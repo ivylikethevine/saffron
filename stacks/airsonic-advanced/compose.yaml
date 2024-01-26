@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  airsonic-advanced:
+    image: lscr.io/linuxserver/airsonic-advanced:latest
+    container_name: airsonic-advanced
+    env_file:
+      - general.env
+    volumes:
+      - /containers/airsonic-advanced/config:/config
+      - ${DATA_DIR}:/data
+    ports:
+      - 4040:4040
+    devices:
+      - /dev/snd:/dev/snd #optional
+    restart: unless-stopped
+networks: {}
