@@ -18,15 +18,18 @@ docker compose up -d
 then visit localhost:5001  or \<hostname\>.local:5001 to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a WEBUI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the compose yaml files.
 
 ## v1.00 List of Stacks & Services
-- [airsonic-advanced](https://docs.linuxserver.io/images/docker-airsonic-advanced/) - music streaming
-- [calibre-web](https://docs.linuxserver.io/images/docker-calibre-web/) - ebook reading
 - [crafty](https://docs.craftycontrol.com/pages/getting-started/installation/docker/) - minecraft servers
 - [duplicati](https://docs.linuxserver.io/images/docker-duplicati/) - backup to AWS/Backblaze/etc.
 - [heimdall](https://docs.linuxserver.io/images/docker-heimdall/) - home page
 - [homeassistant](https://www.home-assistant.io/installation/linux#docker-compose) - smart home automation
-- [jellyfin](https://docs.linuxserver.io/images/docker-jellyfin/) - media streaming & [jellyseer](https://hub.docker.com/r/fallenbagel/jellyseerr) - media requests
+- media-clients
+    * [jellyfin](https://docs.linuxserver.io/images/docker-jellyfin/) - tv/movie streaming
+    * [jellyseer](https://hub.docker.com/r/fallenbagel/jellyseerr) - media requests
+    * [kavita](https://github.com/Kareadita/Kavita) - ebook reader
+    * [navidrome](https://github.com/navidrome/navidrome/) - music streaming
 - [netboot](https://docs.linuxserver.io/images/docker-netbootxyz/) - PXE boot system
 - [netdata](https://learn.netdata.cloud/docs/installing/docker) - hardware usage/monitoring
+- [octoprint](https://github.com/OctoPrint/octoprint-docker) - 3D printer automation/monitoring
 - [qbittorrentvpn](https://github.com/MarkusMcNugen/docker-qBittorrentvpn) - torrent client that runs only on VPN connection
 - [servarr](https://wiki.servarr.com/docker-guide) - media library system
     * [sonarr](https://docs.linuxserver.io/images/docker-sonarr/) - tv
@@ -60,4 +63,6 @@ then visit localhost:5001  or \<hostname\>.local:5001 to start and stop individu
 ###### Env Files
 This project has two types of .env files:
 1. .env - this type is natively loaded by dockge, allowing for WEBUI editing + templating for paths. This is the place that VPN credentials, etc. should be stored since they will not be committed.
+    - if stacks throw errors about undefined variables, make sure to define those variables in the .env for that stack. 
+    - **.env files will have to be defined on ALL nodes where saffron is deployed**
 2. general.env - this holds basic configurations for each container to work and should be changed with caution. They are not available in the Dockge WEBUI

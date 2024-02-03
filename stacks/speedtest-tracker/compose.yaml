@@ -31,7 +31,6 @@ services:
       - POSTGRES_DB=speedtest_tracker
       - POSTGRES_USER=speedy
       - POSTGRES_PASSWORD=password
-      - TZ=America/Los_Angeles
     volumes:
       - /containers/speedtest-db/data:/var/lib/postgresql/data
     restart: unless-stopped

@@ -9,6 +9,7 @@ services:
       - ${CONFIG_DIR}/sonarr-config:/config
       - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra
+      - ${BULK_DIR}:/bulk
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -50,6 +51,7 @@ services:
     volumes:
       - /containers/readarr/config:/config
       - /containers/readarr/books:/books
+      - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra
     ports:
       - 8787:8787

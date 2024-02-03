@@ -1,0 +1,19 @@
+version: "3"
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --providers.docker.exposedByDefault=true
+      - --providers.docker.defaultRule= Host(`swervy.local`) && PathPrefix(`/{{ .Name }}/`)
+    #  - "traefik.http.routers.dataservice.rule= Host(`en.localexample.com`) && PathPrefix(`/9c9t/`)" 
+      - --providers.docker.useBindPortIP=true
+    #  - --traefik.http.routers.traefik.rule=Host(`traefik.lan`, `traefik.lan.to`)
+    ports:
+      - 89:80
+      - 8089:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+networks: {}
