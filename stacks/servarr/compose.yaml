@@ -4,12 +4,12 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     env_file:
-      - general.env
+      - .env.public
     volumes:
-      - ${CONFIG_DIR}/sonarr-config:/config
+      - /containers/sonarr:/config
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra
-      - ${BULK_DIR}:/bulk
+      - ${DATA_DIR_EXTRA}:/extra # optional
+      - ${BULK_DIR}:/bulk # optional
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -19,11 +19,12 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     env_file:
-      - general.env
+      - .env.public
     volumes:
-      - ${CONFIG_DIR}/radarr-config:/config
+      - /containers/radarr:/config
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra
+      - ${DATA_DIR_EXTRA}:/extra # optional
+      - ${BULK_DIR}:/bulk # optional
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -33,11 +34,12 @@ services:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
     env_file:
-      - general.env
+      - .env.public
     volumes:
-      - ${CONFIG_DIR}/lidarr-config:/config
+      - /containers/lidarr:/config
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra
+      - ${DATA_DIR_EXTRA}:/extra # optional
+      - ${BULK_DIR}:/bulk # optional
     ports:
       - 8686:8686
     restart: unless-stopped
@@ -47,48 +49,27 @@ services:
     image: lscr.io/linuxserver/readarr:nightly
     container_name: readarr
     env_file:
-      - general.env
+      - .env.public
     volumes:
       - /containers/readarr/config:/config
       - /containers/readarr/books:/books
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra
+      - ${DATA_DIR_EXTRA}:/extra # optional
     ports:
       - 8787:8787
     restart: unless-stopped
-    networks:
-      bridge: null
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:develop
-    container_name: prowlarr
-    env_file:
-      - general.env
-    volumes:
-      - ${CONFIG_DIR}/prowlarr-config:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped
-    networks:
-      bridge: null
-  flaresolverr:
-    container_name: flaresolverr
-    ports:
-      - 8191:8191
-    environment:
-      - LOG_LEVEL=info
-    restart: unless-stopped
-    image: ghcr.io/flaresolverr/flaresolverr:latest
     networks:
       bridge: null
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
     env_file:
-      - general.env
+      - .env.public
     volumes:
-      - ${CONFIG_DIR}/bazarr-config:/config
+      - /containers/bazarr:/config
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra
+      - ${DATA_DIR_EXTRA}:/extra # optional
+      - ${BULK_DIR}:/bulk # optional
     ports:
       - 6767:6767
     restart: unless-stopped
@@ -97,3 +78,5 @@ services:
 networks:
   bridge:
     driver: bridge
+
+# .env must define DATA_DIR

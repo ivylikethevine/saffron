@@ -2,12 +2,12 @@ version: "3.3"
 services:
   netboot:
     container_name: netboot
+    env_file:
+      - .env.public
     ports:
       - 3300:3000
       - 369:69/udp
       - 38080:80
-    env_file:
-      - general.env
     volumes:
       - /containers/netbootxyz/config:/config
       - /containers/netbootxyz/assets:/assets
