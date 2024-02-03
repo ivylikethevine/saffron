@@ -2,14 +2,16 @@ version: '3.8'
 
 services:
   dockge:
+    restart: always
     container_name: dockge
     image: louislam/dockge:latest
+    environment:
+      - DOCKGE_STACKS_DIR=/home/${USER}/saffron/stacks
+      - DOCKGE_DATA_DIR=/home/${USER}/saffron/dockge/data/
+      - TZ=America/Los_Angeles
     ports:
       - 5001:5001
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKGE_DATA_DIR}:/app/data
-      - ${DOCKGE_STACKS_DIR}:${DOCKGE_STACKS_DIR}
-    env_file:
-      - .env
-    restart: always
+      - /home/${USER}/saffron/dockge/data:/app/data
+      - /home/${USER}/saffron/stacks:/home/${USER}/saffron/stacks
