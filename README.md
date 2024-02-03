@@ -46,6 +46,7 @@ then visit localhost:5001  or \<hostname\>.local:5001 to start and stop individu
 - [speedtest-tracker](https://github.com/alexjustesen/speedtest-tracker) - internet speed monitoring
 - [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client
 - [traefik](https://hub.docker.com/_/traefik) - reverse proxy
+- [uptime-kuma](https://github.com/louislam/uptime-kuma) - nice health checking tool (same dev as Dockge!)
 - [watchtower](https://github.com/containrrr/watchtower) - automatically update & restart docker containers
 
 ### To-Do
@@ -76,6 +77,10 @@ When editing the DATA_DIR(s), it is often best to have the last part of the host
 - [composerize](https://github.com/composerize/composerize) - to turn `docker run...` into docker compose yaml (though dockge does have an implementation of this in the UI)
 - [decomposerize](https://github.com/composerize/decomposerize) - inverse of above
 - [autocompose](https://github.com/Red5d/docker-autocompose) - to turn running containers into docker compose yaml
+
+##### Useful Bash Commands
+
+Quick & dirty fix for fixing file permissions: `sudo chown -R 1000:1000 $DATA_DIR`
 
 ###### Env Files
 
