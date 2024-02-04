@@ -13,8 +13,7 @@
 ```bash
 ssh <hostname>.local
 git clone git@github.com:ivylikethevine/saffron.git
-cd saffron
-cd dockge
+cd saffron/dockge
 docker compose up -d
 ```
 
@@ -55,15 +54,11 @@ then visit localhost:5001  or \<hostname\>.local:5001 to start and stop individu
 - &#128679; [uptime-kuma](https://github.com/louislam/uptime-kuma) - nice health checking tool (same dev as Dockge!)
 - &#x2705; [watchtower](https://github.com/containrrr/watchtower) - automatically update & restart docker containers
 
-### To-Do
+### Compatible with
 
-- Test dockge multiple node system
-- Netdata streaming between nodes
-- Add traefik autorouting
-- Add uptime/monitoring
-- Test easy docker install on linux mint
-- Describe folders: /containers/, /home/user/saffron, + DATA_DIR
-- DNS description (avahi, .local, mdns)
+- [obico](https://www.obico.io/docs/server-guides/install/) - 3D print failure detection notification/stopping
+  - To install:
+    `cd /home/${USER}/saffron/stacks && git clone -b release https://github.com/TheSpaghettiDetective/obico-server.git && cd obico-server && docker compose up -d`
 
 #### Easy docker install
 
@@ -78,7 +73,7 @@ When editing the DATA_DIR(s), it is often best to have the last part of the host
 - `/data/television/:/local/library/television` -> Intuitive
 - `/data/tv/:/local/library/television` -> Often confusing (at least for me!)
 
-##### Migration Tools
+#### Migration Tools
 
 - [composerize](https://github.com/composerize/composerize) - to turn `docker run...` into docker compose yaml (though dockge does have an implementation of this in the UI)
 - [decomposerize](https://github.com/composerize/decomposerize) - inverse of above
@@ -92,7 +87,7 @@ Quick & dirty fix for fixing file permissions: `sudo chown -R 1000:1000 dirName`
 
 For configuring docker containers that talk to each other, you can replace `localhost` with the `container_name` of the service to network with. For example, connecting prowlarr & sonarr, you can use `prowlarr:9696` and `sonarr:8989`. If the containers are not in the same stack, this will require a bridge connection. An example of a bridge is included in `servarr` and `torrent`.
 
-###### Env Files
+##### Env Files
 
 This project has two types of `.env` files:
 
@@ -100,3 +95,21 @@ This project has two types of `.env` files:
     - if stacks throw errors about undefined variables, make sure to define those variables in the `.env` for that stack.
     - these files are ignored by git, so they can locally hold some credentials (such as VPN logins) + personal folder routing
 2. `.env.public` - this holds basic preconfigurations for each container to work and should be changed with caution. They are not available in the Dockge Web UI.
+
+#### To-Do
+
+- Test dockge multiple node system
+- Netdata streaming between nodes
+- Add traefik autorouting
+- Add uptime/monitoring
+- Test easy docker install on linux mint
+- Describe folders: /containers/, /home/user/saffron, + DATA_DIR
+- DNS description (avahi, .local, mdns)
+- Add avahi-repeater
+- Services:
+  - Adguard-home
+  - Code-server
+  - Ansible
+  - Mail server
+  - Cloudflare
+  - Nextcloud
