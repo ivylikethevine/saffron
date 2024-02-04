@@ -6,7 +6,7 @@ services:
       - /init
     environment:
       - PUID=1000
-      - PGID=100
+      - PGID=1000
       - PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       - HOME=/config
     image: linuxserver/duplicati:latest
@@ -15,6 +15,6 @@ services:
       - 8200:8200/tcp
     restart: unless-stopped
     volumes:
-      - /nas:/nas
+      - /nas:/nas # optional
       - /containers/duplicati/config:/config
 networks: {}
