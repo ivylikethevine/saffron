@@ -7,13 +7,12 @@ services:
       - --api.insecure=true
       - --providers.docker
       - --providers.docker.exposedByDefault=true
-      - --providers.docker.defaultRule= Host(`swervy.local`) && PathPrefix(`/{{ .Name }}/`)
-    #  - "traefik.http.routers.dataservice.rule= Host(`en.localexample.com`) && PathPrefix(`/9c9t/`)" 
-      - --providers.docker.useBindPortIP=true
-    #  - --traefik.http.routers.traefik.rule=Host(`traefik.lan`, `traefik.lan.to`)
+      - --providers.docker.defaultRule=Host(`swervy.local`) && PathPrefix(`/{{
+        normalize .Name }}`)
+    # - --providers.docker.useBindPortIP=true
     ports:
-      - 89:80
-      - 8089:8080
+      - 80:80
+      - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 networks: {}
