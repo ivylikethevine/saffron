@@ -1,4 +1,4 @@
 !.env.*
 .env
-stacks/obico/*
+stacks/obico-server/
 containers/*

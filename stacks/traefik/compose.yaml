@@ -7,12 +7,14 @@ services:
       - --api.insecure=true
       - --providers.docker
       - --providers.docker.exposedByDefault=true
-      - --providers.docker.defaultRule=Host(`swervy.local`) && PathPrefix(`/{{
-        normalize .Name }}`)
-    # - --providers.docker.useBindPortIP=true
+     # - --providers.docker.defaultRule=Host(`{{ index .Labels
+    #    "com.docker.compose.service" }}.swervy.local`)
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
     ports:
       - 80:80
-      - 8080:8080
+      - 443:443
+      - 8080:8080 # admin UI
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 networks: {}

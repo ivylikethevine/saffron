@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  dokemon:
+    restart: unless-stopped
+    container_name: dokemon
+    image: productiveops/dokemon:latest
+    ports:
+      - 9091:9090
+    volumes:
+      - /containers/dokemon/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+networks: {}

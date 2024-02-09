@@ -1,8 +1,16 @@
 services:
   uptime-kuma:
-    image: louislam/uptime-kuma:1
+    restart: unless-stopped
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
     volumes:
       - /containers/uptime-kuma/data:/app/data
     ports:
       - 3001:3001
-    restart: unless-stopped
+    labels:
+      - traefik.frontend.rule=Host:localhost;PathPrefixStrip:/uptime-kuma
+    networks:
+      - traefik_default
+networks:
+  traefik_default:
+    external: true

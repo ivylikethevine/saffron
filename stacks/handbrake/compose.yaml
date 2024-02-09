@@ -1,0 +1,13 @@
+version: "3.3"
+services:
+  handbrake:
+    container_name: handbrake
+    ports:
+      - 5800:5800
+    volumes:
+      - /docker/appdata/handbrake:/config:rw
+      - /home/user:/storage:ro
+      - /home/user/HandBrake/watch:/watch:rw
+      - /home/user/HandBrake/output:/output:rw
+    image: jlesage/handbrake
+networks: {}
