@@ -1,6 +1,7 @@
 version: "3.3"
 services:
   watchtower:
+    restart: always
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

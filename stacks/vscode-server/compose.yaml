@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  vscode-server:
+    image: linuxserver/code-server
+    container_name: vscode-server
+    ports:
+      - 8445:8443
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - /containers/vscode-server/config:/config
+      - /home/${USER}/saffron/:/saffron
+networks: {}

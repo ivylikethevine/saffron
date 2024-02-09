@@ -5,42 +5,37 @@ services:
     ports:
       - 4000:4000
     volumes:
-      - /path/to/media:/media
+      - ${DATA_DIR}:/data
+      - ${DATA_DIR_EXTRA}:/extra
+      - ${BULK_DIR}:/bulk
     environment:
-#       App config
       - APP_URL=http://midarr:4000
-
-#       Database config
-      - DB_USERNAME=my_user
-      - DB_PASSWORD=my_password
-      - DB_DATABASE=my_database
-      - DB_HOSTNAME=postgresql
-
-#       Admin account
+      - DB_USERNAME=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_HOSTNAME=midarr-psql
       - SETUP_ADMIN_EMAIL=admin@email.com
       - SETUP_ADMIN_NAME=admin
       - SETUP_ADMIN_PASSWORD=somepassword # minimum length 12
-
-#       Radarr integration
       - RADARR_BASE_URL=radarr:7878
-      - RADARR_API_KEY=someApiKey
-
-#       Sonarr integration
+      - RADARR_API_KEY=${RADARR_API_KEY}
       - SONARR_BASE_URL=sonarr:8989
-      - SONARR_API_KEY=someApiKey
-
+      - SONARR_API_KEY=${SONARR_API_KEY}
     depends_on:
-      postgresql:
-        condition: service_healthy
-
-  postgresql:
-    container_name: postgresql
+      - midarr-psql
+    networks:
+      - servarr_bridge
+  midarr-psql:
+    container_name: midarr-psql
     image: postgres
     volumes:
-      - database-data:/var/lib/postgresql/data
+      - /containers/midarr-psql/data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=my_user
-      - POSTGRES_PASSWORD=my_password
-      - POSTGRES_DB=my_database
-    healthcheck:
-      test: "exit 0"
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    networks:
+      - servarr_bridge
+networks:
+  servarr_bridge:
+    external: true
