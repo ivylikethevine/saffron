@@ -12,6 +12,8 @@
 
 #### To deploy
 
+Prerequisites: git, docker, docker compose, avahi-daemon (optional but recommended)
+
 ```bash
 ssh <hostname>.local # assuming avahi-daemon is running on server, otherwise use the host IP
 git clone git@github.com:ivylikethevine/saffron.git
@@ -27,7 +29,7 @@ then visit localhost:5001  or \<hostname\>.local:5001 to start and stop individu
 2. `/home/$USER/saffron` - saffron root `/dockge` - dockge, `/stacks` - all other stacks/services
 3. `$DATA_DIR` - where bulk files are stored (documents, photos, media, etc.)
 
-## v0.12 List of Stacks & Services
+## v0.15 List of Stacks & Services
 
 &#x2705;: Tested
 
