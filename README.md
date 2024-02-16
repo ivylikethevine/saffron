@@ -10,29 +10,66 @@
 
 I built saffron because I wanted a way to utilize docker compose on a homelab server with easy SVM, configurability, and simple setup.
 
+#### Features
+
+- Media libraries for TV, movies, music, ebooks, & audiobooks. (+ subtitles!)
+- Easy migration from any existing docker or docker compose deployment.
+- Full torrenting suite with VPN integration.
+- Automated backup to cloud storage.
+- Smart home automation & integration.
+- Network speedtests + hardware monitoring.
+- Minecraft server hosting.
+- PXE environment for OS booting on other nodes.
+- Zero DNS or networking configuration outside of docker.
+
+##### Features (Under Development)
+
+1. Automatic traefik routing of containers using docker integration.
+1. Netdata streaming between nodes.
+1. Dockge multi-node deployment support.
+1. Git submodules for additional services.
+  
 #### To deploy
 
 Prerequisites: git, docker, docker compose, avahi-daemon (optional but recommended)
 
 ```bash
-ssh <hostname>.local # assuming avahi-daemon is running on server, otherwise use the host IP
+# On client
+# ssh hostname & ssh hostname.local rely on host having avahi-daemon, otherwise just use the IP address
+ssh <hostname>.local 
+
+# On saffron host
 git clone git@github.com:ivylikethevine/saffron.git
-sudo ./create_folder.sh DATA_DIR # create file folders & DATA_DIR, such as /data, or /mnt/driveName
-cd saffron/dockge
+cd saffron
+
+# Create /containers/* & DATA_DIR (such as /data, or /mnt/driveName)
+sudo ./resources/create_folder.sh DATA_DIR
+
+# Start dockge
+cd dockge
 docker compose up -d
 ```
 
-then visit localhost:5001 or \<hostname\>.local:5001 to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the compose yaml files.
+Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the compose yaml files.
+
+#### To Uninstall
+
+```bash
+docker stop $(docker ps -a -q) 
+rm -rf /home/$USER/saffron
+rm -rf /containers # optional, only if full wipe is wanted
+rm -rf $DATA_DIR
+```
 
 ### Important Paths
 
 1. `/containers/` - stores individual generated configs, db files, etc.
     - This is not a perfect separation, since some containers will use config for "data" (such as torrent clients using it as a default download location)
 2. `/home/$USER/saffron` - saffron root `/dockge` - dockge, `/stacks` - all other stacks/services
-3. `$DATA_DIR` - where bulk files are stored (documents, photos, media, etc.) per stack. 
+3. `$DATA_DIR` - where bulk files are stored (documents, photos, media, etc.) per stack.
     - `.env` files are not (currently) shared between any stacks, so each `.env` must define `DATA_DIR` per stack
 
-## v0.15 List of Stacks & Services
+## v0.20 List of Stacks & Services
 
 ** Names are lowercased per dockge stack naming requirements
 
@@ -40,197 +77,207 @@ then visit localhost:5001 or \<hostname\>.local:5001 to start and stop individua
 
 &#128679;: Active development
 
-* &#128679; [avahi](https://github.com/flungo-docker/avahi) - Allows docker containers to access mdns on LAN.
-  * <details>
+- &#128679; [avahi](https://github.com/flungo-docker/avahi) - Allows docker containers to access mdns on LAN.
+  - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/.webp" /> -->
+      <!-- <img src="resources/screenshots/avahi.webp" alt="avahi ui screenshot"/> -->
     </details>
 
-* &#128679; [crafty](https://docs.craftycontrol.com/pages/getting-started/installation/docker/) - Easily deploy/manage minecraft servers.
-  * <details>
+- &#128679; [crafty](https://docs.craftycontrol.com/pages/getting-started/installation/docker/) - Easily deploy/manage minecraft servers.
+  - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/.webp" /> -->
+      <!-- <img src="resources/screenshots/crafty.webp" alt="crafty ui screenshot"/> -->
     </details>
 
-* &#128679; [dokemon](https://dokemon.dev/) - Web UI to manage docker containers/view logs/etc.
-  * <details>
+- &#128679; [dokemon](https://dokemon.dev/) - Web UI to manage docker containers/view logs/etc.
+  - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/.webp" /> -->
+      <!-- <img src="resources/screenshots/dokemon.webp" alt="dokemon ui screenshot"/> -->
     </details>
 
-* &#x2705; [dockge](https://github.com/louislam/dockge) - Web UI to manage docker compose files (integral to `saffron`).
-  * <details>
+- &#x2705; [dockge](https://github.com/louislam/dockge) - Web UI to manage docker compose files (integral to `saffron`).
+  - <details>
       <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/dockge.webp" />
+      <img src="resources/screenshots/dockge.webp" alt="dockge ui screenshot"/>
     </details>
 
-* &#x2705; [duplicati](https://docs.linuxserver.io/images/docker-duplicati/) - Automated backup to AWS/Backblaze/etc.
-  * <details>
+- &#x2705; [duplicati](https://docs.linuxserver.io/images/docker-duplicati/) - Automated backup to AWS/Backblaze/etc.
+  - <details>
       <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/duplicati.webp" />
-      
-      <a href="https://ivylikethevine.com/projects/homelab-backups/#rule-3-offsite-backups"> Example implementation on my blog.</a>
+      <img src="resources/screenshots/duplicati.webp" alt="duplicati ui screenshot"/>
+      <h4>Example implementation on <a href="https://ivylikethevine.com/projects/homelab-backups/#rule-3-offsite-backups">my blog.</a></h4>
     </details>
 
-* &#128679; [handbrake](https://handbrake.fr/) - Web UI for transcoding video/audio files.
-  * <details>
+- &#128679; [handbrake](https://handbrake.fr/) - Web UI for transcoding video/audio files.
+  - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/.webp" /> -->
+      <!-- <img src="resources/screenshots/handbrake.webp" alt="handbrake ui screenshot"/> -->
     </details>
 
-* &#x2705; [heimdall](https://docs.linuxserver.io/images/docker-heimdall/) - Easy to use home page.
-  * <details>
+- &#x2705; [heimdall](https://docs.linuxserver.io/images/docker-heimdall/) - Easy to use home page.
+  - <details>
       <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/heimdall.webp" />
+      <img src="resources/screenshots/heimdall.webp" alt="heimdall ui screenshot"/>
     </details>
 
-* &#x2705; [homeassistant](https://www.home-assistant.io/installation/linux#docker-compose) - Smart home automation.
-  * <details>
+- &#x2705; [homeassistant](https://www.home-assistant.io/installation/linux#docker-compose) - Smart home automation.
+  - <details>
       <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/homeassistant.webp" />
+      <img src="resources/screenshots/homeassistant.webp" alt="homeassistant ui screenshot"/>
     </details>
 
-* media-clients - Various media streaming services with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
+- media-clients - Various media streaming services with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
 
-  * &#x2705; [jellyfin](https://docs.linuxserver.io/images/docker-jellyfin/) - Tv/movie streaming.
-    * <details>
+  - &#x2705; [jellyfin](https://docs.linuxserver.io/images/docker-jellyfin/) - TV/movie streaming.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/jellyfin.webp" />
+        <img src="resources/screenshots/jellyfin.webp" alt="jellyfin ui screenshot"/>
+        <h4>This container implements the Intel Quicksync hardware encoding, but others are configurable as per <a href="https://docs.linuxserver.io/images/docker-jellyfin/#hardware-acceleration-enhancements">jellyfin acceleration</a> and <a href="https://mods.linuxserver.io/?mod=jellyfin"> linuxserver's docker mods</a>.</h4>
       </details>
 
-  * &#x2705; [jellyseer](https://hub.docker.com/r/fallenbagel/jellyseerr) - Tv/movie requests.
-    * <details>
+  - &#x2705; [jellyseer](https://hub.docker.com/r/fallenbagel/jellyseerr) - TV/movie requests.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/jellyseer.webp" />
+        <img src="resources/screenshots/jellyseer.webp" alt="jellyseer ui screenshot"/>
       </details>
 
-  * &#x2705; [kavita](https://github.com/Kareadita/Kavita) - Ebook reader.
-    * <details>
+  - &#x2705; [kavita](https://github.com/Kareadita/Kavita) - Ebook reader.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/kavita.webp" />
+        <img src="resources/screenshots/kavita.webp" alt="kavita ui screenshot"/>
       </details>
 
-  * &#x2705; [navidrome](https://github.com/navidrome/navidrome/) - Music streaming service (implements [subsonic](https://www.subsonic.org/pages/features.jsp) for compatibility with other services).
-    * <details>
+  - &#x2705; [navidrome](https://github.com/navidrome/navidrome/) - Music streaming service.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/navidrome.webp" />
+        <img src="resources/screenshots/navidrome.webp" alt="navidrome ui screenshot"/>
+        <h4>Implements <a href="https://www.subsonic.org/pages/features.jsp">subsonic</a> for compatibility with other services.</h4>
       </details>
 
-  * &#x2705; [audiobookshelf](https://github.com/advplyr/audiobookshelf) - Audiobook streaming.
-    * <details>
+  - &#x2705; [audiobookshelf](https://github.com/advplyr/audiobookshelf) - Audiobook streaming.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/audiobookshelf.webp" />
+        <img src="resources/screenshots/audiobookshelf.webp" alt="audiobookshelf ui screenshot"/>
       </details>
 
-* &#x2705; [midarr](https://github.com/midarrlabs/midarr-server) - Simple, lightweight media server directly integrated with sonarr & radarr.
-  * <details>
+- &#x2705; [midarr](https://github.com/midarrlabs/midarr-server) - Simple, lightweight media server directly integrated with sonarr & radarr.
+  - <details>
       <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/midarr.webp" />
+      <img src="resources/screenshots/midarr.webp" alt="midarr ui screenshot"/>
     </details>
 
-* &#x2705; [netboot](https://docs.linuxserver.io/images/docker-netbootxyz/) - PXE boot system.
-  * <details>
+- &#x2705; [netboot](https://docs.linuxserver.io/images/docker-netbootxyz/) - PXE boot system.
+  - <details>
       <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/netboot.webp" />
+      <img src="resources/screenshots/netboot.webp" alt="netboot ui screenshot"/>
     </details>
 
-* &#x2705; [netdata](https://learn.netdata.cloud/docs/installing/docker) - Hardware usage/monitoring (incl. containers).
-  * <details>
-      <h3>WebUI Dashboard</h3> 
-      <img src="resources/screenshots/netdata.webp" />
-    </details>
-
-* &#128679; [octoprint](https://github.com/OctoPrint/octoprint-docker) - 3D printer automation/monitoring
-  * <details>
+- &#x2705; [netdata](https://learn.netdata.cloud/docs/installing/docker) - Hardware usage/monitoring (incl. containers).
+  - <details>
       <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/octoprint.webp" />
+      <img src="resources/screenshots/netdata.webp" alt="netdata ui screenshot"/>
     </details>
 
-* torrent - Full torrenting suite with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
+- &#128679; [octoprint](https://github.com/OctoPrint/octoprint-docker) - 3D printer automation/monitoring
+  - <details>
+      <h3>WebUI Dashboard</h3>
+      <img src="resources/screenshots/octoprint.webp" alt="octoprint ui screenshot"/>
+    </details>
+
+- torrent - Full torrenting suite with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
   
-  * &#x2705; [qbittorrentvpn](https://github.com/MarkusMcNugen/docker-qBittorrentvpn) - torrent client that runs only on VPN connection
-    * <details>
+  - &#x2705; [qbittorrenTVpn](https://github.com/MarkusMcNugen/docker-qBittorrenTVpn) - torrent client that runs only on VPN connection
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/qbittorrent.webp" />
+        <img src="resources/screenshots/qbittorrent.webp" alt="qbittorrent ui screenshot"/>
 
         <h4>
-          <a href="https://github.com/MarkusMcNugen/docker-qBittorrentvpn?tab=readme-ov-file#environment-variables">Documentation on Environment Variables</a>
+          <a href="https://github.com/MarkusMcNugen/docker-qBittorrenTVpn?tab=readme-ov-file#environment-variables">Documentation on Environment Variables</a>
         </h4>
       </details>
   
-  * &#x2705; [prowlarr](https://docs.linuxserver.io/images/docker-prowlarr/) - search aggregator
-    * <details>
+  - &#x2705; [prowlarr](https://docs.linuxserver.io/images/docker-prowlarr/) - search aggregator
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/prowlarr.webp" />
+        <img src="resources/screenshots/prowlarr.webp" alt="prowlarr ui screenshot"/>
       </details>
   
-  * &#x2705; [flaresolverr](https://github.com/FlareSolverr/FlareSolverr) - search proxy (required for some search engines)
-    * <details>
+  - &#x2705; [flaresolverr](https://github.com/FlareSolverr/FlareSolverr) - search proxy (required for some search engines)
+    - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/.webp" /> -->
+      <!-- <img src="resources/screenshots/flaresolverr.webp" alt="flaresolverr ui screenshot"/> -->
     </details>
 
-* [servarr](https://wiki.servarr.com/docker-guide) - Media library system(s) with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/servarr/.env.public"><code>.env.public</code></a>.
+- [servarr](https://wiki.servarr.com/docker-guide) - Media library system(s) with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/servarr/.env.public"><code>.env.public</code></a>.
 
-  * &#x2705; [sonarr](https://docs.linuxserver.io/images/docker-sonarr/) - TV library manager.
-    * <details>
+  - &#x2705; [sonarr](https://docs.linuxserver.io/images/docker-sonarr/) - TV library manager.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/sonarr.webp" />
+        <img src="resources/screenshots/sonarr.webp" alt="sonarr ui screenshot"/>
       </details>
 
-  * &#x2705; [radarr](https://docs.linuxserver.io/images/docker-radarr/) - Movie library manager.
-    * <details>
+  - &#x2705; [radarr](https://docs.linuxserver.io/images/docker-radarr/) - Movie library manager.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/radarr.webp" />
+        <img src="resources/screenshots/radarr.webp" alt="radarr ui screenshot"/>
       </details>
 
-  * &#x2705; [lidarr](https://docs.linuxserver.io/images/docker-lidarr/) - Music library manager.
-    * <details>
+  - &#x2705; [lidarr](https://docs.linuxserver.io/images/docker-lidarr/) - Music library manager.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/lidarr.webp" />
+        <img src="resources/screenshots/lidarr.webp" alt="lidarr ui screenshot"/>
       </details>
 
-  * &#x2705; [readarr](https://docs.linuxserver.io/images/docker-readarr/) - Ebook library manager.
-    * <details>
+  - &#x2705; [readarr](https://docs.linuxserver.io/images/docker-readarr/) - Ebook library manager.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/readarr.webp" />
+        <img src="resources/screenshots/readarr.webp" alt="readarr ui screenshot"/>
       </details>
 
-  * &#x2705; [bazarr](https://docs.linuxserver.io/images/docker-bazarr/) - Subtitle management/requests for sonarr/radarr.
-    * <details>
+  - &#x2705; [bazarr](https://docs.linuxserver.io/images/docker-bazarr/) - Subtitle management/requests for sonarr/radarr.
+    - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/bazarr.webp" />
+        <img src="resources/screenshots/bazarr.webp" alt="bazarr ui screenshot"/>
       </details>
 
-* &#x2705; [speedtest-tracker](https://github.com/alexjustesen/speedtest-tracker) - Internet speed monitoring.
-    * <details>
+- &#x2705; [speedtest-tracker](https://github.com/alexjustesen/speedtest-tracker) - Internet speed monitoring.
+  - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/speedtest-tracker.webp" />
+        <img src="resources/screenshots/speedtest-tracker.webp" alt="speedtest-tracker ui screenshot"/>
       </details>
 
-* &#128679; [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client.
-  * <details>
+- &#128679; [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client.
+  - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/.webp" /> -->
+      <!-- <img src="resources/screenshots/thelounge.webp" alt="thelounge ui screenshot"/> -->
     </details>
 
-* &#128679; [traefik](https://hub.docker.com/_/traefik) - Reverse proxy with easy docker integration.
-  * <details>
+- &#128679; [traefik](https://hub.docker.com/_/traefik) - Reverse proxy with easy docker integration.
+  - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/.webp" /> -->
+      <!-- <img src="resources/screenshots/traefik.webp" alt="traefik ui screenshot"/> -->
     </details>
 
-* &#128679; [uptime-kuma](https://github.com/louislam/uptime-kuma) - Nice health checking tool with simple UI (same dev as Dockge!).
-  * <details>
+- &#128679; [uptime-kuma](https://github.com/louislam/uptime-kuma) - Nice health checking tool with simple UI (same dev as Dockge!).
+  - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/.webp" /> -->
+      <!-- <img src="resources/screenshots/uptime-kuma.webp" alt="uptime-kuma ui screenshot"/> -->
     </details>
 
-* &#x2705; [watchtower](https://github.com/containrrr/watchtower) - Automatically update & restart docker containers.
-  * <details>
+- &#x2705; [watchtower](https://github.com/containrrr/watchtower) - Automatically update & restart docker containers.
+  - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/.webp" /> -->
+      <!-- <img src="resources/screenshots/watchtower.webp" alt="watchtower ui screenshot"/> -->
     </details>
+
+### Services under consideration
+
+- [Adguard](https://adguard.com/en/welcome.html) - for whole home ad blocking.
+- [Ansible Semaphore](https://www.semui.co/) - for easier host updating/management.
+- Mail Server - for notifications.
+- [Cloudflare](https://developers.cloudflare.com/cloudflare-one/) - for access outside of home network.
+- [Nextcloud](https://nextcloud.com/) - for general homelab "cloud".
+
 If a service isn't on here yet, feel free to add it! Most of these are very simple applications of the excellent [linuxserver docker images](https://docs.linuxserver.io/images/). When using those, an example .env.public would be as follows
 
 ```bash
@@ -246,11 +293,11 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 ### Compatible with
 
-* [obico](https://www.obico.io/docs/server-guides/install/) - 3D print failure detection notification/stopping
-  * To install:
+- [obico](https://www.obico.io/docs/server-guides/install/) - 3D print failure detection notification/stopping
+  - To install:
     `cd /home/${USER}/saffron/stacks && git clone -b release https://github.com/TheSpaghettiDetective/obico-server.git && cd obico-server && docker compose up -d`
 
-* For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/${USER}/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
+- For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/${USER}/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
 
 #### Easy docker install
 
@@ -262,16 +309,16 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 When editing the DATA_DIR(s), it is often best to have the last part of the host volume match the container volume, such as:
 
-* `/data/television/:/local/library/television` -> Intuitive
-* `/data/tv/:/local/library/television` -> Often confusing (at least for me!)
+- `/data/television/:/local/library/television` -> Intuitive
+- `/data/TV/:/local/library/television` -> Often confusing (at least for me!)
 
 I have `DATA_DIR`, `DATA_DIR_EXTRA`, and `BULK_DIR`, but only `DATA_DIR` is required. The others can be deleted from compose files.
 
 #### Migration Tools
 
-* [composerize](https://github.com/composerize/composerize) - to turn `docker run...` into docker compose yaml (though dockge does have an implementation of this in the UI)
-* [decomposerize](https://github.com/composerize/decomposerize) - inverse of above
-* [autocompose](https://github.com/Red5d/docker-autocompose) - to turn running containers into docker compose yaml
+- [composerize](https://github.com/composerize/composerize) - to turn `docker run...` into docker compose yaml (though dockge does have an implementation of this in the UI)
+- [decomposerize](https://github.com/composerize/decomposerize) - inverse of above
+- [autocompose](https://github.com/Red5d/docker-autocompose) - to turn running containers into docker compose yaml
 
 ##### Useful Bash Commands
 
@@ -287,73 +334,54 @@ Quick & dirty fix for fixing file/folder permissions: `sudo chmod -R 755 /contai
 
 ##### Internal Routing
 
-For configuring docker containers that talk to each other, you can replace `localhost` with the `container_name` of the service to network, as long as both are inside of the same `compose.yaml`. For example, connecting prowlarr & sonarr, you can use `prowlarr:9696` and `sonarr:8989`. If the containers are not in the same stack, this will require a bridge connection. An example of a bridge is included in `servarr` and `torrent`. To connect to `servarr` from `torrent`, `qbittorrentvpn` must use the `servarr_bridge` network.
+For configuring docker containers that talk to each other, you can replace `localhost` with the `container_name` of the service to network, as long as both are inside of the same `compose.yaml`. For example, connecting prowlarr & sonarr, you can use `prowlarr:9696` and `sonarr:8989`. If the containers are not in the same stack, this will require a bridge connection. An example of a bridge is included in `servarr` and `torrent`. To connect to `servarr` from `torrent`, `qbittorrenTVpn` must use the `servarr_bridge` network.
 
 ##### Env Files
 
 This project has two types of `.env` files:
 
 1. `.env` - this type is natively loaded by dockge, allowing for Web UI editing + templating for paths. This is the place that VPN credentials, etc. should be stored since they will not be committed.
-    * if stacks throw errors about undefined variables, make sure to define those variables in the `.env` for that stack.
-    * these files are ignored by git, so they can locally hold some credentials (such as VPN logins) + personal folder routing
+    - if stacks throw errors about undefined variables, make sure to define those variables in the `.env` for that stack.
+    - these files are ignored by git, so they can locally hold some credentials (such as VPN logins) + personal folder routing
 2. `.env.public` - this holds basic preconfigurations for each container to work and should be changed with caution. They are not available in the Dockge Web UI.
 
-
-###### Planned Features
-
-1. Automatic traefik routing of containers using docker integration.
-1. Install script for folder permissions.
-1. Git submodules
-
-#### To-Do
-
-* Test multi-node support
-* Test easy docker install on linux mint
-* DNS description (avahi, .local, mdns)
-* Services:
-  * Adguard
-  * Ansible
-  * Mail server
-  * Cloudflare
-  * Nextcloud
-
-###### Creating a Saffron-Styled compose from Scratch
+##### Creating a Saffron-Styled compose from Scratch
 
 Saffron is designed to be extensible. It is more an amalgamation of my experience than a specific software suite. As such, here is a compilation of my advice when creating new docker compose files for use with saffron or similar deployments.
 
 1. Only edit in one mode at a time - Implemented in this repository is a vscode server, which allows for editing of files that dockge does not display in the UI (such as `.env.public`, `.gitignore`, and the dockge `compose.yaml`). Using dockge to edit some files & vscode to edit others can often result in mismatches and confusion. For any operation, pick one tool and use that until you can fully transition to the other tool.
-2. Consistent naming - In the homelab space, some of the more advanced features of docker are not as useful and often lead to confusion. Here is an example format for a compose file, with explanations. Also, [here is the compose documentation](https://docs.docker.com/compose/compose-file/05-services/).
+2. Keep secrets in `.env` and double check your commits! An alternative option is [docker secrets](https://docs.docker.com/compose/use-secrets/), but same rules apply. Make sure your commits never contain private keys, etc.
+3. Consistent naming - In the homelab space, some of the more advanced features of docker are not as useful and often lead to confusion. Here is an example format for a compose file, with explanations. Also, [here is the compose documentation](https://docs.docker.com/compose/compose-file/05-services/).
 
-```bash
-version: 3
-services:
-  vscode-server: 
-    # "vscode-server" is the name of our service.
-    restart: unless-stopped 
-    # Always remember to define a restart policy. 
-    container_name: vscode-server 
-    # Usually easiest to keep as exact duplicate of service name.
-    image: linuxserver/code-server 
-    # Typically, the service name would be derived from the image name (the part after the "/"). Here, it is different to be easier for human readability since "code-server" is quite vague.
-    ports:
-      - 8445:8443 
-      # The port assignments in saffron are designed to avoid conflicts. host:container is the format, and it is easiest to change host mapping by itself, and not to mess with default port mappings. Some containers require environment variables to change the internal port, so its best to avoid.
-    environment:
-      - PUID=1000 
-      - PGID=1000
-      # Most of the time, we want our containers to have the default user permissions (1000:1000 user:group)
-    env_file:
-      - .env.public 
-      # Alternatively to the environment tag, we can load a .env file directly. The above PUID/PGID could be moved to .env.public for conciseness. 
-    volumes:
-      - /containers/vscode-server/config:/config 
-      # Again, usually easiest to follow /containers/container_name/folder:/folder for consistency & clarity.
-      - /etc/timezone:/etc/timezone:ro 
-      # This will set our TZ to the host's TZ, instead of configuring per container. To change, run `dpkg-reconfigure tzdata` on the host.
-networks: {}
-```
-### It is also easiest to name the stack the same as the main service in the compose file. 
-** (Adding the 'p-' or 'dev-' prefix will ignore the stack in git)
-![image](resources/screenshots/dockge-stack-naming.webp)
-
-3. Keep secrets in `.env` and double check your commits! An alternative option is [docker secrets](https://docs.docker.com/compose/use-secrets/), but same rules apply. Make sure your commits never contain private keys, etc.
+  ```yaml
+  version: 3
+  services:
+    vscode-server: 
+      # "vscode-server" is the name of our service.
+      restart: unless-stopped 
+      # Always remember to define a restart policy. 
+      container_name: vscode-server 
+      # Usually easiest to keep as exact duplicate of service name.
+      image: linuxserver/code-server 
+      # Typically, the service name would be derived from the image name (the part after the "/"). Here, it is different to be easier for human readability since "code-server" is quite vague.
+      ports:
+        - 8445:8443 
+        # The port assignments in saffron are designed to avoid conflicts. host:container is the format, and it is easiest to change host mapping by itself, and not to mess with default port mappings. Some containers require environment variables to change the internal port, so its best to avoid.
+      environment:
+        - PUID=1000 
+        - PGID=1000
+        # Most of the time, we want our containers to have the default user permissions (1000:1000 user:group)
+      env_file:
+        - .env.public 
+        # Alternatively to the environment tag, we can load a .env file directly. The above PUID/PGID could be moved to .env.public for conciseness. 
+      volumes:
+        - /containers/vscode-server/config:/config 
+        # Again, usually easiest to follow /containers/container_name/folder:/folder for consistency & clarity.
+        - /etc/timezone:/etc/timezone:ro 
+        # This will set our TZ to the host's TZ, instead of configuring per container. To change, run `dpkg-reconfigure tzdata` on the host.
+  networks: {}
+  ```
+  
+- It is also easiest to name the stack the same as the main service in the compose file
+    ![image](resources/screenshots/dockge-stack-naming.webp)
+- Also: adding the 'p-' or 'dev-' prefix will ignore the stack in git
