@@ -43,4 +43,5 @@ networks:
   servarr_bridge:
     external: true
 
-# .env must define: VPN_USERNAME, VPN_PASSWORD, CONFIG_DIR, & DATA_DIR
+# .env must define: VPN_ENABLED, VPN_USERNAME, VPN_PASSWORD, & DATA_DIR (other DIR's can be deleted)
+# also requires a .ovpn file in the /containers/qbittorrent/openvpn/ folder for VPN use

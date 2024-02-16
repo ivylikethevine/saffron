@@ -1,4 +1,18 @@
-!.env.*
+# Specifically track the premade .env.public files
+!.env.public
+
+# Keep the Dockge-editable .env private to avoid committing & tracking credentials
 .env
+
+# Section for repositories cloned into stacks/ directory
 stacks/obico-server/
-containers/*
+
+# Prefixes for stacks not tracked by git
+stacks/p-*
+stacks/dev-*
+
+# Only want to commit .webp files for repository size
+resources/screenshots/*.png
+resources/screenshots/*.jpg
+resources/screenshots/*.tiff
+resources/screenshots/*.jpeg

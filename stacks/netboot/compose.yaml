@@ -2,8 +2,9 @@ version: "3.3"
 services:
   netboot:
     container_name: netboot
-    env_file:
-      - .env.public
+    environment:
+      - PUID=1000
+      - PGID=1000
     ports:
       - 3300:3000
       - 369:69/udp
@@ -11,6 +12,7 @@ services:
     volumes:
       - /containers/netbootxyz/config:/config
       - /containers/netbootxyz/assets:/assets
+      - /etc/timezone:/etc/timezone:ro
     restart: unless-stopped
     image: lscr.io/linuxserver/netbootxyz:latest
 networks: {}

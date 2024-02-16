@@ -10,6 +10,7 @@ services:
       - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
+      - /etc/timezone:/etc/timezone:ro
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -25,6 +26,7 @@ services:
       - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
+      - /etc/timezone:/etc/timezone:ro
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -40,6 +42,7 @@ services:
       - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
+      - /etc/timezone:/etc/timezone:ro
     ports:
       - 8686:8686
     restart: unless-stopped
@@ -55,6 +58,7 @@ services:
       - /containers/readarr/books:/books
       - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra # optional
+      - /etc/timezone:/etc/timezone:ro
     ports:
       - 8787:8787
     restart: unless-stopped
@@ -70,6 +74,7 @@ services:
       - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
+      - /etc/timezone:/etc/timezone:ro
     ports:
       - 6767:6767
     restart: unless-stopped
@@ -79,4 +84,4 @@ networks:
   bridge:
     driver: bridge
 
-# .env must define DATA_DIR
+# .env must define DATA_DIR, other DIR's can be deleted

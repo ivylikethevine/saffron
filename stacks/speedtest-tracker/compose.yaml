@@ -16,10 +16,10 @@ services:
       - DB_DATABASE=speedtest_tracker
       - DB_USERNAME=speedy
       - DB_PASSWORD=password
-      - TZ=America/Los_Angeles
     volumes:
       - /containers/speedtest-tracker/config:/config
       - /containers/speedtest-tracker/web:/etc/ssl/web
+      - /etc/timezone:/etc/timezone:ro
     image: ghcr.io/alexjustesen/speedtest-tracker:latest
     restart: unless-stopped
     depends_on:

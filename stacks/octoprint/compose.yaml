@@ -6,14 +6,7 @@ services:
     restart: unless-stopped
     ports:
       - 87:80
-    devices:
-      - /dev/ttyACM0:/dev/ttyACM0
-      - /dev/video0:/dev/video0
-      - /dev/gpiochip0:/dev/gpiochip0
-      - /dev/gpiochip1:/dev/gpiochip1
-      - /dev/gpiochip2:/dev/gpiochip2
-      - /dev/gpiochip3:/dev/gpiochip3
-      - /dev/gpiochip4:/dev/gpiochip4
+    privileged: true
     volumes:
       - /containers/octoprint:/octoprint
     environment:

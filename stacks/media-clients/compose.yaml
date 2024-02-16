@@ -11,6 +11,7 @@ services:
       - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
+      - /etc/timezone:/etc/timezone:ro
   kavita:
     restart: unless-stopped
     container_name: kavita
@@ -22,6 +23,7 @@ services:
       - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
+      - /etc/timezone:/etc/timezone:ro
   navidrome:
     restart: unless-stopped
     container_name: navidrome
@@ -33,6 +35,7 @@ services:
       - ${DATA_DIR}/music:/music:ro
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
+      - /etc/timezone:/etc/timezone:ro
   jellyfin:
     restart: unless-stopped
     container_name: jellyfin
@@ -44,6 +47,7 @@ services:
       - ${DATA_DIR}:/data
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
+      - /etc/timezone:/etc/timezone:ro
     devices:
       - /dev/dri:/dev/dri # for intel hardware decode
     environment:
@@ -58,8 +62,11 @@ services:
       - 5057:5055
     volumes:
       - /containers/jellyseerr/:/app/config
+      - /etc/timezone:/etc/timezone:ro
     networks:
       - servarr_bridge
 networks:
   servarr_bridge:
     external: true
+
+# .env must define DATA_DIR, other DIR's can be deleted

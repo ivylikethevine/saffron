@@ -4,8 +4,6 @@ services:
     container_name: crafty
     image: registry.gitlab.com/crafty-controller/crafty-4:latest
     restart: unless-stopped
-    environment:
-      - TZ=America/Los_Angeles
     ports:
       - 8000:8000 # HTTP
       - 8443:8443 # HTTPS
@@ -18,4 +16,5 @@ services:
       - /containers/crafty/servers:/crafty/servers
       - /containers/crafty/config:/crafty/app/config
       - /containers/crafty/import:/crafty/import
+      - /etc/timezone:/etc/timezone:ro
 networks: {}
