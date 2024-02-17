@@ -34,8 +34,20 @@ I built saffron because I wanted a way to utilize docker compose on a homelab se
 
 #### To deploy
 
+Requires: git, docker, docker compose
+
 ```bash
-# On saffron host (or ssh connection from a client machine)
+# Grab saffron
+git clone git@github.com:ivylikethevine/saffron.git
+cd saffron
+
+# Create file paths with correct permissions & start dockge
+./install-saffron.sh
+```
+
+##### Easy installation of git & docker
+
+```bash
 sudo apt install -y git # required to install saffron
 sudo apt install -y avahi-daemon # optional, but highly recommended for easy configuration
 
@@ -45,14 +57,8 @@ curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh ./get-docker.sh
 # Allow docker to run without sudo
 sudo usermod -aG docker $USER
 newgrp docker
+# And verify
 docker run hello-world
-
-# Grab saffron
-git clone git@github.com:ivylikethevine/saffron.git
-cd saffron
-
-# Create file paths with correct permissions & start dockge
-./install-saffron.sh
 ```
 
 Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the compose yaml files.
