@@ -34,23 +34,25 @@ I built saffron because I wanted a way to utilize docker compose on a homelab se
 
 #### To deploy
 
-Prerequisites: git, docker, docker compose, avahi-daemon (optional but recommended)
-
 ```bash
-# On client
-# ssh hostname & ssh hostname.local rely on host having avahi-daemon, otherwise just use the IP address
-ssh <hostname>.local 
+# On saffron host (or ssh connection from a client machine)
+sudo apt install -y git # required to install saffron
+sudo apt install -y avahi-daemon # optional, but highly recommended for easy configuration
 
-# On saffron host
+# Install docker from the easy install script
+curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh ./get-docker.sh
+
+# Allow docker to run without sudo
+sudo usermod -aG docker $USER
+newgrp docker
+docker run hello-world
+
+# Grab saffron
 git clone git@github.com:ivylikethevine/saffron.git
 cd saffron
 
-# Create /containers/* & DATA_DIR (such as /data, or /mnt/driveName)
-sudo ./resources/create_folder.sh DATA_DIR
-
-# Start dockge
-cd dockge
-docker compose up -d
+# Create file paths with correct permissions & start dockge
+./install-saffron.sh
 ```
 
 Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the compose yaml files.
@@ -61,16 +63,14 @@ Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start an
 docker stop $(docker ps -a -q)  # Important to stop before updates!
 cd /home/$USER/saffron
 git pull
-docker container start dockge
+docker compose up -d dockge # Then visit dockge to start/stop containers
 ```
 
-#### To Uninstall
+#### To Remove
 
 ```bash
-docker stop $(docker ps -a -q) 
-rm -rf /home/$USER/saffron
-rm -rf /containers # optional, only if full wipe is wanted
-rm -rf $DATA_DIR
+cd /home/$USER/saffron
+./remove-saffron.sh
 ```
 
 ### Important Paths
@@ -384,12 +384,6 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 - For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/${USER}/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
 
-#### Easy docker install
-
-`curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh ./get-docker.sh`
-
-** Note: If installing on Linux Mint, `$VERSION_CODENAME` needs to be replaced with `$UBUNTU_CODENAME` for the apt sources to be correct
-
 #### Docker Volumes
 
 When editing the DATA_DIR(s), it is often best to have the last part of the host volume match the container volume, such as:
@@ -404,18 +398,6 @@ I have `DATA_DIR`, `DATA_DIR_EXTRA`, and `BULK_DIR`, but only `DATA_DIR` is requ
 - [composerize](https://github.com/composerize/composerize) - to turn `docker run...` into docker compose yaml (though dockge does have an implementation of this in the UI)
 - [decomposerize](https://github.com/composerize/decomposerize) - inverse of above
 - [autocompose](https://github.com/Red5d/docker-autocompose) - to turn running containers into docker compose yaml
-
-##### Useful Bash Commands
-
-###### Fix File Owner
-
-Quick & dirty fix for fixing file/folder ownership: `sudo chown -R 1000:1000 /containers`
-
-The 1000:1000 is (almost always) an alias for the default Linux user.
-
-###### Fix File Permissions
-
-Quick & dirty fix for fixing file/folder permissions: `sudo chmod -R 755 /containers`
 
 ##### Internal Routing
 
