@@ -27,8 +27,9 @@ I built saffron because I wanted a way to utilize docker compose on a homelab se
 1. Automatic traefik routing of containers using docker integration.
 1. Netdata streaming between nodes.
 1. Dockge multi-node deployment support.
-1. Git submodules for additional services.
-  
+1. Git submodules/subtrees for additional services.
+1. SSL certs
+
 #### To deploy
 
 Prerequisites: git, docker, docker compose, avahi-daemon (optional but recommended)
@@ -51,6 +52,15 @@ docker compose up -d
 ```
 
 Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the compose yaml files.
+
+##### To Update
+
+```bash
+docker stop $(docker ps -a -q)  # Important to stop before updates!
+cd /home/$USER/saffron
+git pull
+docker container start dockge
+```
 
 #### To Uninstall
 
@@ -81,7 +91,7 @@ rm -rf $DATA_DIR
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/avahi.webp" alt="avahi ui screenshot"/> -->
-      
+
       <img alt="x64 Version" src="https://img.shields.io/docker/v/flungo/avahi/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/flungo/avahi/latest?arch=arm64&label=arm64">
     </details>
@@ -90,7 +100,7 @@ rm -rf $DATA_DIR
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/crafty.webp" alt="crafty ui screenshot"/> -->
-      
+
       <img alt="x64 Version" src="https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=arm64&label=arm64">
     </details>
@@ -99,7 +109,7 @@ rm -rf $DATA_DIR
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/dokemon.webp" alt="dokemon ui screenshot"/> -->
-      
+
       <img alt="x64 Version" src="https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=arm64&label=arm64">
     </details>
@@ -108,7 +118,7 @@ rm -rf $DATA_DIR
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/dockge.webp" alt="dockge ui screenshot"/>
-      
+
       <img alt="x64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=arm64&label=arm64">
     </details>
@@ -118,7 +128,7 @@ rm -rf $DATA_DIR
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/duplicati.webp" alt="duplicati ui screenshot"/>
       <h4>Example implementation on <a href="https://ivylikethevine.com/projects/homelab-backups/#rule-3-offsite-backups">my blog.</a></h4>
-      
+
       <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/duplicati/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/duplicati/latest?arch=arm64&label=arm64">
     </details>
@@ -127,7 +137,7 @@ rm -rf $DATA_DIR
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/handbrake.webp" alt="handbrake ui screenshot"/> -->
-      
+
       <img alt="x64 Version" src="https://img.shields.io/docker/v/jlesage/handbrake/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/jlesage/handbrake/latest?arch=arm64&label=arm64">
     </details>
@@ -136,7 +146,7 @@ rm -rf $DATA_DIR
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/heimdall.webp" alt="heimdall ui screenshot"/>
-      
+
       <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/heimdall/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/heimdall/latest?arch=arm64&label=arm64">
     </details>
@@ -204,7 +214,7 @@ rm -rf $DATA_DIR
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/netboot.webp" alt="netboot ui screenshot"/>
-      
+
       <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/netbootxyz/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/netbootxyz/latest?arch=arm64&label=arm64">
     </details>
@@ -312,7 +322,7 @@ rm -rf $DATA_DIR
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/speedtest-tracker.webp" alt="speedtest-tracker ui screenshot"/>
         <p>TODO: Transition to <a href="https://hub.docker.com/r/linuxserver/speedtest-tracker">linuxserver image</a> and add shield badges.</p>
-        Bundled Postgress Versions: 
+        Bundled Postgress Versions:
         <img alt="x64 Version" src="https://img.shields.io/docker/v/postgres/postgres/15?arch=amd64&label=x64">
         <img alt="Arm64 Version" src="https://img.shields.io/docker/v/postgres/postgres/15?arch=arm64&label=arm64">
       </details>
@@ -341,7 +351,7 @@ rm -rf $DATA_DIR
       <!-- <img src="resources/screenshots/uptime-kuma.webp" alt="uptime-kuma ui screenshot"/> -->  
 
       <img alt="x64 Version" src="https://img.shields.io/docker/v/louislam/uptime-kuma/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/uptime-kuma/latest?arch=arm64&label=arm64">    
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/uptime-kuma/latest?arch=arm64&label=arm64">
     </details>
 
 - &#x2705; [watchtower](https://github.com/containrrr/watchtower) - Automatically update & restart docker containers.
@@ -360,16 +370,7 @@ rm -rf $DATA_DIR
 - [Cloudflare](https://developers.cloudflare.com/cloudflare-one/) - for access outside of home network.
 - [Nextcloud](https://nextcloud.com/) - for general homelab "cloud".
 
-If a service isn't on here yet, feel free to add it! Most of these are very simple applications of the excellent [linuxserver docker images](https://docs.linuxserver.io/images/). When using those, an example .env.public would be as follows
-
-```bash
-## Defaults
-PGID=1000
-PUID=1000
-# The PGID/PUID are required in the .env(s), user: 1000:1000 in docker compose does not play well with these images.
-UMASK=022
-# Relatively safe file permission for containers.
-```
+If a service isn't on here yet, feel free to add it! Most of these are very simple applications of the excellent [linuxserver docker images](https://docs.linuxserver.io/images/). See creating a [saffron-styled compose](#saffron-example) for more detail on the format of `compose.yaml` and `.env.public`.
 
 I've also made stacks using Lissy93's well maintained [portainer template repo](https://github.com/Lissy93/portainer-templates), although this is slightly different than working from raw compose files.
 
@@ -427,13 +428,18 @@ This project has two types of `.env` files:
     - these files are ignored by git, so they can locally hold some credentials (such as VPN logins) + personal folder routing
 2. `.env.public` - this holds basic preconfigurations for each container to work and should be changed with caution. They are not available in the Dockge Web UI.
 
-##### Creating a Saffron-Styled compose from Scratch
+### Creating a Saffron-Styled compose from Scratch <a id="saffron-example"></a>
 
 Saffron is designed to be extensible. It is more an amalgamation of my experience than a specific software suite. As such, here is a compilation of my advice when creating new docker compose files for use with saffron or similar deployments.
 
 1. Only edit in one mode at a time - Implemented in this repository is a vscode server, which allows for editing of files that dockge does not display in the UI (such as `.env.public`, `.gitignore`, and the dockge `compose.yaml`). Using dockge to edit some files & vscode to edit others can often result in mismatches and confusion. For any operation, pick one tool and use that until you can fully transition to the other tool.
 2. Keep secrets in `.env` and double check your commits! An alternative option is [docker secrets](https://docs.docker.com/compose/use-secrets/), but same rules apply. Make sure your commits never contain private keys, etc.
 3. Consistent naming - In the homelab space, some of the more advanced features of docker are not as useful and often lead to confusion. Here is an example format for a compose file, with explanations. Also, [here is the compose documentation](https://docs.docker.com/compose/compose-file/05-services/).
+
+- It is often easiest to name the stack  after the main service in the compose file.
+    ![image](resources/screenshots/dockge-stack-naming.webp)
+
+#### stacks/vscode-server/compose.yaml
 
   ```yaml
   version: 3
@@ -463,7 +469,14 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
         # This will set our TZ to the host's TZ, instead of configuring per container. To change, run `dpkg-reconfigure tzdata` on the host.
   networks: {}
   ```
-  
-- It is also easiest to name the stack the same as the main service in the compose file
-    ![image](resources/screenshots/dockge-stack-naming.webp)
-- Also: adding the 'p-' or 'dev-' prefix will ignore the stack in git
+
+#### stacks/vscode-server/.env.public
+
+```bash
+## Defaults
+PGID=1000
+PUID=1000
+# The PGID/PUID are required in the .env(s), user: 1000:1000 in docker compose does not play well with these images.
+UMASK=022
+# Relatively safe file permission for containers.
+```
