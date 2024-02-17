@@ -1,5 +1,7 @@
 # Saffron
 
+![GitHub repo size](https://img.shields.io/github/repo-size/ivylikethevine/saffron) ![GitHub last commit](https://img.shields.io/github/last-commit/ivylikethevine/saffron) ![GitHub Repo stars](https://img.shields.io/github/stars/ivylikethevine/saffron) ![GitHub forks](https://img.shields.io/github/forks/ivylikethevine/saffron) ![GitHub License](https://img.shields.io/github/license/ivylikethevine/saffron)
+
 ## (S)erver (A)s a (F)ile (F)older (R)unning (O)n (N)etwork
 
 ...the second half is a backcronym
