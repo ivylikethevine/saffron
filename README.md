@@ -81,24 +81,36 @@ rm -rf $DATA_DIR
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/avahi.webp" alt="avahi ui screenshot"/> -->
+      
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/flungo/avahi/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/flungo/avahi/latest?arch=arm64&label=arm64">
     </details>
 
 - &#128679; [crafty](https://docs.craftycontrol.com/pages/getting-started/installation/docker/) - Easily deploy/manage minecraft servers.
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/crafty.webp" alt="crafty ui screenshot"/> -->
+      
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=arm64&label=arm64">
     </details>
 
 - &#128679; [dokemon](https://dokemon.dev/) - Web UI to manage docker containers/view logs/etc.
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/dokemon.webp" alt="dokemon ui screenshot"/> -->
+      
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=arm64&label=arm64">
     </details>
 
 - &#x2705; [dockge](https://github.com/louislam/dockge) - Web UI to manage docker compose files (integral to `saffron`).
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/dockge.webp" alt="dockge ui screenshot"/>
+      
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=arm64&label=arm64">
     </details>
 
 - &#x2705; [duplicati](https://docs.linuxserver.io/images/docker-duplicati/) - Automated backup to AWS/Backblaze/etc.
@@ -106,24 +118,37 @@ rm -rf $DATA_DIR
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/duplicati.webp" alt="duplicati ui screenshot"/>
       <h4>Example implementation on <a href="https://ivylikethevine.com/projects/homelab-backups/#rule-3-offsite-backups">my blog.</a></h4>
+      
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/duplicati/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/duplicati/latest?arch=arm64&label=arm64">
     </details>
 
-- &#128679; [handbrake](https://handbrake.fr/) - Web UI for transcoding video/audio files.
+- &#128679; [handbrake](https://handbrake.fr/) - Web UI for transcoding video/audio files. - no ARM support?
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/handbrake.webp" alt="handbrake ui screenshot"/> -->
+      
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/jlesage/handbrake/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/jlesage/handbrake/latest?arch=arm64&label=arm64">
     </details>
 
 - &#x2705; [heimdall](https://docs.linuxserver.io/images/docker-heimdall/) - Easy to use home page.
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/heimdall.webp" alt="heimdall ui screenshot"/>
+      
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/heimdall/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/heimdall/latest?arch=arm64&label=arm64">
     </details>
 
 - &#x2705; [homeassistant](https://www.home-assistant.io/installation/linux#docker-compose) - Smart home automation.
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/homeassistant.webp" alt="homeassistant ui screenshot"/>
+
+      <img alt="x64 Version size" src="https://img.shields.io/docker/image-size/homeassistant/home-assistant/latest?arch=amd64&label=x64">
+      <img alt="arm64 Version size" src="https://img.shields.io/docker/image-size/homeassistant/home-assistant/latest?arch=arm64&label=arm64">
+      <!-- <img alt="x64 Version" src="https://img.shields.io/docker/v/homeassistant/home-assistant/latest?arch=arm64&label=arm64"> HA is unable to use the /v/ version badge for some reason. -->
     </details>
 
 - media-clients - Various media streaming services with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
@@ -133,18 +158,27 @@ rm -rf $DATA_DIR
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/jellyfin.webp" alt="jellyfin ui screenshot"/>
         <h4>This container implements the Intel Quicksync hardware encoding, but others are configurable as per <a href="https://docs.linuxserver.io/images/docker-jellyfin/#hardware-acceleration-enhancements">jellyfin acceleration</a> and <a href="https://mods.linuxserver.io/?mod=jellyfin"> linuxserver's docker mods</a>.</h4>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/jellyfin/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/jellyfin/latest?arch=arm64&label=arm64">
       </details>
 
-  - &#x2705; [jellyseer](https://hub.docker.com/r/fallenbagel/jellyseerr) - TV/movie requests.
+  - &#x2705; [jellyseerr](https://hub.docker.com/r/fallenbagel/jellyseerrr) - TV/movie requests.
     - <details>
         <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/jellyseer.webp" alt="jellyseer ui screenshot"/>
+        <img src="resources/screenshots/jellyseerr.webp" alt="jellyseerr ui screenshot"/>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/fallenbagel/jellyseerr/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/fallenbagel/jellyseerr/latest?arch=arm64&label=arm64">
       </details>
 
   - &#x2705; [kavita](https://github.com/Kareadita/Kavita) - Ebook reader.
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/kavita.webp" alt="kavita ui screenshot"/>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/jvmilazz0/kavita/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/jvmilazz0/kavita/latest?arch=arm64&label=arm64">
       </details>
 
   - &#x2705; [navidrome](https://github.com/navidrome/navidrome/) - Music streaming service.
@@ -152,60 +186,78 @@ rm -rf $DATA_DIR
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/navidrome.webp" alt="navidrome ui screenshot"/>
         <h4>Implements <a href="https://www.subsonic.org/pages/features.jsp">subsonic</a> for compatibility with other services.</h4>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/deluan/navidrome/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/deluan/navidrome/latest?arch=arm64&label=arm64">
       </details>
 
   - &#x2705; [audiobookshelf](https://github.com/advplyr/audiobookshelf) - Audiobook streaming.
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/audiobookshelf.webp" alt="audiobookshelf ui screenshot"/>
-      </details>
 
-- &#x2705; [midarr](https://github.com/midarrlabs/midarr-server) - Simple, lightweight media server directly integrated with sonarr & radarr.
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/midarr.webp" alt="midarr ui screenshot"/>
-    </details>
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/advplyr/audiobookshelf/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/advplyr/audiobookshelf/latest?arch=arm64&label=arm64">
+      </details>
 
 - &#x2705; [netboot](https://docs.linuxserver.io/images/docker-netbootxyz/) - PXE boot system.
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/netboot.webp" alt="netboot ui screenshot"/>
+      
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/netbootxyz/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/netbootxyz/latest?arch=arm64&label=arm64">
     </details>
 
 - &#x2705; [netdata](https://learn.netdata.cloud/docs/installing/docker) - Hardware usage/monitoring (incl. containers).
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/netdata.webp" alt="netdata ui screenshot"/>
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/netdata/netdata/stable?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/netdata/netdata/stable?arch=arm64&label=arm64">
     </details>
 
 - &#128679; [octoprint](https://github.com/OctoPrint/octoprint-docker) - 3D printer automation/monitoring
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/octoprint.webp" alt="octoprint ui screenshot"/>
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/octoprint/octoprint/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/octoprint/octoprint/latest?arch=arm64&label=arm64">
     </details>
 
 - torrent - Full torrenting suite with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
   
-  - &#x2705; [qbittorrenTVpn](https://github.com/MarkusMcNugen/docker-qBittorrenTVpn) - torrent client that runs only on VPN connection
+  - &#x2705; [qbittorrenTVpn](https://github.com/markusmcnugen/docker-qbittorrentvpn) - torrent client that runs only on VPN connection.
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/qbittorrent.webp" alt="qbittorrent ui screenshot"/>
 
         <h4>
-          <a href="https://github.com/MarkusMcNugen/docker-qBittorrenTVpn?tab=readme-ov-file#environment-variables">Documentation on Environment Variables</a>
+          <a href="https://github.com/markusmcnugen/docker-qbittorrentvpn?tab=readme-ov-file#environment-variables">Documentation on Environment Variables</a>
         </h4>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/markusmcnugen/qbittorrentvpn/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/markusmcnugen/qbittorrentvpn/latest?arch=arm64&label=arm64">
       </details>
   
-  - &#x2705; [prowlarr](https://docs.linuxserver.io/images/docker-prowlarr/) - search aggregator
+  - &#x2705; [prowlarr](https://docs.linuxserver.io/images/docker-prowlarr/) - Search aggregator.
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/prowlarr.webp" alt="prowlarr ui screenshot"/>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/prowlarr/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/prowlarr/latest?arch=arm64&label=arm64">
       </details>
   
-  - &#x2705; [flaresolverr](https://github.com/FlareSolverr/FlareSolverr) - search proxy (required for some search engines)
+  - &#x2705; [flaresolverr](https://github.com/flaresolverr/flaresolverr) - Search proxy (required for some search engines).
     - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/flaresolverr.webp" alt="flaresolverr ui screenshot"/> -->
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=arm64&label=arm64">
     </details>
 
 - [servarr](https://wiki.servarr.com/docker-guide) - Media library system(s) with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/servarr/.env.public"><code>.env.public</code></a>.
@@ -214,60 +266,90 @@ rm -rf $DATA_DIR
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/sonarr.webp" alt="sonarr ui screenshot"/>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/sonarr/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/sonarr/latest?arch=arm64&label=arm64">
       </details>
 
   - &#x2705; [radarr](https://docs.linuxserver.io/images/docker-radarr/) - Movie library manager.
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/radarr.webp" alt="radarr ui screenshot"/>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/radarr/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/radarr/latest?arch=arm64&label=arm64">
       </details>
 
   - &#x2705; [lidarr](https://docs.linuxserver.io/images/docker-lidarr/) - Music library manager.
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/lidarr.webp" alt="lidarr ui screenshot"/>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/lidarr/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/lidarr/latest?arch=arm64&label=arm64">
       </details>
 
   - &#x2705; [readarr](https://docs.linuxserver.io/images/docker-readarr/) - Ebook library manager.
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/readarr.webp" alt="readarr ui screenshot"/>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=arm64&label=arm64">
       </details>
 
   - &#x2705; [bazarr](https://docs.linuxserver.io/images/docker-bazarr/) - Subtitle management/requests for sonarr/radarr.
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/bazarr.webp" alt="bazarr ui screenshot"/>
+
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=arm64&label=arm64">
       </details>
 
 - &#x2705; [speedtest-tracker](https://github.com/alexjustesen/speedtest-tracker) - Internet speed monitoring.
   - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/speedtest-tracker.webp" alt="speedtest-tracker ui screenshot"/>
+        <p>TODO: Transition to <a href="https://hub.docker.com/r/linuxserver/speedtest-tracker">linuxserver image</a> and add shield badges.</p>
+        Bundled Postgress Versions: 
+        <img alt="x64 Version" src="https://img.shields.io/docker/v/postgres/postgres/15?arch=amd64&label=x64">
+        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/postgres/postgres/15?arch=arm64&label=arm64">
       </details>
 
 - &#128679; [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client.
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/thelounge.webp" alt="thelounge ui screenshot"/> -->
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/thelounge/thelounge/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/thelounge/thelounge/latest?arch=arm64&label=arm64">
     </details>
 
 - &#128679; [traefik](https://hub.docker.com/_/traefik) - Reverse proxy with easy docker integration.
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/traefik.webp" alt="traefik ui screenshot"/> -->
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/amd64/traefik/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/arm64v8/traefik?label=arm64">
     </details>
 
 - &#128679; [uptime-kuma](https://github.com/louislam/uptime-kuma) - Nice health checking tool with simple UI (same dev as Dockge!).
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/uptime-kuma.webp" alt="uptime-kuma ui screenshot"/> -->
+      <!-- <img src="resources/screenshots/uptime-kuma.webp" alt="uptime-kuma ui screenshot"/> -->  
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/louislam/uptime-kuma/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/uptime-kuma/latest?arch=arm64&label=arm64">    
     </details>
 
 - &#x2705; [watchtower](https://github.com/containrrr/watchtower) - Automatically update & restart docker containers.
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/watchtower.webp" alt="watchtower ui screenshot"/> -->
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/containrrr/watchtower/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/containrrr/watchtower/latest?arch=arm64&label=arm64">
     </details>
 
 ### Services under consideration

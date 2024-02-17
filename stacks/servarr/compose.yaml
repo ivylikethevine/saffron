@@ -49,7 +49,7 @@ services:
     networks:
       bridge: null
   readarr:
-    image: lscr.io/linuxserver/readarr:nightly
+    image: lscr.io/linuxserver/readarr:develop
     container_name: readarr
     env_file:
       - .env.public
