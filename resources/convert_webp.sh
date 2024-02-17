@@ -15,3 +15,5 @@ for D in $(find . -type d); do
   cd ~
 
 done
+
+#TODO: Turn into git precommit hook
