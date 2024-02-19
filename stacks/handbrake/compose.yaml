@@ -1,14 +1,21 @@
 version: "3.3"
 services:
   handbrake:
+    image: jlesage/handbrake
     container_name: handbrake
     restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
     ports:
       - 5800:5800
+    devices:
+      - /dev/dri:/dev/dri # for intel hardware decode
     volumes:
       - /containers/handbrake/config:/config:rw
       - /containers/handbrake/storage:/storage:ro
-      - /containers/handbrake/watch:/watch:rw
-      - /containers/handbrake/output:/output:rw
-    image: jlesage/handbrake
+      - ${WATCH_DIR}:/watch:rw
+      - ${OUTPUT_DIR}:/output:rw
 networks: {}
+
+# .env must define WATCH_DIR & OUTPUT_DIR
