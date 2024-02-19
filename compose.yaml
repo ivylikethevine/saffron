@@ -7,11 +7,11 @@ services:
     image: louislam/dockge:latest
     environment:
       - DOCKGE_STACKS_DIR=/home/${USER}/saffron/stacks
-      - DOCKGE_DATA_DIR=/home/${USER}/saffron/dockge/data/
+      - DOCKGE_DATA_DIR=/home/${USER}/saffron/data/
     ports:
       - 5001:5001
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/${USER}/saffron/dockge/data:/app/data
+      - /home/${USER}/saffron/data:/app/data
       - /home/${USER}/saffron/stacks:/home/${USER}/saffron/stacks
       - /etc/timezone:/etc/timezone:ro
