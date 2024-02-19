@@ -141,7 +141,7 @@ cd /home/$USER/saffron
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/duplicati/latest?arch=arm64&label=arm64">
     </details>
 
-- &#128679; [handbrake](https://handbrake.fr/) - Web UI for transcoding video/audio files. - no ARM support?
+- &#128679; [handbrake](https://handbrake.fr/) - Web UI for transcoding video/audio files.
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/handbrake.webp" alt="handbrake ui screenshot"/> -->
@@ -247,7 +247,7 @@ cd /home/$USER/saffron
 
 - torrent - Full torrenting suite with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
   
-  - &#x2705; [qbittorrenTVpn](https://github.com/markusmcnugen/docker-qbittorrentvpn) - torrent client that runs only on VPN connection.
+  - &#x2705; [qbittorrentvpn](https://github.com/markusmcnugen/docker-qbittorrentvpn) - torrent client that runs only on VPN connection.
     - <details>
         <h3>WebUI Dashboard</h3>
         <img src="resources/screenshots/qbittorrent.webp" alt="qbittorrent ui screenshot"/>
@@ -353,6 +353,15 @@ cd /home/$USER/saffron
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/arm64v8/traefik?label=arm64">
     </details>
 
+- &#128679; [tdarr](https://github.com/HaveAGitGat/Tdarr) - Additional Web UI for transcoding video/audio files, with ability to use distributed compute nodes.
+  - <details>
+      <!-- <h3>WebUI Dashboard</h3> -->
+      <!-- <img src="resources/screenshots/tdarr.webp" alt="tdarr ui screenshot"/> -->
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/HaveAGitGat/Tdarr/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/HaveAGitGat/Tdarr/latest?arch=arm64&label=arm64">
+    </details>
+
 - &#128679; [uptime-kuma](https://github.com/louislam/uptime-kuma) - Nice health checking tool with simple UI (same dev as Dockge!).
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
@@ -366,6 +375,7 @@ cd /home/$USER/saffron
   - <details>
       <!-- <h3>WebUI Dashboard</h3> -->
       <!-- <img src="resources/screenshots/watchtower.webp" alt="watchtower ui screenshot"/> -->
+
       <img alt="x64 Version" src="https://img.shields.io/docker/v/containrrr/watchtower/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/containrrr/watchtower/latest?arch=arm64&label=arm64">
     </details>
