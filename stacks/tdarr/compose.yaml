@@ -1,0 +1,33 @@
+version: "3.3"
+services:
+  tdarr:
+    container_name: tdarr
+    image: ghcr.io/haveagitgat/tdarr:latest
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - 8265:8265 # webUI port
+      - 8266:8266 # server port
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK_SET=002
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - webUIPort=8265
+      - internalNode=true
+      - inContainer=true
+      - ffmpegVersion=6
+      - nodeName=MyInternalNode
+    volumes:
+      - /containers/tdarr/server:/app/server
+      - /containers/tdarr/configs:/app/configs
+      - /containers/tdarr/logs:/app/logs
+      - /containers/tdarr/temp:/temp
+      - /etc/timezone:/etc/timezone:ro
+      - ${MEDIA_PATH}:/media
+    devices:
+      - /dev/dri:/dev/dri # for intel hardware decode
+networks: {}
+
+# .env must define MEDIA_PATH
