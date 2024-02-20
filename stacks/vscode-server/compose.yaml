@@ -9,7 +9,9 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      - DEFAULT_WORKSPACE=/saffron #optional
     volumes:
+      - /home/$USER/saffron/:/saffron
       - /containers/vscode-server/config:/config
       - /etc/timezone:/etc/timezone:ro
 networks: {}
