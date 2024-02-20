@@ -2,7 +2,7 @@
 
 echo "Starting Saffron Removal"
 
-echo "This script will delete all empty files in /containers, /home/$USER/saffron, and DATA_DIR. Are you sure you want to proceed? (y/n)"
+echo "This script will delete all files in /containers and /home/$USER/saffron. Are you sure you want to proceed? (y/n)"
 
 while true; do
     read -s -n 1 key
@@ -13,15 +13,13 @@ while true; do
         docker stop $(docker ps -a -q)
 
         echo "Deleting /containers directory"
-        sudo rm -rf /containers
+        cd /
+        sudo rm -rf containers
 
-        read -p 'Where is the data directory? (ex: /data): ' $DATA_DIR
-
-        echo "Deleting DATA_DIR at $DATA_DIR"
-        sudo rm -rf $DATA_DIR
-
-        cd /home/$USER/saffron/
-        echo "Removal complete."
+        echo "Deleting /home/$USER/saffron"
+        cd /home/$USER/
+        sudo rm -rf saffron
+        echo "Removal complete. If you want to remove leftover docker images, use docker [container|image|system|network|etc] prune"
         exit 0
         ;;
 
