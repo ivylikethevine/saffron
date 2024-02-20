@@ -27,14 +27,15 @@ I built saffron because I wanted a way to utilize docker compose on a homelab se
 ##### Features (Under Development)
 
 1. Automatic traefik routing of containers using docker integration.
-1. Netdata streaming between nodes.
-1. Dockge multi-node deployment support.
+1. Avahi mdns/nss-mdns discovery.
 1. Git submodules/subtrees for additional services.
 1. SSL certs
 
 #### To deploy
 
 Requires: git, docker, docker compose
+
+Tested on: Linux Mint, Ubuntu
 
 ```bash
 # Grab saffron
@@ -66,7 +67,7 @@ Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start an
 ##### To Update
 
 ```bash
-docker stop $(docker ps -a -q)  # Important to stop before updates!
+docker stop $(docker ps -a -q) # Important to stop before updates!
 cd /home/$USER/saffron
 git pull
 docker compose up -d dockge # Then visit dockge to start/stop containers
@@ -231,7 +232,20 @@ cd /home/$USER/saffron
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/netdata.webp" alt="netdata ui screenshot"/>
+      <h4>Configure Streaming between Nodes</h4>
+      <h5>Initial Setup, per <a href="https://learn.netdata.cloud/docs/streaming/streaming-configuration-reference">netdata docs</a></h5>
+      <ul>To get the <code>API_KEY</code> run <code>docker container exec netdata cat /var/lib/netdata/registry/netdata.public.unique.id</code></ul>
+      <ul>Then, replace <code>API_KEY</code> in <code>parent/stream.conf</code> and <code>child/stream.conf</code> with the value from above, as well as updating the <code>PARENT_IP_ADDRESS</code> in <code>child/stream.conf</code></ul>
 
+      <h5>For the parent node, mount:</h5>
+      <ul><code>/home/${USER}/saffron/netdata/parent/stream.conf</code></ul>
+      <ul><code>/home/${USER}/saffron/netdata/parent/netdata.conf</code></ul>
+
+      <h5> For child nodes, mount:</h5>
+      <ul><code>/home/${USER}/saffron/netdata/child/stream.conf</code></ul>
+      <ul><code>/home/${USER}/saffron/netdata/child/netdata.conf</code></ul>
+
+      <p>Note: changes to the <code>stream.conf</code> files will not be committed, but the files remain in the repo unchanged per <code>git update-index --assume-unchanged [<file> ...]</code> <a href="https://stackoverflow.com/questions/3319479/can-i-git-commit-a-file-and-ignore-its-content-changes">See Reference</a></p><p>To continue tracking: <code>git update-index --no-assume-unchanged [<file> ...]</code></p>
       <img alt="x64 Version" src="https://img.shields.io/docker/v/netdata/netdata/stable?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/netdata/netdata/stable?arch=arm64&label=arm64">
     </details>
@@ -436,7 +450,7 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
 2. Keep secrets in `.env` and double check your commits! An alternative option is [docker secrets](https://docs.docker.com/compose/use-secrets/), but same rules apply. Make sure your commits never contain private keys, etc.
 3. Consistent naming - In the homelab space, some of the more advanced features of docker are not as useful and often lead to confusion. Here is an example format for a compose file, with explanations. Also, [here is the compose documentation](https://docs.docker.com/compose/compose-file/05-services/).
 
-- It is often easiest to name the stack  after the main service in the compose file.
+- It is often easiest to name the stack after the main service in the compose file.
     ![image](resources/screenshots/dockge-stack-naming.webp)
 
 #### stacks/vscode-server/compose.yaml

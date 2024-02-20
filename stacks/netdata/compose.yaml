@@ -14,6 +14,9 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
+      # Choose between included child & parent .conf files here
+      - /home/${USER}/saffron/netdata/child/stream.conf:/etc/netdata/stream.conf
+      - /home/${USER}/saffron/netdata/child/netdata.conf:/etc/netdata/netdata.conf
       - /containers/netdata/config:/etc/netdata
       - /containers/netdata/lib:/var/lib/netdata
       - /containers/netdata/cache:/var/cache/netdata
