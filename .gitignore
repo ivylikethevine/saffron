@@ -4,6 +4,9 @@
 # Keep the Dockge-editable .env private to avoid committing & tracking credentials
 .env
 
+# To prevent VPN configurations being committed
+*.ovpn
+
 # Section for repositories cloned into stacks/ directory
 stacks/obico-server/
 
