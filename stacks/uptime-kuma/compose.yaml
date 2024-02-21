@@ -1,12 +1,12 @@
 services:
   uptime-kuma:
-    restart: unless-stopped
     image: louislam/uptime-kuma:latest
     container_name: uptime-kuma
-    volumes:
-      - /containers/uptime-kuma/data:/app/data
+    restart: on-failure
     ports:
       - 3001:3001
+    volumes:
+      - /containers/uptime-kuma/data:/app/data
     labels:
       - traefik.frontend.rule=Host:localhost;PathPrefixStrip:/uptime-kuma
     networks:

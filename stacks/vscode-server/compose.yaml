@@ -1,15 +1,15 @@
-version: "3.8"
+version: '3.8'
 services:
   vscode-server:
     image: linuxserver/code-server
     container_name: vscode-server
+    restart: on-failure
     ports:
       - 8445:8443
-    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
-      - DEFAULT_WORKSPACE=/saffron #optional
+      - DEFAULT_WORKSPACE=/saffron
     volumes:
       - /home/$USER/saffron/:/saffron
       - /containers/vscode-server/config:/config

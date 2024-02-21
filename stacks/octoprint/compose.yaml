@@ -1,14 +1,14 @@
-version: "3.8"
+version: '3.8'
 services:
   octoprint:
     image: octoprint/octoprint
     container_name: octoprint
-    restart: unless-stopped
+    restart: on-failure
+    privileged: true
     ports:
       - 87:80
-    privileged: true
-    volumes:
-      - /containers/octoprint:/octoprint
     environment:
       - ENABLE_MJPG_STREAMER=true
+    volumes:
+      - /containers/octoprint:/octoprint
 networks: {}

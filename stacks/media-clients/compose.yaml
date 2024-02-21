@@ -1,9 +1,9 @@
-version: "3.9"
+version: '3.9'
 services:
   audiobookshelf:
-    restart: unless-stopped
-    container_name: audiobookshelf
     image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    restart: on-failure
     ports:
       - 13378:80
     volumes:
@@ -12,10 +12,39 @@ services:
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
       - /etc/timezone:/etc/timezone:ro
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    restart: on-failure
+    ports:
+      - 8096:8096
+    devices:
+      - /dev/dri:/dev/dri # for intel hardware decode
+    environment:
+      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel # for intel hardware decode
+    volumes:
+      - /containers/jellyfin:/config
+      - ${DATA_DIR}:/data
+      - ${DATA_DIR_EXTRA}:/extra # optional
+      - ${BULK_DIR}:/bulk # optional
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - servarr_bridge
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    restart: on-failure
+    ports:
+      - 5057:5055
+    volumes:
+      - /containers/jellyseerr/:/app/config
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - servarr_bridge
   kavita:
-    restart: unless-stopped
-    container_name: kavita
     image: jvmilazz0/kavita:latest
+    container_name: kavita
+    restart: on-failure
     ports:
       - 5000:5000
     volumes:
@@ -25,9 +54,9 @@ services:
       - ${BULK_DIR}:/bulk # optional
       - /etc/timezone:/etc/timezone:ro
   navidrome:
-    restart: unless-stopped
-    container_name: navidrome
     image: deluan/navidrome:latest
+    container_name: navidrome
+    restart: on-failure
     ports:
       - 4533:4533
     volumes:
@@ -36,37 +65,6 @@ services:
       - ${DATA_DIR_EXTRA}:/extra # optional
       - ${BULK_DIR}:/bulk # optional
       - /etc/timezone:/etc/timezone:ro
-  jellyfin:
-    restart: unless-stopped
-    container_name: jellyfin
-    image: lscr.io/linuxserver/jellyfin:latest
-    ports:
-      - 8096:8096
-    volumes:
-      - /containers/jellyfin:/config
-      - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra # optional
-      - ${BULK_DIR}:/bulk # optional
-      - /etc/timezone:/etc/timezone:ro
-    devices:
-      - /dev/dri:/dev/dri # for intel hardware decode
-    environment:
-      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel # for intel hardware decode
-    networks:
-      - servarr_bridge
-  jellyseerr:
-    restart: unless-stopped
-    container_name: jellyseerr
-    image: fallenbagel/jellyseerr:latest
-    ports:
-      - 5057:5055
-    volumes:
-      - /containers/jellyseerr/:/app/config
-      - /etc/timezone:/etc/timezone:ro
-    networks:
-      - servarr_bridge
 networks:
   servarr_bridge:
     external: true
-
-# .env must define DATA_DIR, other DIR's can be deleted

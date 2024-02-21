@@ -1,18 +1,18 @@
-version: "3.3"
+version: '3.3'
 services:
   netboot:
+    image: lscr.io/linuxserver/netbootxyz:latest
     container_name: netboot
-    environment:
-      - PUID=1000
-      - PGID=1000
+    restart: on-failure
     ports:
       - 3300:3000
       - 369:69/udp
       - 38080:80
+    environment:
+      - PUID=1000
+      - PGID=1000
     volumes:
       - /containers/netbootxyz/config:/config
       - /containers/netbootxyz/assets:/assets
       - /etc/timezone:/etc/timezone:ro
-    restart: unless-stopped
-    image: lscr.io/linuxserver/netbootxyz:latest
 networks: {}

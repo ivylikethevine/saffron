@@ -1,13 +1,15 @@
-version: "3.3"
+version: '3.3'
 services:
   tdarr:
-    container_name: tdarr
     image: ghcr.io/haveagitgat/tdarr:latest
-    restart: unless-stopped
+    container_name: tdarr
+    restart: on-failure
     network_mode: bridge
     ports:
-      - 8265:8265 # webUI port
-      - 8266:8266 # server port
+      - 8265:8265
+      - 8266:8266
+    devices:
+      - /dev/dri:/dev/dri # for intel hardware decode
     environment:
       - PUID=1000
       - PGID=1000
@@ -26,8 +28,6 @@ services:
       - /containers/tdarr/temp:/temp
       - /etc/timezone:/etc/timezone:ro
       - ${MEDIA_PATH}:/media
-    devices:
-      - /dev/dri:/dev/dri # for intel hardware decode
 networks: {}
 
 # .env must define MEDIA_PATH

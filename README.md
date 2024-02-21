@@ -67,7 +67,7 @@ Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start an
 ##### To Update
 
 ```bash
-docker stop $(docker ps -a -q) # Important to stop before updates!
+docker stop $(docker ps -a -q) # Important to stop before updates! (remove the $ if using fish shell)
 cd /home/$USER/saffron
 git pull
 docker compose up -d dockge # Then visit dockge to start/stop containers
@@ -239,12 +239,12 @@ cd /home/$USER/saffron
       <ul>Then, replace <code>API_KEY</code> in <code>parent/stream.conf</code> and <code>child/stream.conf</code> with the value from above, as well as updating the <code>PARENT_IP_ADDRESS</code> in <code>child/stream.conf</code></ul>
 
       <h5>For the parent node, mount:</h5>
-      <ul><code>/home/${USER}/saffron/netdata/parent/stream.conf</code></ul>
-      <ul><code>/home/${USER}/saffron/netdata/parent/netdata.conf</code></ul>
+      <ul><code>/home/$USER/saffron/stacks/netdata/parent/stream.conf</code></ul>
+      <ul><code>/home/$USER/saffron/stacks/netdata/parent/netdata.conf</code></ul>
 
       <h5> For child nodes, mount:</h5>
-      <ul><code>/home/${USER}/saffron/netdata/child/stream.conf</code></ul>
-      <ul><code>/home/${USER}/saffron/netdata/child/netdata.conf</code></ul>
+      <ul><code>/home/$USER/saffron/stacks/netdata/child/stream.conf</code></ul>
+      <ul><code>/home/$USER/saffron/stacks/netdata/child/netdata.conf</code></ul>
 
       <p>Note: changes to the <code>stream.conf</code> files will not be committed, but the files remain in the repo unchanged per <code>git update-index --assume-unchanged [<file> ...]</code> <a href="https://stackoverflow.com/questions/3319479/can-i-git-commit-a-file-and-ignore-its-content-changes">See Reference</a></p><p>To continue tracking: <code>git update-index --no-assume-unchanged [<file> ...]</code></p>
       <img alt="x64 Version" src="https://img.shields.io/docker/v/netdata/netdata/stable?arch=amd64&label=x64">
@@ -345,7 +345,7 @@ cd /home/$USER/saffron
         <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/speedtest-tracker/latest?arch=arm64&label=arm64">
       </details>
 
-- &#128679; [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client.
+- &#x2705; [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client.
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/thelounge.webp" alt="thelounge ui screenshot"/>
@@ -413,9 +413,9 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 - [obico](https://www.obico.io/docs/server-guides/install/) - 3D print failure detection notification/stopping
   - To install:
-    `cd /home/${USER}/saffron/stacks && git clone -b release https://github.com/TheSpaghettiDetective/obico-server.git && cd obico-server && docker compose up -d`
+    `cd /home/$USER/saffron/stacks && git clone -b release https://github.com/TheSpaghettiDetective/obico-server.git && cd obico-server && docker compose up -d`
 
-- For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/${USER}/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
+- For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/$USER/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
 
 #### Docker Volumes
 
@@ -462,23 +462,23 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
   version: 3
   services:
     vscode-server: 
-      # "vscode-server" is the name of our service.
-      restart: unless-stopped 
-      # Always remember to define a restart policy. 
-      container_name: vscode-server 
-      # Usually easiest to keep as exact duplicate of service name.
+    # "vscode-server" is the name of our service.
       image: linuxserver/code-server 
       # Typically, the service name would be derived from the image name (the part after the "/"). Here, it is different to be easier for human readability since "code-server" is quite vague.
+      container_name: vscode-server 
+      # Usually easiest to keep as exact duplicate of service name.
+      restart: on-failure 
+      # Always remember to define a restart policy.
       ports:
         - 8445:8443 
         # The port assignments in saffron are designed to avoid conflicts. host:container is the format, and it is easiest to change host mapping by itself, and not to mess with default port mappings. Some containers require environment variables to change the internal port, so its best to avoid.
+      env_file:
+        - .env.public 
+        # Alternatively to the environment tag, we can load a .env file directly. The below PUID/PGID could be moved to .env.public for conciseness. 
       environment:
         - PUID=1000 
         - PGID=1000
         # Most of the time, we want our containers to have the default user permissions (1000:1000 user:group)
-      env_file:
-        - .env.public 
-        # Alternatively to the environment tag, we can load a .env file directly. The above PUID/PGID could be moved to .env.public for conciseness. 
       volumes:
         - /containers/vscode-server/config:/config 
         # Again, usually easiest to follow /containers/container_name/folder:/folder for consistency & clarity.

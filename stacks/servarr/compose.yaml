@@ -1,87 +1,85 @@
-version: "3.1"
+version: '3.1'
 services:
-  sonarr:
-    image: lscr.io/linuxserver/sonarr:latest
-    container_name: sonarr
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    restart: on-failure
+    ports:
+      - 6767:6767
     env_file:
       - .env.public
     volumes:
-      - /containers/sonarr:/config
+      - /containers/bazarr:/config
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra # optional
-      - ${BULK_DIR}:/bulk # optional
+      - ${DATA_DIR_EXTRA}:/extra
+      - ${BULK_DIR}:/bulk
       - /etc/timezone:/etc/timezone:ro
-    ports:
-      - 8989:8989
-    restart: unless-stopped
-    networks:
-      bridge: null
-  radarr:
-    image: lscr.io/linuxserver/radarr:latest
-    container_name: radarr
-    env_file:
-      - .env.public
-    volumes:
-      - /containers/radarr:/config
-      - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra # optional
-      - ${BULK_DIR}:/bulk # optional
-      - /etc/timezone:/etc/timezone:ro
-    ports:
-      - 7878:7878
-    restart: unless-stopped
     networks:
       bridge: null
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
+    restart: on-failure
+    ports:
+      - 8686:8686
     env_file:
       - .env.public
     volumes:
       - /containers/lidarr:/config
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra # optional
-      - ${BULK_DIR}:/bulk # optional
+      - ${DATA_DIR_EXTRA}:/extra
+      - ${BULK_DIR}:/bulk
       - /etc/timezone:/etc/timezone:ro
+    networks:
+      bridge: null
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: on-failure
     ports:
-      - 8686:8686
-    restart: unless-stopped
+      - 7878:7878
+    env_file:
+      - .env.public
+    volumes:
+      - /containers/radarr:/config
+      - ${DATA_DIR}:/data
+      - ${DATA_DIR_EXTRA}:/extra
+      - ${BULK_DIR}:/bulk
+      - /etc/timezone:/etc/timezone:ro
     networks:
       bridge: null
   readarr:
     image: lscr.io/linuxserver/readarr:develop
     container_name: readarr
+    restart: on-failure
+    ports:
+      - 8787:8787
     env_file:
       - .env.public
     volumes:
       - /containers/readarr/config:/config
       - /containers/readarr/books:/books
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra # optional
+      - ${DATA_DIR_EXTRA}:/extra
       - /etc/timezone:/etc/timezone:ro
-    ports:
-      - 8787:8787
-    restart: unless-stopped
     networks:
       bridge: null
-  bazarr:
-    image: lscr.io/linuxserver/bazarr:latest
-    container_name: bazarr
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: on-failure
+    ports:
+      - 8989:8989
     env_file:
       - .env.public
     volumes:
-      - /containers/bazarr:/config
+      - /containers/sonarr:/config
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra # optional
-      - ${BULK_DIR}:/bulk # optional
+      - ${DATA_DIR_EXTRA}:/extra
+      - ${BULK_DIR}:/bulk
       - /etc/timezone:/etc/timezone:ro
-    ports:
-      - 6767:6767
-    restart: unless-stopped
     networks:
       bridge: null
 networks:
   bridge:
     driver: bridge
-
-# .env must define DATA_DIR, other DIR's can be deleted
