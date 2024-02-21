@@ -1,20 +1,20 @@
-version: "3.6"
+version: '3.6'
 services:
   duplicati:
+    image: linuxserver/duplicati:latest
     container_name: duplicati
+    restart: unless-stopped
     entrypoint:
       - /init
+    ports:
+      - 8200:8200/tcp
     environment:
       - PUID=1000
       - PGID=1000
       - PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       - HOME=/config
-    image: linuxserver/duplicati:latest
-    ipc: private
-    ports:
-      - 8200:8200/tcp
-    restart: unless-stopped
     volumes:
       - /nas:/nas # optional
       - /containers/duplicati/config:/config
+    ipc: private
 networks: {}

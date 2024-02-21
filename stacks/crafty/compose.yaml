@@ -1,15 +1,15 @@
-version: "3"
+version: '3'
 services:
   crafty:
-    container_name: crafty
     image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    container_name: crafty
     restart: unless-stopped
     ports:
-      - 8000:8000 # HTTP
-      - 8443:8443 # HTTPS
-      - 8124:8123 # DYNMAP
-      - 19132:19132/udp # BEDROCK
-      - 25500-25600:25500-25600 # MC SERV PORT RANGE
+      - 8000:8000 # http
+      - 8443:8443 # https
+      - 8124:8123 # dynmap
+      - 19132:19132/udp # bedrock
+      - 25500-25600:25500-25600 # mc server port range
     volumes:
       - /containers/crafty/backups:/crafty/backups
       - /containers/crafty/logs:/crafty/logs

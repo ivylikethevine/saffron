@@ -67,7 +67,7 @@ Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start an
 ##### To Update
 
 ```bash
-docker stop $(docker ps -a -q) # Important to stop before updates!
+docker stop $(docker ps -a -q) # Important to stop before updates! (remove the $ if using fish shell)
 cd /home/$USER/saffron
 git pull
 docker compose up -d dockge # Then visit dockge to start/stop containers
@@ -239,12 +239,12 @@ cd /home/$USER/saffron
       <ul>Then, replace <code>API_KEY</code> in <code>parent/stream.conf</code> and <code>child/stream.conf</code> with the value from above, as well as updating the <code>PARENT_IP_ADDRESS</code> in <code>child/stream.conf</code></ul>
 
       <h5>For the parent node, mount:</h5>
-      <ul><code>/home/${USER}/saffron/netdata/parent/stream.conf</code></ul>
-      <ul><code>/home/${USER}/saffron/netdata/parent/netdata.conf</code></ul>
+      <ul><code>/home/$USER/saffron/stacks/netdata/parent/stream.conf</code></ul>
+      <ul><code>/home/$USER/saffron/stacks/netdata/parent/netdata.conf</code></ul>
 
       <h5> For child nodes, mount:</h5>
-      <ul><code>/home/${USER}/saffron/netdata/child/stream.conf</code></ul>
-      <ul><code>/home/${USER}/saffron/netdata/child/netdata.conf</code></ul>
+      <ul><code>/home/$USER/saffron/stacks/netdata/child/stream.conf</code></ul>
+      <ul><code>/home/$USER/saffron/stacks/netdata/child/netdata.conf</code></ul>
 
       <p>Note: changes to the <code>stream.conf</code> files will not be committed, but the files remain in the repo unchanged per <code>git update-index --assume-unchanged [<file> ...]</code> <a href="https://stackoverflow.com/questions/3319479/can-i-git-commit-a-file-and-ignore-its-content-changes">See Reference</a></p><p>To continue tracking: <code>git update-index --no-assume-unchanged [<file> ...]</code></p>
       <img alt="x64 Version" src="https://img.shields.io/docker/v/netdata/netdata/stable?arch=amd64&label=x64">
@@ -413,9 +413,9 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 - [obico](https://www.obico.io/docs/server-guides/install/) - 3D print failure detection notification/stopping
   - To install:
-    `cd /home/${USER}/saffron/stacks && git clone -b release https://github.com/TheSpaghettiDetective/obico-server.git && cd obico-server && docker compose up -d`
+    `cd /home/$USER/saffron/stacks && git clone -b release https://github.com/TheSpaghettiDetective/obico-server.git && cd obico-server && docker compose up -d`
 
-- For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/${USER}/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
+- For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/$USER/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
 
 #### Docker Volumes
 

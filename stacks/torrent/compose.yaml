@@ -1,42 +1,42 @@
-version: "3.8"
+version: '3.8'
 services:
-  qbittorrentvpn:
-    image: markusmcnugen/qbittorrentvpn
-    container_name: qbittorrentvpn
-    privileged: true
-    volumes:
-      - /containers/qbittorrent/:/config
-      - ${DATA_DIR}:/data/
-      - ${DATA_DIR_EXTRA}:/extra/ # optional
-    ports:
-      - 8080:8080
-      - 8999:8999
-      - 8999:8999/udp
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
     restart: unless-stopped
-    env_file:
-      - .env.public
+    ports:
+      - 8191:8191
+    environment:
+      - LOG_LEVEL=info
     networks:
       - servarr_bridge
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
     container_name: prowlarr
+    restart: unless-stopped
+    ports:
+      - 9696:9696
     env_file:
       - .env.public
     volumes:
       - /containers/prowlarr:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped
     networks:
       - servarr_bridge
-  flaresolverr:
-    container_name: flaresolverr
-    ports:
-      - 8191:8191
-    environment:
-      - LOG_LEVEL=info
+  qbittorrentvpn:
+    image: markusmcnugen/qbittorrentvpn
+    container_name: qbittorrentvpn
     restart: unless-stopped
-    image: ghcr.io/flaresolverr/flaresolverr:latest
+    privileged: true
+    ports:
+      - 8080:8080
+      - 8999:8999
+      - 8999:8999/udp
+    env_file:
+      - .env.public
+    volumes:
+      - /containers/qbittorrent/:/config
+      - ${DATA_DIR}:/data
+      - ${DATA_DIR_EXTRA}:/extra # optional
     networks:
       - servarr_bridge
 networks:

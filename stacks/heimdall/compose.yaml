@@ -1,17 +1,17 @@
-version: "3"
+version: '3'
 services:
   heimdall:
     image: linuxserver/heimdall
     container_name: heimdall
-    volumes:
-      - /containers/heimdall:/config
-      - /etc/timezone:/etc/timezone:ro
-    environment:
-      - PUID=1000
-      - PGID=1000
+    restart: always
+    network_mode: host
     ports:
       - 80:80
       - 443:443
-    restart: always
-    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /containers/heimdall:/config
+      - /etc/timezone:/etc/timezone:ro
 networks: {}
