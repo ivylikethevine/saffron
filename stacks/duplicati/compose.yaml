@@ -3,7 +3,7 @@ services:
   duplicati:
     image: linuxserver/duplicati:latest
     container_name: duplicati
-    restart: on-failure[:3]
+    restart: on-failure
     entrypoint:
       - /init
     ports:

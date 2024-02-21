@@ -3,7 +3,7 @@ services:
   homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
     container_name: homeassistant
-    restart: on-failure[:3]
+    restart: on-failure
     network_mode: host
     privileged: true
     ports:

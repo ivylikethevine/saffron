@@ -3,7 +3,7 @@ services:
   dokemon:
     image: productiveops/dokemon:latest
     container_name: dokemon
-    restart: on-failure[:3]
+    restart: on-failure
     ports:
       - 9091:9090
     volumes:

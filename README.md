@@ -467,7 +467,7 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
       # Typically, the service name would be derived from the image name (the part after the "/"). Here, it is different to be easier for human readability since "code-server" is quite vague.
       container_name: vscode-server 
       # Usually easiest to keep as exact duplicate of service name.
-      restart: on-failure[:3] 
+      restart: on-failure 
       # Always remember to define a restart policy.
       ports:
         - 8445:8443 

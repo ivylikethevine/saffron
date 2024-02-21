@@ -3,7 +3,7 @@ services:
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
     container_name: audiobookshelf
-    restart: on-failure[:3]
+    restart: on-failure
     ports:
       - 13378:80
     volumes:
@@ -15,7 +15,7 @@ services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
-    restart: on-failure[:3]
+    restart: on-failure
     ports:
       - 8096:8096
     devices:
@@ -33,7 +33,7 @@ services:
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
-    restart: on-failure[:3]
+    restart: on-failure
     ports:
       - 5057:5055
     volumes:
@@ -44,7 +44,7 @@ services:
   kavita:
     image: jvmilazz0/kavita:latest
     container_name: kavita
-    restart: on-failure[:3]
+    restart: on-failure
     ports:
       - 5000:5000
     volumes:
@@ -56,7 +56,7 @@ services:
   navidrome:
     image: deluan/navidrome:latest
     container_name: navidrome
-    restart: on-failure[:3]
+    restart: on-failure
     ports:
       - 4533:4533
     volumes:

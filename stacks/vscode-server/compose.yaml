@@ -3,7 +3,7 @@ services:
   vscode-server:
     image: linuxserver/code-server
     container_name: vscode-server
-    restart: on-failure[:3]
+    restart: on-failure
     ports:
       - 8445:8443
     environment:

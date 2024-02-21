@@ -3,7 +3,7 @@ services:
   octoprint:
     image: octoprint/octoprint
     container_name: octoprint
-    restart: on-failure[:3]
+    restart: on-failure
     privileged: true
     ports:
       - 87:80
