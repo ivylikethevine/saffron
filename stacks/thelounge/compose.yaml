@@ -9,3 +9,5 @@ services:
     volumes:
       - /containers/thelounge:/var/opt/thelounge # bind lounge config from the host's file system
 networks: {}
+# to add a theme docker exec --user node -it thelounge thelounge install theme
+# to add a user: docker exec --user node -it thelounge thelounge add username
