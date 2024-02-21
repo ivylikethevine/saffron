@@ -345,7 +345,7 @@ cd /home/$USER/saffron
         <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/speedtest-tracker/latest?arch=arm64&label=arm64">
       </details>
 
-- &#128679; [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client.
+- &#x2705; [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client.
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/thelounge.webp" alt="thelounge ui screenshot"/>
@@ -462,23 +462,23 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
   version: 3
   services:
     vscode-server: 
-      # "vscode-server" is the name of our service.
-      restart: unless-stopped 
-      # Always remember to define a restart policy. 
-      container_name: vscode-server 
-      # Usually easiest to keep as exact duplicate of service name.
+    # "vscode-server" is the name of our service.
       image: linuxserver/code-server 
       # Typically, the service name would be derived from the image name (the part after the "/"). Here, it is different to be easier for human readability since "code-server" is quite vague.
+      container_name: vscode-server 
+      # Usually easiest to keep as exact duplicate of service name.
+      restart: on-failure[:3] 
+      # Always remember to define a restart policy.
       ports:
         - 8445:8443 
         # The port assignments in saffron are designed to avoid conflicts. host:container is the format, and it is easiest to change host mapping by itself, and not to mess with default port mappings. Some containers require environment variables to change the internal port, so its best to avoid.
+      env_file:
+        - .env.public 
+        # Alternatively to the environment tag, we can load a .env file directly. The below PUID/PGID could be moved to .env.public for conciseness. 
       environment:
         - PUID=1000 
         - PGID=1000
         # Most of the time, we want our containers to have the default user permissions (1000:1000 user:group)
-      env_file:
-        - .env.public 
-        # Alternatively to the environment tag, we can load a .env file directly. The above PUID/PGID could be moved to .env.public for conciseness. 
       volumes:
         - /containers/vscode-server/config:/config 
         # Again, usually easiest to follow /containers/container_name/folder:/folder for consistency & clarity.

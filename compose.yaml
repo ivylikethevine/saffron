@@ -8,9 +8,8 @@ services:
       - 5001:5001
     environment:
       - DOCKGE_STACKS_DIR=/home/$USER/saffron/stacks
-      - DOCKGE_DATA_DIR=/home/$USER/saffron/data/
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/$USER/saffron/data:/app/data
+      - /containers/dockge/data:/app/data 
       - /home/$USER/saffron/stacks:/home/$USER/saffron/stacks
       - /etc/timezone:/etc/timezone:ro

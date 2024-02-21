@@ -3,7 +3,7 @@ services:
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
-    restart: unless-stopped
+    restart: on-failure[:3]
     ports:
       - 8191:8191
     environment:
@@ -13,7 +13,7 @@ services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
     container_name: prowlarr
-    restart: unless-stopped
+    restart: on-failure[:3]
     ports:
       - 9696:9696
     env_file:
@@ -25,7 +25,7 @@ services:
   qbittorrentvpn:
     image: markusmcnugen/qbittorrentvpn
     container_name: qbittorrentvpn
-    restart: unless-stopped
+    restart: on-failure[:3]
     privileged: true
     ports:
       - 8080:8080

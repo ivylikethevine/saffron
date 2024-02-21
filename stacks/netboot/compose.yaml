@@ -3,7 +3,7 @@ services:
   netboot:
     image: lscr.io/linuxserver/netbootxyz:latest
     container_name: netboot
-    restart: unless-stopped
+    restart: on-failure[:3]
     ports:
       - 3300:3000
       - 369:69/udp

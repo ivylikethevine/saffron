@@ -3,7 +3,7 @@ services:
   tdarr:
     image: ghcr.io/haveagitgat/tdarr:latest
     container_name: tdarr
-    restart: unless-stopped
+    restart: on-failure[:3]
     network_mode: bridge
     ports:
       - 8265:8265

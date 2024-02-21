@@ -3,7 +3,7 @@ services:
   speedtest-tracker:
     image: lscr.io/linuxserver/speedtest-tracker:latest
     container_name: speedtest-tracker
-    restart: unless-stopped
+    restart: on-failure[:3]
     ports:
       - 8081:80
     environment:

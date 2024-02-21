@@ -5,7 +5,7 @@ services:
     container_name: netdata
     pid: host
     network_mode: host
-    restart: unless-stopped
+    restart: on-failure[:3]
     ports:
       - 19999:19999
     cap_add:

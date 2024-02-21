@@ -3,6 +3,6 @@ services:
   avahi:
     image: flungo/avahi
     container_name: avahi
-    restart: unless-stopped
+    restart: on-failure[:3]
     environment:
       - REFLECTOR_ENABLE_REFLECTOR=yes
