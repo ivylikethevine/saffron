@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   netdata:
     image: netdata/netdata:stable
@@ -15,8 +15,8 @@ services:
       - apparmor:unconfined
     volumes:
       # Choose between included child & parent .conf files here
-      - /home/$USER/saffron/stacks/netdata/stacks/$ROLE/stream.conf:/etc/netdata/config/stream.conf
-      - /home/$USER/saffron/stacks/netdata/stacks/$ROLE/netdata.conf:/etc/netdata/config/netdata.conf
+      - /home/$USER/saffron/stacks/netdata/stacks/parent/stream.conf:/etc/netdata/config/stream.conf
+      - /home/$USER/saffron/stacks/netdata/stacks/parent/netdata.conf:/etc/netdata/config/netdata.conf
       - /containers/netdata/config:/etc/netdata
       - /containers/netdata/lib:/var/lib/netdata
       - /containers/netdata/cache:/var/cache/netdata
@@ -31,5 +31,4 @@ services:
       - /run/dbus:/run/dbus:ro
     environment:
       - NETDATA_EXTRA_DEB_PACKAGES=lm_sensors
-      - ROLE=parent # or child
 networks: {}

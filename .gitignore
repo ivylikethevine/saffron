@@ -3,6 +3,7 @@
 
 # Keep the Dockge-editable .env private to avoid committing & tracking credentials
 .env
+common.env
 
 # To prevent VPN configurations being committed
 *.ovpn

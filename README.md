@@ -6,7 +6,7 @@
 
 ...the second half is a backcronym
 
-### Saffron is a docker compose implementation of a server deployable via (almost entirely) static files
+### Saffron is a docker compose deployment of a server == via (almost entirely) static files
 
 [Why Saffron?](https://ivylikethevine.com/projects/saffron)
 
@@ -35,11 +35,12 @@ I built saffron because I wanted a way to utilize docker compose on a homelab se
 
 Requires: git, docker, docker compose
 
-Tested on: Linux Mint, Ubuntu
+Tested on: Linux Mint, Ubuntu, and Debian
 
 ```bash
-# Grab saffron
-git clone git@github.com:ivylikethevine/saffron.git
+# Grab saffron (either http or ssh)
+git clone https://github.com/ivylikethevine/saffron.git # http, works with no SSH key
+git clone git@github.com:ivylikethevine/saffron.git # ssh
 cd saffron
 
 # Create file paths with correct permissions & start dockge
@@ -50,14 +51,14 @@ cd saffron
 
 ```bash
 sudo apt install -y git # required to install saffron
+sudo apt install -y curl # required to install docker via script
 sudo apt install -y avahi-daemon # optional, but highly recommended for easy configuration
 
 # Install docker from the easy install script
 curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh ./get-docker.sh
 
 # Allow docker to run without sudo
-sudo usermod -aG docker $USER
-newgrp docker
+sudo usermod -aG docker $USER && newgrp docker
 # And verify
 docker run hello-world
 ```
@@ -88,7 +89,7 @@ cd /home/$USER/saffron
 3. `$DATA_DIR` - where bulk files are stored (documents, photos, media, etc.) per stack.
     - `.env` files are not (currently) shared between any stacks, so each `.env` must define `DATA_DIR` per stack
 
-## v0.20 List of Stacks & Services
+## v0.22 List of Stacks & Services
 
 ** Names are lowercased per dockge stack naming requirements
 
@@ -381,6 +382,15 @@ cd /home/$USER/saffron
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/uptime-kuma/latest?arch=arm64&label=arm64">
     </details>
 
+- &#x2705; [utils](https://hub.docker.com/_/ubuntu) - Simple dockerfile-based compose with basic utils for debugging.
+  - <details>
+      <!-- <h3>WebUI Dashboard</h3> -->
+      <!-- <img src="resources/screenshots/uptime-kuma.webp" alt="uptime-kuma ui screenshot"/>   -->
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/_/ubuntu/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/_/ubuntu/latest?arch=arm64&label=arm64">
+    </details>
+
 - &#x2705; [vscode-server](https://docs.linuxserver.io/images/docker-code-server/) - VSCode running with a Web UI (for editing saffron config files, etc.).
   - <details>
       <h3>WebUI Dashboard</h3>
@@ -405,7 +415,7 @@ cd /home/$USER/saffron
 - [Cloudflare](https://developers.cloudflare.com/cloudflare-one/) - for access outside of home network.
 - [Nextcloud](https://nextcloud.com/) - for general homelab "cloud".
 
-If a service isn't on here yet, feel free to add it! Most of these are very simple applications of the excellent [linuxserver docker images](https://docs.linuxserver.io/images/). See creating a [saffron-styled compose](#saffron-example) for more detail on the format of `compose.yaml` and `.env.public`.
+If a service isn't on here yet, feel free to add it! Most of these are very simple applications of the excellent [linuxserver docker images](https://docs.linuxserver.io/images/). See creating a [saffron-styled compose](#saffron-example) for more detail on the format of `compose.yaml` and `.env.public`. There are also the [official docker hub images](https://hub.docker.com/u/library).
 
 I've also made stacks using Lissy93's well maintained [portainer template repo](https://github.com/Lissy93/portainer-templates), although this is slightly different than working from raw compose files.
 
@@ -424,7 +434,7 @@ When editing the DATA_DIR(s), it is often best to have the last part of the host
 - `/data/television/:/local/library/television` -> Intuitive
 - `/data/TV/:/local/library/television` -> Often confusing (at least for me!)
 
-I have `DATA_DIR`, `DATA_DIR_EXTRA`, and `BULK_DIR`, but only `DATA_DIR` is required. The others can be deleted from compose files.
+I have `DATA_DIR`, `EXTRA_DIR`, and `BULK_DIR`, but only `DATA_DIR` is required. The others can be deleted from compose files.
 
 #### Migration Tools
 
@@ -434,16 +444,17 @@ I have `DATA_DIR`, `DATA_DIR_EXTRA`, and `BULK_DIR`, but only `DATA_DIR` is requ
 
 ##### Internal Routing
 
-For configuring docker containers that talk to each other, you can replace `localhost` with the `container_name` of the service to network, as long as both are inside of the same `compose.yaml`. For example, connecting prowlarr & sonarr, you can use `prowlarr:9696` and `sonarr:8989`. If the containers are not in the same stack, this will require a bridge connection. An example of a bridge is included in `servarr` and `torrent`. To connect to `servarr` from `torrent`, `qbittorrenTVpn` must use the `servarr_bridge` network.
+For configuring docker containers that talk to each other, you can replace `localhost` with the `container_name` of the service to network, as long as both are inside of the same `compose.yaml`. For example, connecting prowlarr & sonarr, you can use `prowlarr:9696` and `sonarr:8989`. If the containers are not in the same stack, this will require a bridge connection. An example of a bridge is included in `servarr` and `torrent`. To connect to `servarr` from `torrent`, `qbittorrentvpn` must use the `servarr_bridge` network.
 
 ##### Env Files
 
-This project has two types of `.env` files:
+This project has 3 types of `.env` files:
 
 1. `.env` - this type is natively loaded by dockge, allowing for Web UI editing + templating for paths. This is the place that VPN credentials, etc. should be stored since they will not be committed.
     - if stacks throw errors about undefined variables, make sure to define those variables in the `.env` for that stack.
     - these files are ignored by git, so they can locally hold some credentials (such as VPN logins) + personal folder routing
 2. `.env.public` - this holds basic preconfigurations for each container to work and should be changed with caution. They are not available in the Dockge Web UI.
+3. `common.env.public` - preconfiguration shared between many services.
 
 ### Creating a Saffron-Styled compose from Scratch <a id="saffron-example"></a>
 
@@ -459,7 +470,7 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
 #### stacks/vscode-server/compose.yaml
 
   ```yaml
-  version: 3
+  version: "3.8"
   services:
     vscode-server: 
     # "vscode-server" is the name of our service.

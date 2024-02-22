@@ -1,7 +1,7 @@
-version: '3.3'
+version: "3.8"
 services:
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:latest
+    image: haveagitgat/tdarr:latest
     container_name: tdarr
     restart: on-failure
     network_mode: bridge
@@ -10,10 +10,9 @@ services:
       - 8266:8266
     devices:
       - /dev/dri:/dev/dri # for intel hardware decode
+    env_file:
+      - ../common.env.public
     environment:
-      - PUID=1000
-      - PGID=1000
-      - UMASK_SET=002
       - serverIP=0.0.0.0
       - serverPort=8266
       - webUIPort=8265
@@ -28,6 +27,9 @@ services:
       - /containers/tdarr/temp:/temp
       - /etc/timezone:/etc/timezone:ro
       - ${MEDIA_PATH}:/media
+      - ${DATA_DIR}:/data
+      - ${EXTRA_DIR}:/extra
+      - ${BULK_DIR}:/bulk
 networks: {}
 
-# .env must define MEDIA_PATH
+# .env must define MEDIA_PATH & DATA_DIRs

@@ -1,16 +1,15 @@
-version: '3.3'
+version: "3.8"
 services:
   netboot:
-    image: lscr.io/linuxserver/netbootxyz:latest
+    image: linuxserver/netbootxyz:latest
     container_name: netboot
     restart: on-failure
     ports:
       - 3300:3000
       - 369:69/udp
       - 38080:80
-    environment:
-      - PUID=1000
-      - PGID=1000
+    env_file:
+      - ../common.env.public
     volumes:
       - /containers/netbootxyz/config:/config
       - /containers/netbootxyz/assets:/assets

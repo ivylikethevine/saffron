@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.8"
 services:
   duplicati:
     image: linuxserver/duplicati:latest
@@ -6,11 +6,11 @@ services:
     restart: on-failure
     entrypoint:
       - /init
+    env_file:
+      - ../common.env.public
     ports:
       - 8200:8200/tcp
     environment:
-      - PUID=1000
-      - PGID=1000
       - PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       - HOME=/config
     volumes:

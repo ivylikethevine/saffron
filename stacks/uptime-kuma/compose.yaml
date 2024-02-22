@@ -5,12 +5,8 @@ services:
     restart: on-failure
     ports:
       - 3001:3001
+    env_file:
+      - ../common.env.public
     volumes:
       - /containers/uptime-kuma/data:/app/data
-    labels:
-      - traefik.frontend.rule=Host:localhost;PathPrefixStrip:/uptime-kuma
-    networks:
-      - traefik_default
-networks:
-  traefik_default:
-    external: true
+networks: {}

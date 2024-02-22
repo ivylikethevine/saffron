@@ -1,7 +1,7 @@
-version: '3.8'
+version: "3.8"
 services:
   flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
+    image: flaresolverr/flaresolverr:latest
     container_name: flaresolverr
     restart: on-failure
     ports:
@@ -11,12 +11,13 @@ services:
     networks:
       - servarr_bridge
   prowlarr:
-    image: lscr.io/linuxserver/prowlarr:develop
+    image: linuxserver/prowlarr:develop
     container_name: prowlarr
     restart: on-failure
     ports:
       - 9696:9696
     env_file:
+      - ../common.env.public
       - .env.public
     volumes:
       - /containers/prowlarr:/config
@@ -32,11 +33,12 @@ services:
       - 8999:8999
       - 8999:8999/udp
     env_file:
+      - ../common.env.public
       - .env.public
     volumes:
       - /containers/qbittorrent/:/config
       - ${DATA_DIR}:/data
-      - ${DATA_DIR_EXTRA}:/extra # optional
+      - ${EXTRA_DIR}:/extra # optional
     networks:
       - servarr_bridge
 networks:

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   dockge:
     image: louislam/dockge:latest
@@ -8,6 +8,7 @@ services:
       - 5001:5001
     environment:
       - DOCKGE_STACKS_DIR=/home/$USER/saffron/stacks
+      - USER=$USER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /containers/dockge/data:/app/data 

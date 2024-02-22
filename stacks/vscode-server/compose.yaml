@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   vscode-server:
     image: linuxserver/code-server
@@ -6,9 +6,9 @@ services:
     restart: on-failure
     ports:
       - 8445:8443
+    env_file:
+      - ../common.env.public
     environment:
-      - PUID=1000
-      - PGID=1000
       - DEFAULT_WORKSPACE=/saffron
     volumes:
       - /home/$USER/saffron/:/saffron
