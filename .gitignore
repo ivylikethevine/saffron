@@ -16,6 +16,3 @@ stacks/obico-server/
 # Prefixes for stacks not tracked by git
 stacks/p-*
 stacks/dev-*
-
-!.git/hooks/pre-commit
-!.vscode/settings.json

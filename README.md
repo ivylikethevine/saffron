@@ -42,7 +42,7 @@ Tested on: Linux Mint, Ubuntu, and Debian
 # Grab saffron (either http or ssh)
 git clone https://github.com/ivylikethevine/saffron.git # http, works with no SSH key
 git clone git@github.com:ivylikethevine/saffron.git # ssh
-cd saffron
+cd saffron/resources
 
 # Make directories with correct permssions, create common.yaml, & start dockge
 ./install-saffron.sh
@@ -78,7 +78,7 @@ docker compose up -d dockge # Then visit dockge to start/stop containers
 #### To Remove
 
 ```bash
-cd /home/$USER/saffron
+cd /home/$USER/saffron/resources
 ./remove-saffron.sh
 ```
 
@@ -108,8 +108,8 @@ cd /home/$USER/saffron
 
 - &#x2705;; [crafty](https://docs.craftycontrol.com/pages/getting-started/installation/docker/) - Easily deploy/manage minecraft servers.
   - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/crafty.webp" alt="crafty ui screenshot"/>
+      <!-- <h3>WebUI Dashboard</h3>
+      <img src="resources/screenshots/crafty.webp" alt="crafty ui screenshot"/> -->
 
       <img alt="x64 Version" src="https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=arm64&label=arm64">
@@ -135,8 +135,8 @@ cd /home/$USER/saffron
 
 - &#x2705;; [dozzle](https://github.com/amir20/dozzle) - Web UI to live docker container logs.
   - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/dozzle.webp" alt="dozzle ui screenshot"/>
+      <!-- <h3>WebUI Dashboard</h3>
+      <img src="resources/screenshots/dozzle.webp" alt="dozzle ui screenshot"/> -->
 
       <img alt="x64 Version" src="https://img.shields.io/docker/v/amir20/dozzle/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/amir20/dozzle/latest?arch=arm64&label=arm64">
@@ -182,8 +182,8 @@ cd /home/$USER/saffron
 
 - &#x2705; [it-tools](https://github.com/corentinth/it-tools) - Helpful tool for various tasks (generating UUIDs, hashes, etc.).
   - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/it-tools.webp" alt="homeassistant ui screenshot"/>
+      <!-- <h3>WebUI Dashboard</h3>
+      <img src="resources/screenshots/it-tools.webp" alt="homeassistant ui screenshot"/> -->
 
       <img alt="x64 Version" src="https://img.shields.io/docker/v/corentinth/it-tools/latest?arch=amd64&label=x64">
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/corentinth/it-tools/latest?arch=arm64&label=arm64">
@@ -425,7 +425,7 @@ cd /home/$USER/saffron
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/containrrr/watchtower/latest?arch=arm64&label=arm64">
     </details>
 
-#### Services under consideration
+### Services under consideration
 
 - [Adguard](https://adguard.com/en/welcome.html) - for whole home ad blocking.
 - [Ansible Semaphore](https://www.semui.co/) - for easier host updating/management.
@@ -449,13 +449,15 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 #### `common.yaml` (new in v0.25) <a id="common-yaml"></a>
 
-By using a set of base "services" inside of `saffron/stacks/common.yaml`, we can limit the length of each docker compose file & allow for easy re-use of shared docker configurations, mainly:
+By using a set of base "services"** inside of `saffron/stacks/common.yaml`, we can limit the length of each docker compose file & allow for easy re-use of shared docker configurations, mainly:
 
 1. Consistent PUID/PGID & UMASK - all extended services have shared environment variables.
 2. Consistent mount locations (such as media libraries) - library locations only have to be defined once.
 3. Consistent localtime - not very important, but nice to have.
 
-On install, saffron copies it's local `stacks/common.yaml.public` file to `stacks/compose.yaml`, setting `/data` in all extended containers to the value of `$DATA_DIR` used during setup. This can be changed by using the vscode-server and editing files in the saffron directory. `common.yaml` is set to be ignored by git to prevent committing personal directory paths.
+On install, saffron copies it's local `stacks/common.yaml.public` file to `stacks/compose.yaml`, setting `/data` in all extended containers to the value of `$DATA_DIR` used during setup. This can be changed by using vscode-server and editing files in the saffron directory. `common.yaml` is set to be ignored by git to prevent committing personal directory paths.
+
+** : These aren't full services since they have no images defined. As such, they can't run alone.
 
 #### Env Files
 

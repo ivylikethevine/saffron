@@ -1,0 +1,12 @@
+# move this file to .git/hooks/pre-commit to enable webp conversion
+# based on https://chriskyfung.medium.com/automatically-create-webp-for-new-jpg-and-png-images-in-a-git-project-using-git-hooks-98c43ef6b9b0
+for FILE in ` git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep -e .jpg -e .jpeg -e .png -i | sed 's/ /*/g' ` ;  do 
+  echo $(echo ${FILE} | sed -e 's/\*/ /g' -e 's/^"//' -e 's/"$//') \
+		'-->' $(echo "$FILE" | sed -e 's/\*/ /g' -e 's/^"//' | sed 's/.[^.]*$//').webp 
+  cwebp -q 50 "$(echo "$FILE" | sed -e 's/\*/ /g' -e 's/^"//' -e 's/"$//' )" \
+		-o "$(echo "$FILE" | sed -e 's/\*/ /g' -e 's/^"//' | sed 's/.[^.]*$//').webp" \
+		-mt -quiet
+    rm $FILE
+    git add $FILE
+    git commit --amend --no-edit 
+done 

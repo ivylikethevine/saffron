@@ -1,0 +1,28 @@
+// move this file to .vscode/settings.json to use yaml key sorting. extension: https://marketplace.visualstudio.com/items?itemName=PascalReitermann93.vscode-yaml-sort
+{
+    "vscode-yaml-sort.noCompatMode": true,
+    "vscode-yaml-sort.useCustomSortRecursively": true,
+    "vscode-yaml-sort.useLeadingDashes": false,
+    "vscode-yaml-sort.useCommentProcessor": false,
+    "vscode-yaml-sort.customSortKeywords_1": [
+        "version",
+        "services",
+        "image",
+        "container_name",
+        "restart",
+        "user",
+        "pid",
+        "network_mode",
+        "cap_add",
+        "security_opt",
+        "privileged",
+        "entrypoint",
+        "ports",
+        "devices",
+        "env_file",
+        "environment",
+        "volumes",
+        "labels",
+        "networks"
+    ]
+}
