@@ -6,12 +6,12 @@ services:
     restart: on-failure
     ports:
       - 8445:8443
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
     environment:
       - DEFAULT_WORKSPACE=/saffron
     volumes:
       - /home/$USER/saffron/:/saffron
       - /containers/vscode-server/config:/config
-      - /etc/timezone:/etc/timezone:ro
 networks: {}

@@ -4,8 +4,6 @@ services:
     image: jlesage/handbrake
     container_name: handbrake
     restart: on-failure
-    env_file:
-      - ../common.env.public
     ports:
       - 5800:5800
     devices:
@@ -13,10 +11,7 @@ services:
     volumes:
       - /containers/handbrake/config:/config:rw
       - /containers/handbrake/storage:/storage:ro
-      - ${HANDBRAKE_WATCH}:/watch:rw
-      - ${HANDBRAKE_WATCH}:/output:rw
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra
-      - ${BULK_DIR}:/bulk
+    extends:
+      file: ../common.yaml
+      service: media-access
 networks: {}
-

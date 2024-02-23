@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  base-settings:
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - UMASK=022
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+  media-access:
+    extends: base-settings
+    volumes:
+      - /host_data_dir:/data
+networks: {}

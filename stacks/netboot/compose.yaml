@@ -8,10 +8,10 @@ services:
       - 3300:3000
       - 369:69/udp
       - 38080:80
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: base-settings
     volumes:
       - /containers/netbootxyz/config:/config
       - /containers/netbootxyz/assets:/assets
-      - /etc/timezone:/etc/timezone:ro
 networks: {}

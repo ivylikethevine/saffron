@@ -3,7 +3,9 @@
 
 # Keep the Dockge-editable .env private to avoid committing & tracking credentials
 .env
-common.env
+
+# Same with custom common.yaml (which contains file paths)
+stacks/common.yaml
 
 # To prevent VPN configurations being committed
 *.ovpn

@@ -6,14 +6,11 @@ services:
     restart: on-failure
     ports:
       - 6767:6767
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
     volumes:
       - /containers/bazarr:/config
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra
-      - ${BULK_DIR}:/bulk
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - bridge
   lidarr:
@@ -22,14 +19,11 @@ services:
     restart: on-failure
     ports:
       - 8686:8686
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
     volumes:
       - /containers/lidarr:/config
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra
-      - ${BULK_DIR}:/bulk
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - bridge
   radarr:
@@ -38,14 +32,11 @@ services:
     restart: on-failure
     ports:
       - 7878:7878
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
     volumes:
       - /containers/radarr:/config
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra
-      - ${BULK_DIR}:/bulk
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - bridge
   readarr:
@@ -54,14 +45,12 @@ services:
     restart: on-failure
     ports:
       - 8787:8787
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
     volumes:
       - /containers/readarr/config:/config
       - /containers/readarr/books:/books
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - bridge
   sonarr:
@@ -70,14 +59,11 @@ services:
     restart: on-failure
     ports:
       - 8989:8989
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
     volumes:
       - /containers/sonarr:/config
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra
-      - ${BULK_DIR}:/bulk
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - bridge
 networks:

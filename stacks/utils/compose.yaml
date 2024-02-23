@@ -7,6 +7,4 @@ services:
     restart: unless-stopped
     stdin_open: true # docker run -i
     tty: true # docker run -t
-    env_file:
-      - ../common.env.public
 networks: {}

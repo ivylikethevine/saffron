@@ -17,7 +17,6 @@ services:
     ports:
       - 9696:9696
     env_file:
-      - ../common.env.public
       - .env.public
     volumes:
       - /containers/prowlarr:/config
@@ -32,18 +31,18 @@ services:
       - 8080:8080
       - 8999:8999
       - 8999:8999/udp
+    extends:
+      file: ../common.yaml
+      service: media-access
     env_file:
-      - ../common.env.public
       - .env.public
     volumes:
       - /containers/qbittorrent/:/config
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra # optional
     networks:
       - servarr_bridge
 networks:
   servarr_bridge:
     external: true
 
-# .env must define: VPN_ENABLED, VPN_USERNAME, VPN_PASSWORD, & DATA_DIR (other DIR's can be deleted)
+# .env must define: VPN_ENABLED, VPN_USERNAME, & VPN_PASSWORD
 # also requires a .ovpn file in the /containers/qbittorrent/openvpn/ folder for VPN use

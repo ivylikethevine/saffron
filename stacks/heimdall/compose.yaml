@@ -8,9 +8,9 @@ services:
     ports:
       - 80:80
       - 443:443
-    env_file:
-      - ../common.env.public
     volumes:
       - /containers/heimdall:/config
-      - /etc/timezone:/etc/timezone:ro
+    extends:
+      file: ../common.yaml
+      service: base-settings
 networks: {}

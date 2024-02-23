@@ -8,7 +8,7 @@ services:
       - 5001:5001
     environment:
       - DOCKGE_STACKS_DIR=/home/$USER/saffron/stacks
-      - USER=$USER
+      - USER=$USER # to pass down to use in other stacks
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /containers/dockge/data:/app/data 

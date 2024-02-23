@@ -6,7 +6,7 @@
 
 ...the second half is a backcronym
 
-### Saffron is a docker compose deployment of a server == via (almost entirely) static files
+### Saffron is a docker compose deployment of a homelab via (almost entirely) static files
 
 [Why Saffron?](https://ivylikethevine.com/projects/saffron)
 
@@ -23,6 +23,7 @@ I built saffron because I wanted a way to utilize docker compose on a homelab se
 - Minecraft server hosting.
 - PXE environment for OS booting on other nodes.
 - Zero DNS or networking configuration outside of docker.
+- Easily configurable volume mounting via [common.yaml](#common-yaml) and [docker extends](https://docs.docker.com/compose/multiple-compose-files/extends/)
 
 ##### Features (Under Development)
 
@@ -43,7 +44,7 @@ git clone https://github.com/ivylikethevine/saffron.git # http, works with no SS
 git clone git@github.com:ivylikethevine/saffron.git # ssh
 cd saffron
 
-# Create file paths with correct permissions & start dockge
+# Make directories with correct permssions, create common.yaml, & start dockge
 ./install-saffron.sh
 ```
 
@@ -85,11 +86,10 @@ cd /home/$USER/saffron
 
 1. `/containers/` - stores individual generated configs, db files, etc.
     - This is not a perfect separation, since some containers will use config for "data" (such as torrent clients using it as a default download location)
-2. `/home/$USER/saffron` - saffron root `/dockge` - dockge, `/stacks` - all other stacks/services
-3. `$DATA_DIR` - where bulk files are stored (documents, photos, media, etc.) per stack.
-    - `.env` files are not (currently) shared between any stacks, so each `.env` must define `DATA_DIR` per stack
+2. `/home/$USER/saffron/stacks` - all stacks & services' compose files
+3. `$DATA_DIR` - where bulk files are stored (configured during setup) See [common.yaml](#common-yaml) for more infromation.
 
-## v0.22 List of Stacks & Services
+## v0.25 List of Stacks & Services
 
 ** Names are lowercased per dockge stack naming requirements
 
@@ -133,6 +133,15 @@ cd /home/$USER/saffron
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=arm64&label=arm64">
     </details>
 
+- &#x2705;; [dozzle](https://github.com/amir20/dozzle) - Web UI to live docker container logs.
+  - <details>
+      <h3>WebUI Dashboard</h3>
+      <img src="resources/screenshots/dozzle.webp" alt="dozzle ui screenshot"/>
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/amir20/dozzle/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/amir20/dozzle/latest?arch=arm64&label=arm64">
+    </details>
+
 - &#x2705; [duplicati](https://docs.linuxserver.io/images/docker-duplicati/) - Automated backup to AWS/Backblaze/etc.
   - <details>
       <h3>WebUI Dashboard</h3>
@@ -171,7 +180,16 @@ cd /home/$USER/saffron
       <!-- <img alt="x64 Version" src="https://img.shields.io/docker/v/homeassistant/home-assistant/latest?arch=arm64&label=arm64"> HA is unable to use the /v/ version badge for some reason. -->
     </details>
 
-- media-clients - Various media streaming services with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
+- &#x2705; [it-tools](https://github.com/corentinth/it-tools) - Helpful tool for various tasks (generating UUIDs, hashes, etc.).
+  - <details>
+      <h3>WebUI Dashboard</h3>
+      <img src="resources/screenshots/it-tools.webp" alt="homeassistant ui screenshot"/>
+
+      <img alt="x64 Version" src="https://img.shields.io/docker/v/corentinth/it-tools/latest?arch=amd64&label=x64">
+      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/corentinth/it-tools/latest?arch=arm64&label=arm64">
+    </details>
+
+- media-clients - Various media streaming services.
 
   - &#x2705; [jellyfin](https://docs.linuxserver.io/images/docker-jellyfin/) - TV/movie streaming.
     - <details>
@@ -291,7 +309,7 @@ cd /home/$USER/saffron
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=arm64&label=arm64">
     </details>
 
-- [servarr](https://wiki.servarr.com/docker-guide) - Media library system(s) with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/servarr/.env.public"><code>.env.public</code></a>.
+- [servarr](https://wiki.servarr.com/docker-guide) - Media library systems.
 
   - &#x2705; [sonarr](https://docs.linuxserver.io/images/docker-sonarr/) - TV library manager.
     - <details>
@@ -407,7 +425,7 @@ cd /home/$USER/saffron
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/containrrr/watchtower/latest?arch=arm64&label=arm64">
     </details>
 
-### Services under consideration
+#### Services under consideration
 
 - [Adguard](https://adguard.com/en/welcome.html) - for whole home ad blocking.
 - [Ansible Semaphore](https://www.semui.co/) - for easier host updating/management.
@@ -415,11 +433,11 @@ cd /home/$USER/saffron
 - [Cloudflare](https://developers.cloudflare.com/cloudflare-one/) - for access outside of home network.
 - [Nextcloud](https://nextcloud.com/) - for general homelab "cloud".
 
-If a service isn't on here yet, feel free to add it! Most of these are very simple applications of the excellent [linuxserver docker images](https://docs.linuxserver.io/images/). See creating a [saffron-styled compose](#saffron-example) for more detail on the format of `compose.yaml` and `.env.public`. There are also the [official docker hub images](https://hub.docker.com/u/library).
+If a service isn't on here yet, feel free to add it! Most of these are very simple applications of the excellent [linuxserver docker images](https://docs.linuxserver.io/images/). See creating a [saffron-styled compose](#saffron-example) for more detail on the format of `compose.yaml`. There are also the [official docker hub images](https://hub.docker.com/u/library).
 
 I've also made stacks using Lissy93's well maintained [portainer template repo](https://github.com/Lissy93/portainer-templates), although this is slightly different than working from raw compose files.
 
-### Compatible with
+#### Compatible with
 
 - [obico](https://www.obico.io/docs/server-guides/install/) - 3D print failure detection notification/stopping
   - To install:
@@ -427,14 +445,33 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 - For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/$USER/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
 
+### Configuration
+
+#### `common.yaml` (new in v0.25) <a id="common-yaml"></a>
+
+By using a set of base "services" inside of `saffron/stacks/common.yaml`, we can limit the length of each docker compose file & allow for easy re-use of shared docker configurations, mainly:
+
+1. Consistent PUID/PGID & UMASK - all extended services have shared environment variables.
+2. Consistent mount locations (such as media libraries) - library locations only have to be defined once.
+3. Consistent localtime - not very important, but nice to have.
+
+On install, saffron copies it's local `stacks/common.yaml.public` file to `stacks/compose.yaml`, setting `/data` in all extended containers to the value of `$DATA_DIR` used during setup. This can be changed by using the vscode-server and editing files in the saffron directory. `common.yaml` is set to be ignored by git to prevent committing personal directory paths.
+
+#### Env Files
+
+This project has 2 types of `.env` files:
+
+1. `.env` - this type is natively loaded by dockge, allowing for Web UI editing + templating for paths. This is the place that VPN credentials, etc. should be stored since they will not be committed.
+    - if stacks throw errors about undefined variables, make sure to define those variables in the `.env` for that stack.
+    - these files are ignored by git, so they can locally hold some credentials (such as VPN logins) + personal folder routing
+2. `.env.public` - this holds basic preconfigurations for each container to work and should be changed with caution. They are not available in the Dockge Web UI.
+
 #### Docker Volumes
 
 When editing the DATA_DIR(s), it is often best to have the last part of the host volume match the container volume, such as:
 
 - `/data/television/:/local/library/television` -> Intuitive
 - `/data/TV/:/local/library/television` -> Often confusing (at least for me!)
-
-I have `DATA_DIR`, `EXTRA_DIR`, and `BULK_DIR`, but only `DATA_DIR` is required. The others can be deleted from compose files.
 
 #### Migration Tools
 
@@ -445,16 +482,6 @@ I have `DATA_DIR`, `EXTRA_DIR`, and `BULK_DIR`, but only `DATA_DIR` is required.
 ##### Internal Routing
 
 For configuring docker containers that talk to each other, you can replace `localhost` with the `container_name` of the service to network, as long as both are inside of the same `compose.yaml`. For example, connecting prowlarr & sonarr, you can use `prowlarr:9696` and `sonarr:8989`. If the containers are not in the same stack, this will require a bridge connection. An example of a bridge is included in `servarr` and `torrent`. To connect to `servarr` from `torrent`, `qbittorrentvpn` must use the `servarr_bridge` network.
-
-##### Env Files
-
-This project has 3 types of `.env` files:
-
-1. `.env` - this type is natively loaded by dockge, allowing for Web UI editing + templating for paths. This is the place that VPN credentials, etc. should be stored since they will not be committed.
-    - if stacks throw errors about undefined variables, make sure to define those variables in the `.env` for that stack.
-    - these files are ignored by git, so they can locally hold some credentials (such as VPN logins) + personal folder routing
-2. `.env.public` - this holds basic preconfigurations for each container to work and should be changed with caution. They are not available in the Dockge Web UI.
-3. `common.env.public` - preconfiguration shared between many services.
 
 ### Creating a Saffron-Styled compose from Scratch <a id="saffron-example"></a>
 
@@ -483,28 +510,13 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
       ports:
         - 8445:8443 
         # The port assignments in saffron are designed to avoid conflicts. host:container is the format, and it is easiest to change host mapping by itself, and not to mess with default port mappings. Some containers require environment variables to change the internal port, so its best to avoid.
-      env_file:
-        - .env.public 
-        # Alternatively to the environment tag, we can load a .env file directly. The below PUID/PGID could be moved to .env.public for conciseness. 
-      environment:
-        - PUID=1000 
-        - PGID=1000
-        # Most of the time, we want our containers to have the default user permissions (1000:1000 user:group)
+      extends:
+        file: ../common.yaml
+        service: base-settings
+        # base-settings: PUID, PGID, UMASK & localtime
+        # media-access: base-settings + volume mounting $DATA_DIR(s)
       volumes:
         - /containers/vscode-server/config:/config 
         # Again, usually easiest to follow /containers/container_name/folder:/folder for consistency & clarity.
-        - /etc/timezone:/etc/timezone:ro 
-        # This will set our TZ to the host's TZ, instead of configuring per container. To change, run `dpkg-reconfigure tzdata` on the host.
   networks: {}
   ```
-
-#### stacks/vscode-server/.env.public
-
-```bash
-## Defaults
-PGID=1000
-PUID=1000
-# The PGID/PUID are required in the .env(s), user: 1000:1000 in docker compose does not play well with these images.
-UMASK=022
-# Relatively safe file permission for containers.
-```

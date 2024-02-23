@@ -25,4 +25,12 @@ sudo chmod -R 755 $DATA_DIR
 cd /home/$USER/saffron/
 echo "Installation complete, starting dockge..."
 docker compose up -d
+
+echo "Creating common.yaml from common.yaml.public..."
+cd stacks
+cp common.yaml.public common.yaml
+sed -i -e "s/host_data_dir/$DATA_DIR/g" common.yaml
+cd ..
+
+echo "Opening dockge in web browser"
 xdg-open http://$HOSTNAME.local:5001/

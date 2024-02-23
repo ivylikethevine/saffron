@@ -8,9 +8,9 @@ services:
       - 8081:80
     environment:
       - DB_CONNECTION=sqlite
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: base-settings
     volumes:
       - /containers/speedtest-tracker/config:/config
-      - /etc/timezone:/etc/timezone:ro
 networks: {}

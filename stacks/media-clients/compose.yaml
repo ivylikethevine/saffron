@@ -6,14 +6,11 @@ services:
     restart: on-failure
     ports:
       - 13378:80
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
     volumes:
       - /containers/audiobookshelf/config:/config
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra # optional
-      - ${BULK_DIR}:/bulk # optional
-      - /etc/timezone:/etc/timezone:ro
   jellyfin:
     image: linuxserver/jellyfin:latest
     container_name: jellyfin
@@ -24,14 +21,11 @@ services:
       - /dev/dri:/dev/dri # for intel hardware decode
     environment:
       - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel # for intel hardware decode
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
     volumes:
       - /containers/jellyfin:/config
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra # optional
-      - ${BULK_DIR}:/bulk # optional
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - servarr_bridge
   jellyseerr:
@@ -51,28 +45,25 @@ services:
     restart: on-failure
     ports:
       - 5000:5000
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
     volumes:
       - /containers/kavita/config:/kavita/config
-      - ${DATA_DIR}:/data
-      - ${EXTRA_DIR}:/extra # optional
-      - ${BULK_DIR}:/bulk # optional
-      - /etc/timezone:/etc/timezone:ro
   navidrome:
     image: deluan/navidrome:latest
     container_name: navidrome
     restart: on-failure
     ports:
       - 4533:4533
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: media-access
+    environment:
+      - ND_MUSICFOLDER=/data/music
+      - ND_DATAFOLDER=/navidrome/data
     volumes:
-      - /containers/navidrome/data:/data
-      - ${DATA_DIR}/music:/music:ro
-      - ${EXTRA_DIR}:/extra # optional
-      - ${BULK_DIR}:/bulk # optional
-      - /etc/timezone:/etc/timezone:ro
+      - /containers/navidrome/data:/navidrome/data
 networks:
   servarr_bridge:
     external: true

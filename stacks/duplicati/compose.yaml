@@ -6,15 +6,16 @@ services:
     restart: on-failure
     entrypoint:
       - /init
-    env_file:
-      - ../common.env.public
+    extends:
+      file: ../common.yaml
+      service: base-settings
     ports:
       - 8200:8200/tcp
     environment:
       - PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       - HOME=/config
     volumes:
-      - /nas:/nas # optional
       - /containers/duplicati/config:/config
+      - /nas:/nas # optional
     ipc: private
 networks: {}
