@@ -17,11 +17,5 @@ stacks/obico-server/
 stacks/p-*
 stacks/dev-*
 
-# Only want to commit .webp files for repository size
-# resources/screenshots/*.png
-# resources/screenshots/*.jpg
-# resources/screenshots/*.tiff
-# resources/screenshots/*.jpeg
-
 !.git/hooks/pre-commit
 !.vscode/settings.json
