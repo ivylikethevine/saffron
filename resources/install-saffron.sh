@@ -27,10 +27,10 @@ echo "Installation complete, starting dockge..."
 docker compose up -d
 
 echo "Creating common.yaml from common.yaml.public..."
-cd stacks
+cd /home/$USER/saffron/stacks
 cp common.yaml.public common.yaml
 sed -i -e "s/host_data_dir/$DATA_DIR/g" common.yaml
-cd ..
+cd /home/$USER/saffron
 
 echo "Opening dockge in web browser"
 xdg-open http://$HOSTNAME.local:5001/
