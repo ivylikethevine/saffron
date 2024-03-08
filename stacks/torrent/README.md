@@ -1,36 +1,35 @@
----
-avahi
----
+# Torrent
 
-# Avahi
+# Qbittorrentvpn
 
-(https://github.com/markusmcnugen/docker-qbittorrentvpn)
+<https://github.com/markusmcnugen/docker-qbittorrentvpn>
 
-- <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/qbittorrent.webp" alt="qbittorrent ui screenshot"/>
+## Architecture Compatibility
 
-      <h4>
-        <a href="https://github.com/markusmcnugen/docker-qbittorrentvpn?tab=readme-ov-file#environment-variables">Documentation on Environment Variables</a>
-      </h4>
+![x64 Version](https://img.shields.io/docker/v/markusmcnugen/qbittorrentvpn/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/markusmcnugen/qbittorrentvpn/latest?arch=arm64&label=arm64)
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/markusmcnugen/qbittorrentvpn/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/markusmcnugen/qbittorrentvpn/latest?arch=arm64&label=arm64">
+### WebUI Dashboard
 
-    </details>
-  (https://docs.linuxserver.io/images/docker-prowlarr/)
+![Qbittorrent UI](../../resources/screenshots/qbittorrent.webp)
 
-- <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/prowlarr.webp" alt="prowlarr ui screenshot"/>
+#### [Documentation on Environment Variables](https://github.com/markusmcnugen/docker-qbittorrentvpn?tab=readme-ov-file#environment-variables)
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/prowlarr/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/prowlarr/latest?arch=arm64&label=arm64">
+# Prowlarr
 
-    </details>
-  (https://github.com/flaresolverr/flaresolverr)
+<https://docs.linuxserver.io/images/docker-prowlarr/>
 
-- <details>
-    <img alt="x64 Version" src="https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=amd64&label=x64">
-    <img alt="Arm64 Version" src="https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=arm64&label=arm64">
-  </details>
+## Architecture Compatibility
+
+![x64 Version](https://img.shields.io/docker/v/linuxserver/prowlarr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/linuxserver/prowlarr/latest?arch=arm64&label=arm64)
+
+### WebUI Dashboard
+
+![Prowlarr UI](../../resources/screenshots/prowlarr.webp)
+
+# Flaresolverr
+
+<https://github.com/flaresolverr/flaresolverr>
+
+## Architecture Compatibility
+
+![x64 Version](https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=arm64&label=arm64)

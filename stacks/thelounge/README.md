@@ -1,13 +1,11 @@
----
-avahi
----
+# Thelounge
 
-# Avahi
+<https://github.com/thelounge/thelounge-docker>
 
-- <details>
-    <h3>WebUI Dashboard</h3>
-    <img src="resources/screenshots/thelounge.webp" alt="thelounge ui screenshot"/>
+## Architecture Compatibility
 
-    <img alt="x64 Version" src="https://img.shields.io/docker/v/thelounge/thelounge/latest?arch=amd64&label=x64">
-    <img alt="Arm64 Version" src="https://img.shields.io/docker/v/thelounge/thelounge/latest?arch=arm64&label=arm64">
-  </details>
+![x64 Version](https://img.shields.io/docker/v/thelounge/thelounge/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/thelounge/thelounge/latest?arch=arm64&label=arm64)
+
+### WebUI Dashboard
+
+![Thelounge UI](../../resources/screenshots/thelounge.webp)

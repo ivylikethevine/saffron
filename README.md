@@ -93,10 +93,6 @@ cd /home/$USER/saffron/resources
 
 \*\* Names are lowercased per dockge stack naming requirements
 
-&#x2705;: Tested
-
-&#128679;: Active development
-
 - &#128679; [avahi](stacks/avahi/README.md) - Allows docker containers to access mdns on LAN.
 
 - &#x2705; [crafty](stacks/crafty/README.md)- Easily deploy/manage minecraft servers.
@@ -119,71 +115,71 @@ cd /home/$USER/saffron/resources
 
 - &#x2705; [handbrake](stacks/handbrake/README.md) - Web UI for transcoding video/audio files.
 
-- &#x2705; [heimdall] - Easy to use home page.
+- &#x2705; [heimdall](stacks/heimdall/README.md) - Easy to use home page.
 
-- &#x2705; [homeassistant] - Smart home automation.
+- &#x2705; [homeassistant](stacks/homeassistant/README.md) - Smart home automation.
 
-- &#x2705; [mariadb]()
+- &#x2705; [mariadb](stacks/mariadb/README.md) - Basic database (mostly used as template for adding to services that require a DB).
 
-- &#x2705; [it-tools] - Helpful tool for various tasks (generating UUIDs, hashes, etc.).
+- &#x2705; [it-tools](stacks/it-tools/README.md) - Helpful tool for various tasks (generating UUIDs, hashes, etc.).
 
-- media-clients - Various media streaming services.
+- &#128994; [media-clients](stacks/media-clients/README.md) - Various media streaming services.
 
-  - &#x2705; [jellyfin] - TV/movie streaming.
+  - &#x2705; jellyfin - TV/movie streaming.
 
-  - &#x2705; [jellyseerr]- TV/movie requests.
+  - &#x2705; jellyseerr - TV/movie requests.
 
-  - &#x2705; [kavita] Ebook reader.
+  - &#x2705; kavita Ebook reader.
 
-  - &#x2705; [navidrome]- Music streaming service.
+  - &#x2705; navidrome- Music streaming service.
 
-  - &#x2705; [audiobookshelf] - Audiobook streaming.
+  - &#x2705; audiobookshelf - Audiobook streaming.
 
-- &#x2705; [netboot] - PXE boot system.
+- &#x2705; [netboot](stacks/netboot/README.md) - PXE boot system.
 
-- &#x2705; [netdata] - Hardware usage/monitoring (incl. containers).
+- &#x2705; [netdata](stacks/netdata/README.md) - Hardware usage/monitoring (incl. containers).
 
-- &#128679; [octoprint] - 3D printer automation/monitoring
+- &#128679; [octoprint](stacks/octoprint/README.md) - 3D printer automation/monitoring
 
-- &#x2705; [plex]()
+- &#x2705; [plex](stacks/plex/README.md) - Fully featured media player/environment with many smart tv integrations.
 
-- [servarr] - Media library systems.
+- &#128994; [servarr](stacks/servarr/README.md) - Media library systems.
 
-  - &#x2705; [sonarr] - TV library manager.
+  - &#x2705; sonarr - TV library manager.
 
-  - &#x2705; [radarr] - Movie library manager.
+  - &#x2705; radarr - Movie library manager.
 
-  - &#x2705; [lidarr]- Music library manager.
+  - &#x2705; lidarr- Music library manager.
 
-  - &#x2705; [readarr] - Ebook library manager.
+  - &#x2705; readarr - Ebook library manager.
 
-  - &#x2705; [bazarr] -
+  - &#x2705; bazarr - Subtitle management/requests for sonarr/radarr.
 
-- &#x2705; [speedtest-tracker] - Internet speed monitoring.
+- &#x2705; [speedtest-tracker](stacks/speedtest-tracker/README.md) - Internet speed monitoring.
 
-- &#128679; [tdarr] - Additional Web UI for transcoding video/audio files, with ability to use distributed compute nodes.
+- &#128679; [tdarr](stacks/tdarr/README.md) - Additional Web UI for transcoding video/audio files, with ability to use distributed compute nodes.
 
-- &#x2705; [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client.
+- &#x2705; [thelounge](stacks/thelounge/README.md) - IRC client.
 
-- torrent - Full torrenting suite with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
+- &#128994; [torrent](stacks/torrent/README.md) - Full torrenting suite with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/torrent/.env.public"><code>.env.public</code></a>.
 
-  - &#x2705; [qbittorrentvpn] - torrent client that runs only on VPN connection.
+  - &#x2705; qbittorrentvpn - torrent client that runs only on VPN connection.
 
-  - &#x2705; [prowlarr] - Search aggregator.
+  - &#x2705; prowlarr - Search aggregator.
 
-  - &#x2705; [flaresolverr] - Search proxy (required for some search engines).
+  - &#x2705; flaresolverr - Search proxy (required for some search engines).
 
-- &#128679; [traefik] - Reverse proxy with easy docker integration.
+- &#128679; [traefik](stacks/traefik/README.md) - Reverse proxy with easy docker integration.
 
-- &#x2705; [uptime-kuma] - Nice health checking tool with simple UI (same dev as Dockge!).
+- &#x2705; [uptime-kuma](stacks/uptime-kuma/README.md) - Nice health checking tool with simple UI (same dev as Dockge!).
 
-- &#x2705; [utils] - Simple dockerfile-based compose with basic utils for debugging.
+- &#x2705; [utils](stacks/utils/README.md) - Simple dockerfile-based compose with basic utils for debugging.
 
-- &#x2705; [vscode-server] - VSCode running with a Web UI (for editing saffron config files, etc.).
+- &#x2705; [vscode-server](stacks/vscode-server/README.md) - VSCode running with a Web UI (for editing saffron config files, etc.).
 
-- &#x2705; [watchtower] - Automatically update & restart docker containers.
+- &#x2705; [watchtower](stacks/watchtower/README.md) - Automatically update & restart docker containers.
 
-- &#128679; [windows]()
+- &#128679; [windows](stacks/windows/README.md) - Automatic install/configuration with web VNC & native RDP for Windows XP -> Windows 11
 
 ### Services under consideration
 

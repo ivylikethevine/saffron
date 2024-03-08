@@ -1,57 +1,63 @@
----
-avahi
----
+# Servarr
 
-# Avahi
+<https://wiki.servarr.com/docker-guide>
 
-(https://wiki.servarr.com/docker-guide)
+# Sonarr
 
-(https://docs.linuxserver.io/images/docker-sonarr/)
+<https://docs.linuxserver.io/images/docker-sonarr/>
 
-- <details>
-    <h3>WebUI Dashboard</h3>
-    <img src="resources/screenshots/sonarr.webp" alt="sonarr ui screenshot"/>
+## Architecture Compatibility
 
-    <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/sonarr/latest?arch=amd64&label=x64">
-    <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/sonarr/latest?arch=arm64&label=arm64">
-  </details>
+![x64 Version](https://img.shields.io/docker/v/linuxserver/sonarr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/linuxserver/sonarr/latest?arch=arm64&label=arm64)
 
-(https://docs.linuxserver.io/images/docker-radarr/)
+### WebUI Dashboard
 
-- <details>
-    <h3>WebUI Dashboard</h3>
-    <img src="resources/screenshots/radarr.webp" alt="radarr ui screenshot"/>
+![Sonarr UI](../../resources/screenshots/sonarr.webp)
 
-    <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/radarr/latest?arch=amd64&label=x64">
-    <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/radarr/latest?arch=arm64&label=arm64">
-  </details>
+# Radarr
 
-(https://docs.linuxserver.io/images/docker-lidarr/)
+<https://docs.linuxserver.io/images/docker-radarr/>
 
-- <details>
-    <h3>WebUI Dashboard</h3>
-    <img src="resources/screenshots/lidarr.webp" alt="lidarr ui screenshot"/>
+## Architecture Compatibility
 
-    <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/lidarr/latest?arch=amd64&label=x64">
-    <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/lidarr/latest?arch=arm64&label=arm64">
-  </details>
+![x64 Version](https://img.shields.io/docker/v/linuxserver/radarr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/linuxserver/radarr/latest?arch=arm64&label=arm64)
 
-(https://docs.linuxserver.io/images/docker-readarr/)
+### WebUI Dashboard
 
-- <details>
-    <h3>WebUI Dashboard</h3>
-    <img src="resources/screenshots/readarr.webp" alt="readarr ui screenshot"/>
+![Radarr UI](../../resources/screenshots/radarr.webp)
 
-    <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=amd64&label=x64">
-    <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=arm64&label=arm64">
-  </details>Subtitle management/requests for sonarr/radarr.
+# Lidarr
 
-(https://docs.linuxserver.io/images/docker-bazarr/)
+<https://docs.linuxserver.io/images/docker-lidarr/>
 
-- <details>
-    <h3>WebUI Dashboard</h3>
-    <img src="resources/screenshots/bazarr.webp" alt="bazarr ui screenshot"/>
+## Architecture Compatibility
 
-    <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=amd64&label=x64">
-    <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=arm64&label=arm64">
-  </details>
+![x64 Version](https://img.shields.io/docker/v/linuxserver/lidarr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/linuxserver/lidarr/latest?arch=arm64&label=arm64)
+
+### WebUI Dashboard
+
+![Lidarr UI](../../resources/screenshots/lidarr.webp)
+
+# Readarr
+
+<https://docs.linuxserver.io/images/docker-readarr/>
+
+## Architecture Compatibility
+
+![x64 Version](https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=arm64&label=arm64)
+
+### WebUI Dashboard
+
+![Readarr UI](../../resources/screenshots/readarr.webp) -### WebUI Dashboard
+
+# Bazarr
+
+<https://docs.linuxserver.io/images/docker-bazarr/>
+
+## Architecture Compatibility
+
+![x64 Version](https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=arm64&label=arm64)
+
+### WebUI Dashboard
+
+![Bazarr UI](../../resources/screenshots/bazarr.webp)

@@ -1,15 +1,11 @@
----
-dokemon
----
+# Dokemon
 
-# dokemon
+<https://dokemon.dev/>
 
-- <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/dokemon.webp" alt="dokemon ui screenshot"/>
+## Architecture Compatibility
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=arm64&label=arm64">
+![x64](https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=amd64&label=x64) ![arm64](https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=arm64&label=arm64)
 
-    </details>
-  (https://dokemon.dev/)
+### WebUI Dashboard
+
+![Dokemon UI](../../resources/screenshots/dokemon.webp)

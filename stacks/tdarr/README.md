@@ -1,15 +1,11 @@
----
-avahi
----
+# Tdarr
 
-# Avahi
+<https://github.com/HaveAGitGat/Tdarr>
 
-(https://github.com/HaveAGitGat/Tdarr)
+## Architecture Compatibility
 
-- <details>
-    <h3>WebUI Dashboard</h3>
-    <img src="resources/screenshots/tdarr.webp" alt="tdarr ui screenshot"/>
+![x64 Version](https://img.shields.io/docker/v/HaveAGitGat/Tdarr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/HaveAGitGat/Tdarr/latest?arch=arm64&label=arm64)
 
-    <img alt="x64 Version" src="https://img.shields.io/docker/v/HaveAGitGat/Tdarr/latest?arch=amd64&label=x64">
-    <img alt="Arm64 Version" src="https://img.shields.io/docker/v/HaveAGitGat/Tdarr/latest?arch=arm64&label=arm64">
-  </details>
+### WebUI Dashboard
+
+![tdarr ui screenshot](../../resources/screenshots/tdarr.webp)

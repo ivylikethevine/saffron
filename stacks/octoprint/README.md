@@ -1,15 +1,11 @@
----
-avahi
----
+# Octoprint
 
-# Avahi
+<https://github.com/OctoPrint/octoprint-docker>
 
-- <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/octoprint.webp" alt="octoprint ui screenshot"/>
+## Architecture Compatibility
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/octoprint/octoprint/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/octoprint/octoprint/latest?arch=arm64&label=arm64">
+![x64 Version](https://img.shields.io/docker/v/octoprint/octoprint/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/octoprint/octoprint/latest?arch=arm64&label=arm64)
 
-    </details>
-  (https://github.com/OctoPrint/octoprint-docker)
+### WebUI Dashboard
+
+![Octoprint UI](../../resources/screenshots/octoprint.webp)
