@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 services:
   thelounge:
     image: thelounge/thelounge:latest
@@ -9,6 +9,5 @@ services:
     volumes:
       - /containers/thelounge:/var/opt/thelounge
 networks: {}
-
 # to add a theme docker exec --user node -it thelounge thelounge install theme
 # to add a user: docker exec --user node -it thelounge thelounge add username
