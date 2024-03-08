@@ -48,7 +48,7 @@
 
 ### WebUI Dashboard
 
-![Readarr UI](../../resources/screenshots/readarr.webp) -### WebUI Dashboard
+![Readarr UI](../../resources/screenshots/readarr.webp)
 
 # Bazarr
 
