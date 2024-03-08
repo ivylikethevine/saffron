@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 services:
   dockge:
     image: louislam/dockge:latest
@@ -11,6 +11,6 @@ services:
       - USER=$USER # to pass down to use in other stacks
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /containers/dockge/data:/app/data 
+      - /containers/dockge/data:/app/data
       - /home/$USER/saffron/stacks:/home/$USER/saffron/stacks
       - /etc/timezone:/etc/timezone:ro

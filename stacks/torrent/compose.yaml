@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 services:
   flaresolverr:
     image: flaresolverr/flaresolverr:latest
@@ -43,6 +43,5 @@ services:
 networks:
   servarr_bridge:
     external: true
-
 # .env must define: VPN_ENABLED, VPN_USERNAME, & VPN_PASSWORD
 # also requires a .ovpn file in the /containers/qbittorrent/openvpn/ folder for VPN use

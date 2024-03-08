@@ -85,46 +85,22 @@ cd /home/$USER/saffron/resources
 ### Important Paths
 
 1. `/containers/` - stores individual generated configs, db files, etc.
-    - This is not a perfect separation, since some containers will use config for "data" (such as torrent clients using it as a default download location)
+   - This is not a perfect separation, since some containers will use config for "data" (such as torrent clients using it as a default download location)
 2. `/home/$USER/saffron/stacks` - all stacks & services' compose files
 3. `$DATA_DIR` - where bulk files are stored (configured during setup) See [common.yaml](#common-yaml) for more infromation.
 
-## v0.25 List of Stacks & Services
+## v0.30 List of Stacks & Services (30+ Containers)
 
-** Names are lowercased per dockge stack naming requirements
+\*\* Names are lowercased per dockge stack naming requirements
 
-&#x2705;: Tested
+- &#128679; [avahi](stacks/avahi/README.md) - Allows docker containers to access mdns on LAN.
 
-&#128679;: Active development
+- &#x2705; [crafty](stacks/crafty/README.md) - Easily deploy/manage minecraft servers.
 
-- &#128679; [avahi](https://github.com/flungo-docker/avahi) - Allows docker containers to access mdns on LAN.
-  - <details>
-      <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/avahi.webp" alt="avahi ui screenshot"/> -->
-
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/flungo/avahi/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/flungo/avahi/latest?arch=arm64&label=arm64">
-    </details>
-
-- &#x2705;; [crafty](https://docs.craftycontrol.com/pages/getting-started/installation/docker/) - Easily deploy/manage minecraft servers.
-  - <details>
-      <!-- <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/crafty.webp" alt="crafty ui screenshot"/> -->
-
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=arm64&label=arm64">
-    </details>
-
-- &#x2705;; [dokemon](https://dokemon.dev/) - Web UI to manage docker containers/view logs/etc.
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/dokemon.webp" alt="dokemon ui screenshot"/>
-
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/productiveops/dokemon/latest?arch=arm64&label=arm64">
-    </details>
+- &#x2705; [dokemon](stacks/dokemon/README.md) - Web UI to manage docker containers/view logs/etc.
 
 - &#x2705; [dockge](https://github.com/louislam/dockge) - Web UI to manage docker compose files (integral to `saffron`).
+
   - <details>
       <h3>WebUI Dashboard</h3>
       <img src="resources/screenshots/dockge.webp" alt="dockge ui screenshot"/>
@@ -133,297 +109,77 @@ cd /home/$USER/saffron/resources
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=arm64&label=arm64">
     </details>
 
-- &#x2705;; [dozzle](https://github.com/amir20/dozzle) - Web UI to live docker container logs.
-  - <details>
-      <!-- <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/dozzle.webp" alt="dozzle ui screenshot"/> -->
+- &#x2705; [dozzle](stacks/dozzle/README.md) - Web UI to live docker container logs.
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/amir20/dozzle/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/amir20/dozzle/latest?arch=arm64&label=arm64">
-    </details>
+- &#x2705; [duplicati](stacks/duplicati/README.md) - Automated backup to AWS/Backblaze/etc.
 
-- &#x2705; [duplicati](https://docs.linuxserver.io/images/docker-duplicati/) - Automated backup to AWS/Backblaze/etc.
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/duplicati.webp" alt="duplicati ui screenshot"/>
-      <h4>Example implementation on <a href="https://ivylikethevine.com/projects/homelab-backups/#rule-3-offsite-backups">my blog.</a></h4>
+- &#x2705; [handbrake](stacks/handbrake/README.md) - Web UI for transcoding video/audio files.
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/duplicati/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/duplicati/latest?arch=arm64&label=arm64">
-    </details>
+- &#x2705; [heimdall](stacks/heimdall/README.md) - Easy to use home page.
 
-- &#x2705; [handbrake](https://handbrake.fr/) - Web UI for transcoding video/audio files.
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/handbrake.webp" alt="handbrake ui screenshot"/>
+- &#x2705; [homeassistant](stacks/homeassistant/README.md) - Smart home automation.
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/jlesage/handbrake/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/jlesage/handbrake/latest?arch=arm64&label=arm64">
-    </details>
+- &#x2705; [it-tools](stacks/it-tools/README.md) - Helpful tool for various tasks (generating UUIDs, hashes, etc.).
 
-- &#x2705; [heimdall](https://docs.linuxserver.io/images/docker-heimdall/) - Easy to use home page.
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/heimdall.webp" alt="heimdall ui screenshot"/>
+- &#x2705; [mariadb](stacks/mariadb/README.md) - Basic database (mostly used as template for adding to services that require a DB).
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/heimdall/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/heimdall/latest?arch=arm64&label=arm64">
-    </details>
+- &#128994; [media-clients](stacks/media-clients/README.md) - Various media streaming services.
 
-- &#x2705; [homeassistant](https://www.home-assistant.io/installation/linux#docker-compose) - Smart home automation.
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/homeassistant.webp" alt="homeassistant ui screenshot"/>
+  - &#x2705; jellyfin - TV/movie streaming.
 
-      <img alt="x64 Version size" src="https://img.shields.io/docker/image-size/homeassistant/home-assistant/latest?arch=amd64&label=x64">
-      <img alt="arm64 Version size" src="https://img.shields.io/docker/image-size/homeassistant/home-assistant/latest?arch=arm64&label=arm64">
-      <!-- <img alt="x64 Version" src="https://img.shields.io/docker/v/homeassistant/home-assistant/latest?arch=arm64&label=arm64"> HA is unable to use the /v/ version badge for some reason. -->
-    </details>
+  - &#x2705; jellyseerr - TV/movie requests.
 
-- &#x2705; [it-tools](https://github.com/corentinth/it-tools) - Helpful tool for various tasks (generating UUIDs, hashes, etc.).
-  - <details>
-      <!-- <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/it-tools.webp" alt="homeassistant ui screenshot"/> -->
+  - &#x2705; kavita - Ebook reader.
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/corentinth/it-tools/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/corentinth/it-tools/latest?arch=arm64&label=arm64">
-    </details>
+  - &#x2705; navidrome - Music streaming service.
 
-- media-clients - Various media streaming services.
+  - &#x2705; audiobookshelf - Audiobook streaming.
 
-  - &#x2705; [jellyfin](https://docs.linuxserver.io/images/docker-jellyfin/) - TV/movie streaming.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/jellyfin.webp" alt="jellyfin ui screenshot"/>
-        <h4>This container implements the Intel Quicksync hardware encoding, but others are configurable as per <a href="https://docs.linuxserver.io/images/docker-jellyfin/#hardware-acceleration-enhancements">jellyfin acceleration</a> and <a href="https://mods.linuxserver.io/?mod=jellyfin"> linuxserver's docker mods</a>.</h4>
+- &#x2705; [netboot](stacks/netboot/README.md) - PXE boot system.
 
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/jellyfin/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/jellyfin/latest?arch=arm64&label=arm64">
-      </details>
+- &#x2705; [netdata](stacks/netdata/README.md) - Hardware usage/monitoring (incl. containers).
 
-  - &#x2705; [jellyseerr](https://hub.docker.com/r/fallenbagel/jellyseerr) - TV/movie requests.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/jellyseerr.webp" alt="jellyseerr ui screenshot"/>
-        <h4>Login Issues</h4>
-        <h5>If you can't login to jellyseer, make sure that your containers have a bridge network between them, and that your jellyfin password is long enough.</h5>
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/fallenbagel/jellyseerr/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/fallenbagel/jellyseerr/latest?arch=arm64&label=arm64">
-      </details>
+- &#128679; [octoprint](stacks/octoprint/README.md) - 3D printer automation/monitoring
 
-  - &#x2705; [kavita](https://github.com/Kareadita/Kavita) - Ebook reader.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/kavita.webp" alt="kavita ui screenshot"/>
+- &#x2705; [plex](stacks/plex/README.md) - Fully featured media player/environment with many smart tv integrations.
 
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/jvmilazz0/kavita/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/jvmilazz0/kavita/latest?arch=arm64&label=arm64">
-      </details>
+- &#128994; [servarr](stacks/servarr/README.md) - Media library systems.
 
-  - &#x2705; [navidrome](https://github.com/navidrome/navidrome/) - Music streaming service.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/navidrome.webp" alt="navidrome ui screenshot"/>
-        <h4>Implements <a href="https://www.subsonic.org/pages/features.jsp">subsonic</a> for compatibility with other services.</h4>
+  - &#x2705; sonarr - TV library manager.
 
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/deluan/navidrome/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/deluan/navidrome/latest?arch=arm64&label=arm64">
-      </details>
+  - &#x2705; radarr - Movie library manager.
 
-  - &#x2705; [audiobookshelf](https://github.com/advplyr/audiobookshelf) - Audiobook streaming.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/audiobookshelf.webp" alt="audiobookshelf ui screenshot"/>
+  - &#x2705; lidarr - Music library manager.
 
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/advplyr/audiobookshelf/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/advplyr/audiobookshelf/latest?arch=arm64&label=arm64">
-      </details>
+  - &#x2705; readarr - Ebook library manager.
 
-- &#x2705; [netboot](https://docs.linuxserver.io/images/docker-netbootxyz/) - PXE boot system.
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/netboot.webp" alt="netboot ui screenshot"/>
+  - &#x2705; bazarr - Subtitle management/requests for sonarr/radarr.
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/netbootxyz/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/netbootxyz/latest?arch=arm64&label=arm64">
-    </details>
+- &#x2705; [speedtest-tracker](stacks/speedtest-tracker/README.md) - Internet speed monitoring.
 
-- &#x2705; [netdata](https://learn.netdata.cloud/docs/installing/docker) - Hardware usage/monitoring (incl. containers).
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/netdata.webp" alt="netdata ui screenshot"/>
-      <h4>Configure Streaming between Nodes</h4>
-      <h5>Initial Setup, per <a href="https://learn.netdata.cloud/docs/streaming/streaming-configuration-reference">netdata docs</a></h5>
-      <ul>To get the <code>API_KEY</code> run <code>docker container exec netdata cat /var/lib/netdata/registry/netdata.public.unique.id</code></ul>
-      <ul>Then, replace <code>API_KEY</code> in <code>parent/stream.conf</code> and <code>child/stream.conf</code> with the value from above, as well as updating the <code>PARENT_IP_ADDRESS</code> in <code>child/stream.conf</code></ul>
+- &#128679; [tdarr](stacks/tdarr/README.md) - Additional Web UI for transcoding video/audio files, with ability to use distributed compute nodes.
 
-      <h5>For the parent node, mount:</h5>
-      <ul><code>/home/$USER/saffron/stacks/netdata/parent/stream.conf</code></ul>
-      <ul><code>/home/$USER/saffron/stacks/netdata/parent/netdata.conf</code></ul>
+- &#x2705; [thelounge](stacks/thelounge/README.md) - IRC client.
 
-      <h5> For child nodes, mount:</h5>
-      <ul><code>/home/$USER/saffron/stacks/netdata/child/stream.conf</code></ul>
-      <ul><code>/home/$USER/saffron/stacks/netdata/child/netdata.conf</code></ul>
+- &#128994; [torrent](stacks/torrent/README.md) - Full torrenting suite with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/torrent/.env.public"><code>.env.public</code></a>.
 
-      <p>Note: changes to the <code>stream.conf</code> files will not be committed, but the files remain in the repo unchanged per <code>git update-index --assume-unchanged [<file> ...]</code> <a href="https://stackoverflow.com/questions/3319479/can-i-git-commit-a-file-and-ignore-its-content-changes">See Reference</a></p><p>To continue tracking: <code>git update-index --no-assume-unchanged [<file> ...]</code></p>
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/netdata/netdata/stable?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/netdata/netdata/stable?arch=arm64&label=arm64">
-    </details>
+  - &#x2705; qbittorrentvpn - Torrent client that runs only on VPN connection.
 
-- &#128679; [octoprint](https://github.com/OctoPrint/octoprint-docker) - 3D printer automation/monitoring
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/octoprint.webp" alt="octoprint ui screenshot"/>
+  - &#x2705; prowlarr - Search aggregator.
 
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/octoprint/octoprint/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/octoprint/octoprint/latest?arch=arm64&label=arm64">
-    </details>
+  - &#x2705; flaresolverr - Search proxy (required for some search engines & reduces error rates in general).
 
-- torrent - Full torrenting suite with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/media-clients/.env.public"><code>.env.public</code></a>.
-  
-  - &#x2705; [qbittorrentvpn](https://github.com/markusmcnugen/docker-qbittorrentvpn) - torrent client that runs only on VPN connection.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/qbittorrent.webp" alt="qbittorrent ui screenshot"/>
+- &#128679; [traefik](stacks/traefik/README.md) - Reverse proxy with easy docker integration.
 
-        <h4>
-          <a href="https://github.com/markusmcnugen/docker-qbittorrentvpn?tab=readme-ov-file#environment-variables">Documentation on Environment Variables</a>
-        </h4>
+- &#x2705; [uptime-kuma](stacks/uptime-kuma/README.md) - Nice health checking tool with simple UI (same dev as Dockge!).
 
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/markusmcnugen/qbittorrentvpn/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/markusmcnugen/qbittorrentvpn/latest?arch=arm64&label=arm64">
-      </details>
-  
-  - &#x2705; [prowlarr](https://docs.linuxserver.io/images/docker-prowlarr/) - Search aggregator.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/prowlarr.webp" alt="prowlarr ui screenshot"/>
+- &#x2705; [utils](stacks/utils/README.md) - Simple dockerfile-based compose with basic utils for debugging.
 
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/prowlarr/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/prowlarr/latest?arch=arm64&label=arm64">
-      </details>
-  
-  - &#x2705; [flaresolverr](https://github.com/flaresolverr/flaresolverr) - Search proxy (required for some search engines).
-    - <details>
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=arm64&label=arm64">
-    </details>
+- &#x2705; [vscode-server](stacks/vscode-server/README.md) - VSCode running with a Web UI (for editing saffron config files, etc.).
 
-- [servarr](https://wiki.servarr.com/docker-guide) - Media library systems.
+- &#x2705; [watchtower](stacks/watchtower/README.md) - Automatically update & restart docker containers.
 
-  - &#x2705; [sonarr](https://docs.linuxserver.io/images/docker-sonarr/) - TV library manager.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/sonarr.webp" alt="sonarr ui screenshot"/>
-
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/sonarr/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/sonarr/latest?arch=arm64&label=arm64">
-      </details>
-
-  - &#x2705; [radarr](https://docs.linuxserver.io/images/docker-radarr/) - Movie library manager.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/radarr.webp" alt="radarr ui screenshot"/>
-
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/radarr/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/radarr/latest?arch=arm64&label=arm64">
-      </details>
-
-  - &#x2705; [lidarr](https://docs.linuxserver.io/images/docker-lidarr/) - Music library manager.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/lidarr.webp" alt="lidarr ui screenshot"/>
-
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/lidarr/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/lidarr/latest?arch=arm64&label=arm64">
-      </details>
-
-  - &#x2705; [readarr](https://docs.linuxserver.io/images/docker-readarr/) - Ebook library manager.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/readarr.webp" alt="readarr ui screenshot"/>
-
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=arm64&label=arm64">
-      </details>
-
-  - &#x2705; [bazarr](https://docs.linuxserver.io/images/docker-bazarr/) - Subtitle management/requests for sonarr/radarr.
-    - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/bazarr.webp" alt="bazarr ui screenshot"/>
-
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=arm64&label=arm64">
-      </details>
-
-- &#x2705; [speedtest-tracker](https://docs.linuxserver.io/images/docker-speedtest-tracker/) - Internet speed monitoring.
-  - <details>
-        <h3>WebUI Dashboard</h3>
-        <img src="resources/screenshots/speedtest-tracker.webp" alt="speedtest-tracker ui screenshot"/>
-        <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/speedtest-tracker/latest?arch=amd64&label=x64">
-        <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/speedtest-tracker/latest?arch=arm64&label=arm64">
-      </details>
-
-- &#x2705; [thelounge](https://github.com/thelounge/thelounge-docker) - IRC client.
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/thelounge.webp" alt="thelounge ui screenshot"/>
-
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/thelounge/thelounge/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/thelounge/thelounge/latest?arch=arm64&label=arm64">
-    </details>
-
-- &#128679; [traefik](https://hub.docker.com/_/traefik) - Reverse proxy with easy docker integration.
-  - <details>
-      <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/traefik.webp" alt="traefik ui screenshot"/> -->
-
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/amd64/traefik/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/arm64v8/traefik?label=arm64">
-    </details>
-
-- &#128679; [tdarr](https://github.com/HaveAGitGat/Tdarr) - Additional Web UI for transcoding video/audio files, with ability to use distributed compute nodes.
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/tdarr.webp" alt="tdarr ui screenshot"/>
-
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/HaveAGitGat/Tdarr/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/HaveAGitGat/Tdarr/latest?arch=arm64&label=arm64">
-    </details>
-
-- &#x2705; [uptime-kuma](https://github.com/louislam/uptime-kuma) - Nice health checking tool with simple UI (same dev as Dockge!).
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/uptime-kuma.webp" alt="uptime-kuma ui screenshot"/>  
-
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/louislam/uptime-kuma/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/uptime-kuma/latest?arch=arm64&label=arm64">
-    </details>
-
-- &#x2705; [utils](https://hub.docker.com/_/ubuntu) - Simple dockerfile-based compose with basic utils for debugging.
-  - <details>
-      <!-- <h3>WebUI Dashboard</h3> -->
-      <!-- <img src="resources/screenshots/uptime-kuma.webp" alt="uptime-kuma ui screenshot"/>   -->
-
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/_/ubuntu/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/_/ubuntu/latest?arch=arm64&label=arm64">
-    </details>
-
-- &#x2705; [vscode-server](https://docs.linuxserver.io/images/docker-code-server/) - VSCode running with a Web UI (for editing saffron config files, etc.).
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/vscode-server.webp" alt="vscode-server ui screenshot"/>  
-      <h4>Docker Mods</h4>
-      <h5>Linuxserver has a great list of docker mods for <a href="https://mods.linuxserver.io/?mod=code-server">vscode-server</a>, allowing various tools and runtimes to be added.</h5>
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/linuxserver/code-server/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/linuxserver/code-server/latest?arch=arm64&label=arm64">
-    </details>
-
-- &#x2705; [watchtower](https://github.com/containrrr/watchtower) - Automatically update & restart docker containers.
-  - <details>
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/containrrr/watchtower/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/containrrr/watchtower/latest?arch=arm64&label=arm64">
-    </details>
+- &#x2705; [windows](stacks/windows/README.md) - Automatic install/configuration with web VNC & native RDP for Windows XP -> Windows 11
 
 ### Services under consideration
 
@@ -440,6 +196,7 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 #### Compatible with
 
 - [obico](https://www.obico.io/docs/server-guides/install/) - 3D print failure detection notification/stopping
+
   - To install:
     `cd /home/$USER/saffron/stacks && git clone -b release https://github.com/TheSpaghettiDetective/obico-server.git && cd obico-server && docker compose up -d`
 
@@ -449,7 +206,7 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 #### `common.yaml` (new in v0.25) <a id="common-yaml"></a>
 
-By using a set of base "services"** inside of `saffron/stacks/common.yaml`, we can limit the length of each docker compose file & allow for easy re-use of shared docker configurations, mainly:
+By using a set of base "services"\*\* inside of `saffron/stacks/common.yaml`, we can limit the length of each docker compose file & allow for easy re-use of shared docker configurations, mainly:
 
 1. Consistent PUID/PGID & UMASK - all extended services have shared environment variables.
 2. Consistent mount locations (such as media libraries) - library locations only have to be defined once.
@@ -457,15 +214,15 @@ By using a set of base "services"** inside of `saffron/stacks/common.yaml`, we c
 
 On install, saffron copies it's local `stacks/common.yaml.public` file to `stacks/compose.yaml`, setting `/data` in all extended containers to the value of `$DATA_DIR` used during setup. This can be changed by using vscode-server and editing files in the saffron directory. `common.yaml` is set to be ignored by git to prevent committing personal directory paths.
 
-** : These aren't full services since they have no images defined. As such, they can't run alone.
+\*\* : These aren't full services since they have no images defined. As such, they can't run alone.
 
 #### Env Files
 
 This project has 2 types of `.env` files:
 
 1. `.env` - this type is natively loaded by dockge, allowing for Web UI editing + templating for paths. This is the place that VPN credentials, etc. should be stored since they will not be committed.
-    - if stacks throw errors about undefined variables, make sure to define those variables in the `.env` for that stack.
-    - these files are ignored by git, so they can locally hold some credentials (such as VPN logins) + personal folder routing
+   - if stacks throw errors about undefined variables, make sure to define those variables in the `.env` for that stack.
+   - these files are ignored by git, so they can locally hold some credentials (such as VPN logins) + personal folder routing
 2. `.env.public` - this holds basic preconfigurations for each container to work and should be changed with caution. They are not available in the Dockge Web UI.
 
 #### Docker Volumes
@@ -494,31 +251,31 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
 3. Consistent naming - In the homelab space, some of the more advanced features of docker are not as useful and often lead to confusion. Here is an example format for a compose file, with explanations. Also, [here is the compose documentation](https://docs.docker.com/compose/compose-file/05-services/).
 
 - It is often easiest to name the stack after the main service in the compose file.
-    ![image](resources/screenshots/dockge-stack-naming.webp)
+  ![image](resources/screenshots/dockge-stack-naming.webp)
 
 #### stacks/vscode-server/compose.yaml
 
-  ```yaml
-  version: "3.8"
-  services:
-    vscode-server: 
+```yaml
+version: '3.8'
+services:
+  vscode-server:
     # "vscode-server" is the name of our service.
-      image: linuxserver/code-server 
-      # Typically, the service name would be derived from the image name (the part after the "/"). Here, it is different to be easier for human readability since "code-server" is quite vague.
-      container_name: vscode-server 
-      # Usually easiest to keep as exact duplicate of service name.
-      restart: on-failure 
-      # Always remember to define a restart policy.
-      ports:
-        - 8445:8443 
-        # The port assignments in saffron are designed to avoid conflicts. host:container is the format, and it is easiest to change host mapping by itself, and not to mess with default port mappings. Some containers require environment variables to change the internal port, so its best to avoid.
-      extends:
-        file: ../common.yaml
-        service: base-settings
-        # base-settings: PUID, PGID, UMASK & localtime
-        # media-access: base-settings + volume mounting $DATA_DIR(s)
-      volumes:
-        - /containers/vscode-server/config:/config 
-        # Again, usually easiest to follow /containers/container_name/folder:/folder for consistency & clarity.
-  networks: {}
-  ```
+    image: linuxserver/code-server
+    # Typically, the service name would be derived from the image name (the part after the "/"). Here, it is different to be easier for human readability since "code-server" is quite vague.
+    container_name: vscode-server
+    # Usually easiest to keep as exact duplicate of service name.
+    restart: on-failure
+    # Always remember to define a restart policy.
+    ports:
+      - 8445:8443
+      # The port assignments in saffron are designed to avoid conflicts. host:container is the format, and it is easiest to change host mapping by itself, and not to mess with default port mappings. Some containers require environment variables to change the internal port, so its best to avoid.
+    extends:
+      file: ../common.yaml
+      service: base-settings
+      # base-settings: PUID, PGID, UMASK & localtime
+      # media-access: base-settings + volume mounting $DATA_DIR(s)
+    volumes:
+      - /containers/vscode-server/config:/config
+      # Again, usually easiest to follow /containers/container_name/folder:/folder for consistency & clarity.
+networks: {}
+```
