@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri # for intel hardware decode
+    extends:
+      file: ../common.yaml
+      service: media-access
+    volumes:
+      - /containers/plex:/config
+networks: {}
