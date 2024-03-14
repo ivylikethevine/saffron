@@ -10,5 +10,3 @@ services:
   media-access:
     extends: base-settings
     volumes:
-      - /host_data_dir:/data
-networks: {}

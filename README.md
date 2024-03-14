@@ -64,7 +64,7 @@ sudo usermod -aG docker $USER && newgrp docker
 docker run hello-world
 ```
 
-Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the compose yaml files.
+Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the [compose](https://docs.docker.com/compose/) [yaml](https://learnxinyminutes.com/docs/yaml/) files.
 
 ##### To Update
 

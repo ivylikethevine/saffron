@@ -29,7 +29,7 @@ docker compose up -d
 echo "Creating common.yaml from common.yaml.public..."
 cd /home/$USER/saffron/stacks
 cp common.yaml.public common.yaml
-sed -i -e s/host_data_dir/$DATA_DIR/g common.yaml
+cat "      - $DATA_DIR:/data" >common.yaml
 cd /home/$USER/saffron
 
 echo "Opening dockge in web browser"
