@@ -12,6 +12,8 @@
 
 I built saffron because I wanted a way to utilize docker compose on a homelab server with easy SVM, configurability, and simple setup.
 
+Read this project's README's as a wiki [here](https://ivylikethevine.github.io/saffron), served via [docsify](https://ivylikethevine.github.io/saffron).
+
 #### Features
 
 - Media libraries for TV, movies, music, ebooks, & audiobooks. (+ subtitles!)
