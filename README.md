@@ -111,6 +111,8 @@ cd /home/$USER/saffron/resources
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=arm64&label=arm64">
     </details>
 
+- &#x2705; [docsify](stacks/docsify/README.md) - Web UI to view this repo's `README.md`'s as a wiki reflecting local edits. See the [public](https://ivylikethevine.github.io/saffron) instance or visit <http://hostname.local:5001> (if the container is running).
+
 - &#x2705; [dozzle](stacks/dozzle/README.md) - Web UI to live docker container logs.
 
 - &#x2705; [duplicati](stacks/duplicati/README.md) - Automated backup to AWS/Backblaze/etc.

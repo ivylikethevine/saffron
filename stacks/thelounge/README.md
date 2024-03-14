@@ -1,3 +1,5 @@
+[Back to main README.md](../../README.md)
+
 # Thelounge
 
 <https://github.com/thelounge>

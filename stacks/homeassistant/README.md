@@ -1,3 +1,5 @@
+[Back to main README.md](../../README.md)
+
 # Homeassistant
 
 Smart home automation.

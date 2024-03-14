@@ -1,3 +1,5 @@
+[Back to main README.md](../../README.md)
+
 # Uptime-kuma
 
 Nice health checking tool with simple UI (same dev as Dockge!).

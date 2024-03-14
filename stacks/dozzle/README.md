@@ -1,3 +1,5 @@
+[Back to main README.md](../../README.md)
+
 # Dozzle
 
 Web UI to live docker container logs.

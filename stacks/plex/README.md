@@ -1,3 +1,5 @@
+[Back to main README.md](../../README.md)
+
 # Plex
 
 Fully featured media player/environment with many smart tv integrations.
