@@ -1,5 +1,3 @@
-[Back to main README.md](../../README.md)
-
 # Dokemon
 
 Web UI to manage docker containers/view logs/etc.

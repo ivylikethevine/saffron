@@ -1,5 +1,3 @@
-[Back to main README.md](../../README.md)
-
 # Duplicati
 
 Automated backup to AWS/Backblaze/etc.

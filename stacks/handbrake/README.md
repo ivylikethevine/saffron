@@ -1,5 +1,3 @@
-[Back to main README.md](../../README.md)
-
 # Handbrake
 
 Web UI for transcoding video/audio files.

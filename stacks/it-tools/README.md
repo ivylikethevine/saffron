@@ -1,5 +1,3 @@
-[Back to main README.md](../../README.md)
-
 # It-tools
 
 Helpful tool for various tasks (generating UUIDs, hashes, etc.).

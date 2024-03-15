@@ -1,5 +1,3 @@
-[Back to main README.md](../../README.md)
-
 # MariaDB
 
 Basic database (mostly used as template for adding to services that require a DB).

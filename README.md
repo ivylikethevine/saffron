@@ -6,6 +6,8 @@
 
 ...the second half is a backcronym
 
+**Saffron is GPL-3.0 open sourced [on github](https://github.com/ivylikethevine/saffron)**
+
 ### Saffron is a docker compose deployment of a homelab via (almost entirely) static files
 
 [Why Saffron?](https://ivylikethevine.com/projects/saffron)
@@ -143,7 +145,9 @@ cd /home/$USER/saffron/resources
 
 - &#x2705; [netdata](stacks/netdata/README.md) - Hardware usage/monitoring (incl. containers).
 
-- &#128679; [octoprint](stacks/octoprint/README.md) - 3D printer automation/monitoring
+- &#x2705; [octoprint](stacks/octoprint/README.md) - 3D printer automation/monitoring
+
+  - &#128994; optional: [ustreamer](https://github.com/pikvm/ustreamer) - MJPEG-streamer replacement, can be used standalone as an IP camera.
 
 - &#x2705; [plex](stacks/plex/README.md) - Fully featured media player/environment with many smart tv integrations.
 

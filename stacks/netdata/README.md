@@ -1,5 +1,3 @@
-[Back to main README.md](../../README.md)
-
 # Netdata
 
 Hardware usage/monitoring (incl. containers).

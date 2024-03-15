@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Document</title>
+    <title>Saffron Wiki</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="description" content="Description" />
+    <meta name="description" content="Homelab documentation" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
@@ -18,11 +18,49 @@
     <div id="app"></div>
     <script>
       window.$docsify = {
-        name: '',
-        repo: '',
+        name: 'Saffron Wiki',
+        repo: 'https://github.com/ivylikethevine/saffron',
+        auto2top: true,
+        timeUpdater: {
+          text: '<span style="text-align:right;display:grid;">last updated at {docsify-updated}</span>',
+          formatUpdated: '{HH}:{mm} on {DD}-{MM}-{YYYY}',
+        },
       };
     </script>
     <!-- Docsify v4 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+
+    <!-- Medium-style zoom plugin -->
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+
+    <!-- Updated at time plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify-updated/src/time-updater.min.js"></script>
+
+    <!-- Copy to clipboard plugin -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+
+    <!-- Charty rendering plugin -->
+    <script src="//cdn.jsdelivr.net/npm/@markbattistella/docsify-charty@latest"></script>
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/@markbattistella/docsify-charty@latest/dist/docsify-charty.min.css"
+    />
+
+    <!-- Mermaid rendering plugin -->
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true });
+      window.mermaid = mermaid;
+    </script>
+    <script src="//unpkg.com/docsify-mermaid@2.0.0/dist/docsify-mermaid.js"></script>
+
+    <!-- Katex rendering plugin -->
+    <script src="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
+    />
+    <script src="//cdn.jsdelivr.net/npm/marked@4"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
   </body>
 </html>

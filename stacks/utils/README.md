@@ -1,5 +1,3 @@
-[Back to main README.md](../../README.md)
-
 # Utils
 
 Simple dockerfile-based compose with basic utils for debugging.

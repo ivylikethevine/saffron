@@ -1,5 +1,3 @@
-[Back to main README.md](../../README.md)
-
 # Avahi
 
 Allows docker containers to access mdns on LAN.
