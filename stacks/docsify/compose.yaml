@@ -1,12 +1,10 @@
-version: '3.8'
+version: "3.8"
 services:
   docsify:
     build:
       context: .
     container_name: docsify
     restart: always
-    # stdin_open: true # docker run -i
-    # tty: true # docker run -t
     ports:
       - 3000:3000
     volumes:
