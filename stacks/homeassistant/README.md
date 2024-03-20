@@ -11,3 +11,5 @@ Smart home automation.
 ### WebUI Dashboard
 
 ![Homeassistant UI](../../resources/screenshots/homeassistant.webp)
+
+[filename](compose.yaml ':include :type=code')

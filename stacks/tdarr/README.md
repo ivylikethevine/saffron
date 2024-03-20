@@ -15,3 +15,5 @@ Additional Web UI for transcoding video/audio files, with ability to use distrib
 ### WebUI Dashboard
 
 ![Tdarr UI](../../resources/screenshots/tdarr.webp)
+
+[filename](compose.yaml ':include :type=code')

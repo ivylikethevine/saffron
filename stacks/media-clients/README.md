@@ -95,3 +95,5 @@ Audiobook streaming.
 ### WebUI Dashboard
 
 ![Audiobookshelf UI](../../resources/screenshots/audiobookshelf.webp)
+
+[filename](compose.yaml ':include :type=code')

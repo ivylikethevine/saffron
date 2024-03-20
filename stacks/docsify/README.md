@@ -23,3 +23,7 @@ Charty - https://charty.docsify.markbattistella.com/#/?id=docsify-charty
 KaTeX support - https://github.com/upupming/docsify-katex/tree/master
 
 - surround equation with $$, not triple backtick
+
+[filename](compose.yaml ':include :type=code')
+
+<!-- [Dockerfile](Dockerfile ':include') -->

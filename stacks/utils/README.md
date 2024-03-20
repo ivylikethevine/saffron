@@ -15,3 +15,7 @@ Simple dockerfile-based compose with basic utils for debugging.
 #### Built using local Dockerfile
 
 Dockerfile documentation: [here](https://docs.docker.com/reference/dockerfile/)
+
+[filename](compose.yaml ':include :type=code')
+
+<!-- [filename](./Dockerfile ':include :type=code') -->

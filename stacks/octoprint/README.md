@@ -79,3 +79,5 @@ https://github.com/juliagoda/CH341SER/issues/18
 | 38           | 122       | GPIO3_D2 | 3              | 26         |
 | 39           | GND       |          |                |            |
 | 40           | 121       | GPIO3_D1 | 3              | 25         |
+
+[filename](compose.yaml ':include :type=code')

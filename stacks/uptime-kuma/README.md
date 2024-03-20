@@ -13,3 +13,4 @@ Nice health checking tool with simple UI (same dev as Dockge!).
 ### WebUI Dashboard
 
 ![Uptime-kuma UI](../../resources/screenshots/uptime-kuma.webp)
+[filename](compose.yaml ':include :type=code')

@@ -15,3 +15,5 @@
 ### WebUI Dashboard
 
 ![Thelounge UI](../../resources/screenshots/thelounge.webp)
+
+[filename](compose.yaml ':include :type=code')

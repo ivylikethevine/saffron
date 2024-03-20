@@ -9,3 +9,5 @@ Allows docker containers to access mdns on LAN.
 ## Architecture Compatibility
 
 ![x64](https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=amd64&label=x64) ![arm64](https://img.shields.io/docker/v/arcadiatechnology/crafty-4/latest?arch=arm64&label=arm64)
+
+[filename](compose.yaml ':include :type=code')

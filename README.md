@@ -38,6 +38,8 @@ Read this project's README's as a wiki [here](https://ivylikethevine.github.io/s
 
 #### To deploy
 
+In depth instructions [here](resources/README.md).
+
 Requires: git, docker, docker compose
 
 Tested on: Linux Mint, Ubuntu, and Debian
@@ -95,6 +97,8 @@ cd /home/$USER/saffron/resources
 
 ## v0.35 List of Stacks & Services (35+ Apps, 40+ Containers)
 
+[Stacks](stacks/README.md) rely on a customized [common.yaml.public] for correct permissions, time zones, and data directory mounts.
+
 \*\* Names are lowercased per dockge stack naming requirements
 
 - &#128679; [avahi](stacks/avahi/README.md) - Allows docker containers to access mdns on LAN.
@@ -103,15 +107,7 @@ cd /home/$USER/saffron/resources
 
 - &#x2705; [dokemon](stacks/dokemon/README.md) - Web UI to manage docker containers/view logs/etc.
 
-- &#x2705; [dockge](https://github.com/louislam/dockge) - Web UI to manage docker compose files (integral to `saffron`).
-
-  - <details>
-      <h3>WebUI Dashboard</h3>
-      <img src="resources/screenshots/dockge.webp" alt="dockge ui screenshot"/>
-
-      <img alt="x64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=amd64&label=x64">
-      <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=arm64&label=arm64">
-    </details>
+- &#x2705; [dockge](dockge.md) - Web UI to manage docker compose files (integral to `saffron`).
 
 - &#x2705; [docsify](stacks/docsify/README.md) - Web UI to view this repo's `README.md`'s as a wiki reflecting local edits. See the [public](https://ivylikethevine.github.io/saffron) instance or visit <http://hostname.local:5001> (if the container is running).
 
@@ -212,9 +208,11 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 - For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/$USER/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
 
+<!-- [filename](.gitignore ':include :type=code') -->
+
 ### Configuration
 
-#### `common.yaml` (new in v0.25) <a id="common-yaml"></a>
+#### `common.yaml` <a id="common-yaml"></a>
 
 By using a set of base "services"\*\* inside of `saffron/stacks/common.yaml`, we can limit the length of each docker compose file & allow for easy re-use of shared docker configurations, mainly:
 
@@ -225,6 +223,8 @@ By using a set of base "services"\*\* inside of `saffron/stacks/common.yaml`, we
 On install, saffron copies it's local `stacks/common.yaml.public` file to `stacks/compose.yaml`, setting `/data` in all extended containers to the value of `$DATA_DIR` used during setup. This can be changed by using vscode-server and editing files in the saffron directory. `common.yaml` is set to be ignored by git to prevent committing personal directory paths.
 
 \*\* : These aren't full services since they have no images defined. As such, they can't run alone.
+
+[filename](stacks/common.yaml.public ':include :type=code')
 
 #### Env Files
 
