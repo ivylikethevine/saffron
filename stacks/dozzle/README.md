@@ -15,3 +15,5 @@ Web UI to live docker container logs.
 ### WebUI Dashboard
 
 ![Web UI](../../resources/screenshots/dozzle.webp)
+
+[filename](compose.yaml ':include :type=code')

@@ -21,3 +21,5 @@ VSCode running with a Web UI (for editing saffron config files, etc.).
 #### Docker Mods
 
 ##### Linuxserver has a great list of docker mods for [vscode-server](https://mods.linuxserver.io/?mod=code-server), allowing various tools and runtimes to be added.
+
+[filename](compose.yaml ':include :type=code')

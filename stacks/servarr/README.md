@@ -113,3 +113,5 @@ Subtitle management/requests for sonarr/radarr.
 ### WebUI Dashboard
 
 ![Bazarr UI](../../resources/screenshots/bazarr.webp)
+
+[filename](compose.yaml ':include :type=code')

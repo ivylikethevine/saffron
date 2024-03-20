@@ -15,3 +15,5 @@ Web UI for transcoding video/audio files.
 ### WebUI Dashboard
 
 ![Handbrake UI](../../resources/screenshots/handbrake.webp)
+
+[filename](compose.yaml ':include :type=code')

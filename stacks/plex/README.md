@@ -17,3 +17,5 @@ Fully featured media player/environment with many smart tv integrations.
 ### WebUI Dashboard
 
 ![Plex UI](../../resources/screenshots/plex.webp)
+
+[filename](compose.yaml ':include :type=code')

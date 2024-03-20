@@ -15,3 +15,4 @@ Reverse proxy with easy docker integration.
 ### WebUI Dashboard
 
 ![Traefik UI](../../resources/screenshots/traefik.webp)
+[filename](compose.yaml ':include :type=code')

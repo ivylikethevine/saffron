@@ -17,3 +17,5 @@ PXE boot system.
 ### WebUI Dashboard
 
 ![Netboot UI](../../resources/screenshots/netboot.webp)
+
+[filename](compose.yaml ':include :type=code')

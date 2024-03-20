@@ -13,3 +13,5 @@ Automatic install/configuration with web VNC & native RDP for Windows XP -> Wind
 ### WebUI Dashboard
 
 ![Windows UI](../../resources/screenshots/windows.webp)
+
+[filename](compose.yaml ':include :type=code')

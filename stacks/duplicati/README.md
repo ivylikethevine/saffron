@@ -19,3 +19,5 @@ Automated backup to AWS/Backblaze/etc.
 ![Web UI](../../resources/screenshots/duplicati.webp)
 
 Example implementation on [my blog](https://ivylikethevine.com/projects/homelab-backups/#rule-3-offsite-backups)
+
+[filename](compose.yaml ':include :type=code')

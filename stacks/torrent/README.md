@@ -53,3 +53,6 @@ Search proxy (required for some search engines & reduces error rates in general)
 ## Architecture Compatibility
 
 ![x64 Version](https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=arm64&label=arm64)
+
+[filename](compose.yaml ':include :type=code')
+<!-- [filename](env.public ':include :type=code') -->

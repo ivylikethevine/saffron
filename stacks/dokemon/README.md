@@ -15,3 +15,5 @@ Web UI to manage docker containers/view logs/etc.
 ### WebUI Dashboard
 
 ![Dokemon UI](../../resources/screenshots/dokemon.webp)
+
+[filename](compose.yaml ':include :type=code')

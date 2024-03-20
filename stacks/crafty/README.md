@@ -13,3 +13,5 @@ Easily deploy/manage minecraft servers.
 ### WebUI Dashboard
 
 ![Crafty UI](../../resources/screenshots/crafty.webp)
+
+[filename](compose.yaml ':include :type=code')
