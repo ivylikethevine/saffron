@@ -6,11 +6,15 @@
 
 ...the second half is a backcronym
 
+**Saffron is GPL-3.0 open sourced [on github](https://github.com/ivylikethevine/saffron)**
+
 ### Saffron is a docker compose deployment of a homelab via (almost entirely) static files
 
 [Why Saffron?](https://ivylikethevine.com/projects/saffron)
 
 I built saffron because I wanted a way to utilize docker compose on a homelab server with easy SVM, configurability, and simple setup.
+
+Read this project's README's as a wiki [here](https://ivylikethevine.github.io/saffron), served via [docsify](https://ivylikethevine.github.io/saffron).
 
 #### Features
 
@@ -64,7 +68,7 @@ sudo usermod -aG docker $USER && newgrp docker
 docker run hello-world
 ```
 
-Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the compose yaml files.
+Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the [compose](https://docs.docker.com/compose/) [yaml](https://learnxinyminutes.com/docs/yaml/) files.
 
 ##### To Update
 
@@ -89,7 +93,7 @@ cd /home/$USER/saffron/resources
 2. `/home/$USER/saffron/stacks` - all stacks & services' compose files
 3. `$DATA_DIR` - where bulk files are stored (configured during setup) See [common.yaml](#common-yaml) for more infromation.
 
-## v0.30 List of Stacks & Services (30+ Containers)
+## v0.35 List of Stacks & Services (35+ Apps, 40+ Containers)
 
 \*\* Names are lowercased per dockge stack naming requirements
 
@@ -109,9 +113,13 @@ cd /home/$USER/saffron/resources
       <img alt="Arm64 Version" src="https://img.shields.io/docker/v/louislam/dockge/latest?arch=arm64&label=arm64">
     </details>
 
+- &#x2705; [docsify](stacks/docsify/README.md) - Web UI to view this repo's `README.md`'s as a wiki reflecting local edits. See the [public](https://ivylikethevine.github.io/saffron) instance or visit <http://hostname.local:5001> (if the container is running).
+
 - &#x2705; [dozzle](stacks/dozzle/README.md) - Web UI to live docker container logs.
 
 - &#x2705; [duplicati](stacks/duplicati/README.md) - Automated backup to AWS/Backblaze/etc.
+
+- &#x2705; [esphome](stacks/esphome/README.md) - Easily create & mange esp32-based IoT devices, such as temp. sensors.
 
 - &#x2705; [handbrake](stacks/handbrake/README.md) - Web UI for transcoding video/audio files.
 
@@ -139,7 +147,7 @@ cd /home/$USER/saffron/resources
 
 - &#x2705; [netdata](stacks/netdata/README.md) - Hardware usage/monitoring (incl. containers).
 
-- &#128679; [octoprint](stacks/octoprint/README.md) - 3D printer automation/monitoring
+- &#x2705; [octoprint](stacks/octoprint/README.md) - 3D printer automation/monitoring
 
 - &#x2705; [plex](stacks/plex/README.md) - Fully featured media player/environment with many smart tv integrations.
 
@@ -172,6 +180,8 @@ cd /home/$USER/saffron/resources
 - &#128679; [traefik](stacks/traefik/README.md) - Reverse proxy with easy docker integration.
 
 - &#x2705; [uptime-kuma](stacks/uptime-kuma/README.md) - Nice health checking tool with simple UI (same dev as Dockge!).
+
+- &#x2705; [ustreamer](stacks/ustreamer/README.md) - Easily deployable IP camera.
 
 - &#x2705; [utils](stacks/utils/README.md) - Simple dockerfile-based compose with basic utils for debugging.
 

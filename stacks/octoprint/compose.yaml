@@ -1,14 +1,21 @@
-version: '3.8'
+version: "3.8"
 services:
   octoprint:
     image: octoprint/octoprint
     container_name: octoprint
-    restart: on-failure
-    privileged: true
+    restart: always
     ports:
-      - 87:80
-    environment:
-      - ENABLE_MJPG_STREAMER=true
+      - 85:80
     volumes:
       - /containers/octoprint:/octoprint
+    privileged: true
+  ustreamer:
+    image: pikvm/ustreamer:latest
+    container_name: ustreamer
+    restart: always
+    devices:
+      - /dev/video3:/dev/video0
+    ports:
+      - 8080:8080
+    command: ustreamer --device /dev/video0 -b 32 -w 32 -r 1280x720 -q 60
 networks: {}

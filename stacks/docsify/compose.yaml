@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  docsify:
+    build:
+      context: .
+    container_name: docsify
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - /home/$USER/saffron:/saffron:ro
+networks: {}

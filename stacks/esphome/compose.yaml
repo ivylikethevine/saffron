@@ -1,0 +1,9 @@
+services:
+  esphome:
+    image: esphome/esphome:latest
+    container_name: esphome
+    restart: unless-stopped
+    volumes:
+      - /containers/esphome/config:/config
+    ports:
+      - 6052:6052
