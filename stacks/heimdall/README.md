@@ -16,4 +16,4 @@ Easy to use home page.
 
 ### WebUI Dashboard
 
-![Heimdall UI](resources/screenshots/heimdall.webp)
+![Heimdall UI](../../resources/screenshots/heimdall.webp)
