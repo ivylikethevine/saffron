@@ -1,10 +1,19 @@
 # Saffron
 
-![GitHub repo size](https://img.shields.io/github/repo-size/ivylikethevine/saffron) ![GitHub last commit](https://img.shields.io/github/last-commit/ivylikethevine/saffron) ![GitHub Repo stars](https://img.shields.io/github/stars/ivylikethevine/saffron) ![GitHub forks](https://img.shields.io/github/forks/ivylikethevine/saffron) ![GitHub License](https://img.shields.io/github/license/ivylikethevine/saffron)
+[![GitHub repo size](https://img.shields.io/github/repo-size/ivylikethevine/saffron) ![GitHub last commit](https://img.shields.io/github/last-commit/ivylikethevine/saffron) ![GitHub Repo stars](https://img.shields.io/github/stars/ivylikethevine/saffron) ![GitHub License](https://img.shields.io/github/license/ivylikethevine/saffron)](https://github.com/ivylikethevine/saffron)
 
 ## (S)erver (A)s a (F)ile (F)older (R)unning (O)n (N)etwork
 
 ...the second half is a backcronym
+
+### What is Saffron?
+
+Saffron is a(n)
+1. open sourced
+2. homelab deployment
+3. annotated notebook
+4. self documenting wiki
+5. docker compose system
 
 **Saffron is GPL-3.0 open sourced [on github](https://github.com/ivylikethevine/saffron)**
 
@@ -16,197 +25,42 @@ I built saffron because I wanted a way to utilize docker compose on a homelab se
 
 Read this project's README's as a wiki [here](https://ivylikethevine.github.io/saffron), served via [docsify](https://ivylikethevine.github.io/saffron).
 
-#### Features
+### What does Saffron replace?
 
 - Media libraries for TV, movies, music, ebooks, & audiobooks. (+ subtitles!)
-- Easy migration from any existing docker or docker compose deployment.
+  - Radarr/Sonarr + Plex/Jellyfin
+  - Lidarr + Navidrome
+  - Readarr + Kavita & Audiobookshelf
+  - Bazarr
+  - Overseerr/Jellyseer
+- Self contained and reactive wiki
+  - docsify
+  - vscode-server
+- Comprehensive monitoring/administration suite
+  - dockage
+  - uptime kuma
+  - dozzle
+  - netdata
+  - speedtest-tracker
 - Full torrenting suite with VPN integration.
+  - qbittorrentvpn
+  - prowlarr
+  - flaresolvarr
 - Automated backup to cloud storage.
+  - duplicati
 - Smart home automation & integration.
-- Network speedtests + hardware monitoring.
-- Minecraft server hosting.
-- PXE environment for OS booting on other nodes.
+  - homeassistant
+  - ustreamer
+  - octoprint
+  - esphome
+
+AND MORE
+
+All while being:
+
 - Zero DNS or networking configuration outside of docker.
 - Easily configurable volume mounting via [common.yaml](#common-yaml) and [docker extends](https://docs.docker.com/compose/multiple-compose-files/extends/)
-
-##### Features (Under Development)
-
-1. Automatic traefik routing of containers using docker integration.
-1. Avahi mdns/nss-mdns discovery.
-1. Git submodules/subtrees for additional services.
-1. SSL certs
-
-#### To deploy
-
-In depth instructions [here](resources/README.md).
-
-Requires: git, docker, docker compose
-
-Tested on: Linux Mint, Ubuntu, and Debian
-
-```bash
-# Grab saffron (either http or ssh)
-git clone https://github.com/ivylikethevine/saffron.git # http, works with no SSH key
-git clone git@github.com:ivylikethevine/saffron.git # ssh
-cd saffron/resources
-
-# Make directories with correct permssions, create common.yaml, & start dockge
-./install-saffron.sh
-```
-
-##### Easy installation of git & docker
-
-```bash
-sudo apt install -y git # required to install saffron
-sudo apt install -y curl # required to install docker via script
-sudo apt install -y avahi-daemon # optional, but highly recommended for easy configuration
-
-# Install docker from the easy install script
-curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh ./get-docker.sh
-
-# Allow docker to run without sudo
-sudo usermod -aG docker $USER && newgrp docker
-# And verify
-docker run hello-world
-```
-
-Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the [compose](https://docs.docker.com/compose/) [yaml](https://learnxinyminutes.com/docs/yaml/) files.
-
-##### To Update
-
-```bash
-docker stop $(docker ps -a -q) # Important to stop before updates! (remove the $ if using fish shell)
-cd /home/$USER/saffron
-git pull
-docker compose up -d dockge # Then visit dockge to start/stop containers
-```
-
-#### To Remove
-
-```bash
-cd /home/$USER/saffron/resources
-./remove-saffron.sh
-```
-
-### Important Paths
-
-1. `/containers/` - stores individual generated configs, db files, etc.
-   - This is not a perfect separation, since some containers will use config for "data" (such as torrent clients using it as a default download location)
-2. `/home/$USER/saffron/stacks` - all stacks & services' compose files
-3. `$DATA_DIR` - where bulk files are stored (configured during setup) See [common.yaml](#common-yaml) for more infromation.
-
-## v0.35 List of Stacks & Services (35+ Apps, 40+ Containers)
-
-[Stacks](stacks/README.md) rely on a customized [common.yaml.public] for correct permissions, time zones, and data directory mounts.
-
-\*\* Names are lowercased per dockge stack naming requirements
-
-- &#128679; [avahi](stacks/avahi/README.md) - Allows docker containers to access mdns on LAN.
-
-- &#x2705; [crafty](stacks/crafty/README.md) - Easily deploy/manage minecraft servers.
-
-- &#x2705; [dokemon](stacks/dokemon/README.md) - Web UI to manage docker containers/view logs/etc.
-
-- &#x2705; [dockge](dockge.md) - Web UI to manage docker compose files (integral to `saffron`).
-
-- &#x2705; [docsify](stacks/docsify/README.md) - Web UI to view this repo's `README.md`'s as a wiki reflecting local edits. See the [public](https://ivylikethevine.github.io/saffron) instance or visit <http://hostname.local:5001> (if the container is running).
-
-- &#x2705; [dozzle](stacks/dozzle/README.md) - Web UI to live docker container logs.
-
-- &#x2705; [duplicati](stacks/duplicati/README.md) - Automated backup to AWS/Backblaze/etc.
-
-- &#x2705; [esphome](stacks/esphome/README.md) - Easily create & mange esp32-based IoT devices, such as temp. sensors.
-
-- &#x2705; [handbrake](stacks/handbrake/README.md) - Web UI for transcoding video/audio files.
-
-- &#x2705; [heimdall](stacks/heimdall/README.md) - Easy to use home page.
-
-- &#x2705; [homeassistant](stacks/homeassistant/README.md) - Smart home automation.
-
-- &#x2705; [it-tools](stacks/it-tools/README.md) - Helpful tool for various tasks (generating UUIDs, hashes, etc.).
-
-- &#x2705; [mariadb](stacks/mariadb/README.md) - Basic database (mostly used as template for adding to services that require a DB).
-
-- &#128994; [media-clients](stacks/media-clients/README.md) - Various media streaming services.
-
-  - &#x2705; jellyfin - TV/movie streaming.
-
-  - &#x2705; jellyseerr - TV/movie requests.
-
-  - &#x2705; kavita - Ebook reader.
-
-  - &#x2705; navidrome - Music streaming service.
-
-  - &#x2705; audiobookshelf - Audiobook streaming.
-
-- &#x2705; [netboot](stacks/netboot/README.md) - PXE boot system.
-
-- &#x2705; [netdata](stacks/netdata/README.md) - Hardware usage/monitoring (incl. containers).
-
-- &#x2705; [octoprint](stacks/octoprint/README.md) - 3D printer automation/monitoring
-
-- &#x2705; [plex](stacks/plex/README.md) - Fully featured media player/environment with many smart tv integrations.
-
-- &#128994; [servarr](stacks/servarr/README.md) - Media library systems.
-
-  - &#x2705; sonarr - TV library manager.
-
-  - &#x2705; radarr - Movie library manager.
-
-  - &#x2705; lidarr - Music library manager.
-
-  - &#x2705; readarr - Ebook library manager.
-
-  - &#x2705; bazarr - Subtitle management/requests for sonarr/radarr.
-
-- &#x2705; [speedtest-tracker](stacks/speedtest-tracker/README.md) - Internet speed monitoring.
-
-- &#128679; [tdarr](stacks/tdarr/README.md) - Additional Web UI for transcoding video/audio files, with ability to use distributed compute nodes.
-
-- &#x2705; [thelounge](stacks/thelounge/README.md) - IRC client.
-
-- &#128994; [torrent](stacks/torrent/README.md) - Full torrenting suite with a preconfigured <a href="https://github.com/ivylikethevine/saffron/blob/main/stacks/torrent/.env.public"><code>.env.public</code></a>.
-
-  - &#x2705; qbittorrentvpn - Torrent client that runs only on VPN connection.
-
-  - &#x2705; prowlarr - Search aggregator.
-
-  - &#x2705; flaresolverr - Search proxy (required for some search engines & reduces error rates in general).
-
-- &#128679; [traefik](stacks/traefik/README.md) - Reverse proxy with easy docker integration.
-
-- &#x2705; [uptime-kuma](stacks/uptime-kuma/README.md) - Nice health checking tool with simple UI (same dev as Dockge!).
-
-- &#x2705; [ustreamer](stacks/ustreamer/README.md) - Easily deployable IP camera.
-
-- &#x2705; [utils](stacks/utils/README.md) - Simple dockerfile-based compose with basic utils for debugging.
-
-- &#x2705; [vscode-server](stacks/vscode-server/README.md) - VSCode running with a Web UI (for editing saffron config files, etc.).
-
-- &#x2705; [watchtower](stacks/watchtower/README.md) - Automatically update & restart docker containers.
-
-- &#x2705; [windows](stacks/windows/README.md) - Automatic install/configuration with web VNC & native RDP for Windows XP -> Windows 11
-
-### Services under consideration
-
-- [Adguard](https://adguard.com/en/welcome.html) - for whole home ad blocking.
-- [Ansible Semaphore](https://www.semui.co/) - for easier host updating/management.
-- Mail Server - for notifications.
-- [Cloudflare](https://developers.cloudflare.com/cloudflare-one/) - for access outside of home network.
-- [Nextcloud](https://nextcloud.com/) - for general homelab "cloud".
-
-If a service isn't on here yet, feel free to add it! Most of these are very simple applications of the excellent [linuxserver docker images](https://docs.linuxserver.io/images/). See creating a [saffron-styled compose](#saffron-example) for more detail on the format of `compose.yaml`. There are also the [official docker hub images](https://hub.docker.com/u/library).
-
-I've also made stacks using Lissy93's well maintained [portainer template repo](https://github.com/Lissy93/portainer-templates), although this is slightly different than working from raw compose files.
-
-#### Compatible with
-
-- [obico](https://www.obico.io/docs/server-guides/install/) - 3D print failure detection notification/stopping
-
-  - To install:
-    `cd /home/$USER/saffron/stacks && git clone -b release https://github.com/TheSpaghettiDetective/obico-server.git && cd obico-server && docker compose up -d`
-
-- For other projects that use a docker compose file from locally build Dockerfiles, clone the repo into `/home/$USER/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
+- Easy migration from any existing docker or docker compose deployment.
 
 <!-- [filename](.gitignore ':include :type=code') -->
 
@@ -224,7 +78,7 @@ On install, saffron copies it's local `stacks/common.yaml.public` file to `stack
 
 \*\* : These aren't full services since they have no images defined. As such, they can't run alone.
 
-[filename](stacks/common.yaml.public ':include :type=code')
+[filename](stacks/common.yaml.public ":include :type=code")
 
 #### Env Files
 
@@ -266,7 +120,7 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
 #### stacks/vscode-server/compose.yaml
 
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   vscode-server:
     # "vscode-server" is the name of our service.
@@ -289,3 +143,34 @@ services:
       # Again, usually easiest to follow /containers/container_name/folder:/folder for consistency & clarity.
 networks: {}
 ```
+
+#### To Install \* Deploy
+
+In depth instructions, including prerequisites [here](resources/README.md).
+
+Requires: git, docker, docker compose
+
+Tested on: Linux Mint, Ubuntu, and Debian
+
+```bash
+# Grab saffron (either http or ssh)
+git clone https://github.com/ivylikethevine/saffron.git # http, works with no SSH key
+git clone git@github.com:ivylikethevine/saffron.git # ssh
+cd saffron/resources
+
+# Make directories with correct permssions, create common.yaml, & start dockge
+./install-saffron.sh
+```
+
+Then visit `http://localhost:5001` or `http://<hostname>.local:5001` to start and stop individual stacks via the [Dockge](https://github.com/louislam/dockge) interface. Dockge is a Web UI to manage & control docker containers. As opposed to portainer, the user maintains direct and full control of the [compose](https://docs.docker.com/compose/) [yaml](https://learnxinyminutes.com/docs/yaml/) files.
+
+If a service isn't on here yet, feel free to add it! Most of these are very simple applications of the excellent [linuxserver docker images](https://docs.linuxserver.io/images/). See creating a [saffron-styled compose](#saffron-example) for more detail on the format of `compose.yaml`. There are also the [official docker hub images](https://hub.docker.com/u/library).
+
+I've also made stacks using Lissy93's well maintained [portainer template repo](https://github.com/Lissy93/portainer-templates), although this is slightly different than working from raw compose files.
+
+### Important Paths
+
+1. `/containers/` - stores individual generated configs, db files, etc.
+   - This is not a perfect separation, since some containers will use config for "data" (such as torrent clients using it as a default download location)
+2. `/home/$USER/saffron/stacks` - all stacks & services' compose files
+3. `$DATA_DIR` - where bulk files are stored (configured during setup) See [common.yaml](#common-yaml) for more infromation.

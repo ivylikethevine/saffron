@@ -20,4 +20,6 @@ Automated backup to AWS/Backblaze/etc.
 
 Example implementation on [my blog](https://ivylikethevine.com/projects/homelab-backups/#rule-3-offsite-backups)
 
+#### `compose.yaml`
+
 [filename](compose.yaml ':include :type=code')

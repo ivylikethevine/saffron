@@ -40,4 +40,6 @@ Note: changes to the `stream.conf` files will not be committed, but the files re
 
 To continue tracking: `git update-index --no-assume-unchanged [ ...]`
 
+#### `compose.yaml`
+
 [filename](compose.yaml ':include :type=code')

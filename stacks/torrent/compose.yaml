@@ -1,19 +1,20 @@
-version: '3.8'
+version: "3.8"
 services:
   flaresolverr:
     image: flaresolverr/flaresolverr:latest
     container_name: flaresolverr
-    restart: on-failure
+    restart: always
     ports:
       - 8191:8191
-    environment:
-      - LOG_LEVEL=info
     networks:
       - servarr_bridge
+    extends:
+      file: ../common.yaml
+      service: base-settings
   prowlarr:
     image: linuxserver/prowlarr:develop
     container_name: prowlarr
-    restart: on-failure
+    restart: always
     ports:
       - 9696:9696
     env_file:
@@ -23,9 +24,9 @@ services:
     networks:
       - servarr_bridge
   qbittorrentvpn:
-    image: markusmcnugen/qbittorrentvpn
+    image: dyonr/qbittorrentvpn
     container_name: qbittorrentvpn
-    restart: on-failure
+    restart: always
     privileged: true
     ports:
       - 8080:8080
@@ -34,14 +35,18 @@ services:
     extends:
       file: ../common.yaml
       service: media-access
+    environment:
+      - VPN_ENABLED=yes
+      - VPN_TYPE=wireguard
     env_file:
       - .env.public
     volumes:
-      - /containers/qbittorrent/:/config
+      - /containers/qbittorrent/config:/config
     networks:
+      - default
       - servarr_bridge
 networks:
+  default:
+    driver: bridge
   servarr_bridge:
     external: true
-# .env must define: VPN_ENABLED, VPN_USERNAME, & VPN_PASSWORD
-# also requires a .ovpn file in the /containers/qbittorrent/openvpn/ folder for VPN use

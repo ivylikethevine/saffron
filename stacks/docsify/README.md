@@ -24,6 +24,6 @@ KaTeX support - https://github.com/upupming/docsify-katex/tree/master
 
 - surround equation with $$, not triple backtick
 
-[filename](compose.yaml ':include :type=code')
+#### `compose.yaml`
 
-<!-- [Dockerfile](Dockerfile ':include') -->
+[filename](compose.yaml ':include :type=code')

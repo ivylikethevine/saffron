@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   watchtower:
     image: containrrr/watchtower
@@ -10,4 +10,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
-networks: {}
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

@@ -2,7 +2,7 @@ services:
   uptime-kuma:
     image: louislam/uptime-kuma:latest
     container_name: uptime-kuma
-    restart: on-failure
+    restart: always
     ports:
       - 3001:3001
     extends:
@@ -10,4 +10,8 @@ services:
       service: base-settings
     volumes:
       - /containers/uptime-kuma/data:/app/data
-networks: {}
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

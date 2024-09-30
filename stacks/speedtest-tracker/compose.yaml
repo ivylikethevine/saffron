@@ -1,16 +1,21 @@
-version: '3.8'
+version: "3.8"
 services:
   speedtest-tracker:
-    image: linuxserver/speedtest-tracker:latest
+    image: linuxserver/speedtest-tracker:0.19.0
     container_name: speedtest-tracker
-    restart: on-failure
+    restart: always
     ports:
       - 8081:80
     environment:
       - DB_CONNECTION=sqlite
+      - APP_KEY=$APP_KEY
     extends:
       file: ../common.yaml
       service: base-settings
     volumes:
       - /containers/speedtest-tracker/config:/config
-networks: {}
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

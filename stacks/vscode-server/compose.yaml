@@ -1,9 +1,9 @@
-version: '3.8'
+version: "3.8"
 services:
   vscode-server:
     image: linuxserver/code-server
     container_name: vscode-server
-    restart: on-failure
+    restart: always
     ports:
       - 8445:8443
     extends:
@@ -14,4 +14,8 @@ services:
     volumes:
       - /home/$USER/saffron/:/saffron
       - /containers/vscode-server/config:/config
-networks: {}
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

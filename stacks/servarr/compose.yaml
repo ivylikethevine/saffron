@@ -1,9 +1,9 @@
-version: '3.8'
+version: "3.8"
 services:
   bazarr:
     image: linuxserver/bazarr:latest
     container_name: bazarr
-    restart: on-failure
+    restart: always
     ports:
       - 6767:6767
     extends:
@@ -16,7 +16,7 @@ services:
   lidarr:
     image: linuxserver/lidarr:latest
     container_name: lidarr
-    restart: on-failure
+    restart: always
     ports:
       - 8686:8686
     extends:
@@ -29,7 +29,7 @@ services:
   radarr:
     image: linuxserver/radarr:latest
     container_name: radarr
-    restart: on-failure
+    restart: always
     ports:
       - 7878:7878
     extends:
@@ -42,7 +42,7 @@ services:
   readarr:
     image: linuxserver/readarr:develop
     container_name: readarr
-    restart: on-failure
+    restart: always
     ports:
       - 8787:8787
     extends:
@@ -56,7 +56,7 @@ services:
   sonarr:
     image: linuxserver/sonarr:latest
     container_name: sonarr
-    restart: on-failure
+    restart: always
     ports:
       - 8989:8989
     extends:

@@ -6,7 +6,9 @@ Torrent client that runs only on VPN connection.
 
 <https://www.qbittorrent.org/>
 
-<https://github.com/markusmcnugen/docker-qbittorrentvpn>
+New - <https://github.com/DyonR/docker-qbittorrentvpn>
+
+Old - <https://github.com/markusmcnugen/docker-qbittorrentvpn>
 
 <https://hub.docker.com/r/markusmcnugen/qbittorrentvpn/>
 
@@ -54,5 +56,10 @@ Search proxy (required for some search engines & reduces error rates in general)
 
 ![x64 Version](https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=arm64&label=arm64)
 
+#### `compose.yaml`
+
 [filename](compose.yaml ':include :type=code')
-<!-- [filename](env.public ':include :type=code') -->
+
+#### `env.public`
+
+[filename](env.public ':include :type=code')

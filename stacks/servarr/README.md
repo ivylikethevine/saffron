@@ -114,4 +114,6 @@ Subtitle management/requests for sonarr/radarr.
 
 ![Bazarr UI](../../resources/screenshots/bazarr.webp)
 
+#### `compose.yaml`
+
 [filename](compose.yaml ':include :type=code')

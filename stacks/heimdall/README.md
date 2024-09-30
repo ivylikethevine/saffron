@@ -18,4 +18,6 @@ Easy to use home page.
 
 ![Heimdall UI](../../resources/screenshots/heimdall.webp)
 
+#### `compose.yaml`
+
 [filename](compose.yaml ':include :type=code')

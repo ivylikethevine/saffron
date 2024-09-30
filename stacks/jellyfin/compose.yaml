@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  jellyfin:
+    image: linuxserver/jellyfin:latest
+    container_name: jellyfin
+    restart: on-failure
+    ports:
+      - 8096:8096
+    devices:
+      - /dev/dri:/dev/dri # for intel hardware decode
+    environment:
+      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel # for intel hardware decode
+    extends:
+      file: ../common.yaml
+      service: media-access
+    volumes:
+      - /containers/jellyfin:/config
+    networks:
+      - servarr_bridge
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    restart: on-failure
+    ports:
+      - 5057:5055
+    volumes:
+      - /containers/jellyseerr/:/app/config
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - servarr_bridge
+networks:
+  servarr_bridge:
+    external: true

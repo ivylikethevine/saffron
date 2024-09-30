@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   plex:
     image: linuxserver/plex:latest
@@ -15,4 +15,19 @@ services:
       service: media-access
     volumes:
       - /containers/plex:/config
-networks: {}
+  overseerr:
+    image: linuxserver/overseerr:latest
+    container_name: overseerr
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    volumes:
+      - /containers/overseerr/config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+    networks:
+      - servarr_bridge
+networks:
+  servarr_bridge:
+    external: true

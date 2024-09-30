@@ -12,4 +12,6 @@ Smart home automation.
 
 ![Homeassistant UI](../../resources/screenshots/homeassistant.webp)
 
+#### `compose.yaml`
+
 [filename](compose.yaml ':include :type=code')

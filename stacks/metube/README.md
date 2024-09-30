@@ -1,6 +1,3 @@
-Ustreamer
-
-https://github.com/pikvm/ustreamer
 
 #### `compose.yaml`
 

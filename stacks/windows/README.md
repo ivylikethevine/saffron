@@ -14,4 +14,6 @@ Automatic install/configuration with web VNC & native RDP for Windows XP -> Wind
 
 ![Windows UI](../../resources/screenshots/windows.webp)
 
+#### `compose.yaml`
+
 [filename](compose.yaml ':include :type=code')

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   dozzle:
     container_name: dozzle
@@ -9,3 +9,12 @@ services:
       - 9999:8080
     environment:
       DOZZLE_NO_ANALYTICS: true
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    restart: always
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

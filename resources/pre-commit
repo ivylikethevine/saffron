@@ -7,6 +7,12 @@ for FILE in $(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep
     -o "$(echo "$FILE" | sed -e 's/\*/ /g' -e 's/^"//' | sed 's/.[^.]*$//').webp" \
     -mt -quiet
   rm $FILE
-  git add $FILE
+  git rm $FILE
+  git add "$(echo "$FILE" | sed -e 's/\*/ /g' -e 's/^"//' | sed 's/.[^.]*$//').webp"
   git commit --amend --no-edit
 done
+# to count all non-webp lines of code
+# git ls-files -- . ':!:*.webp' | xargs cat | wc -l
+
+# count number of stack directories
+# ls -l stacks | grep '^d' | wc -l

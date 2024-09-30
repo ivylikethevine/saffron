@@ -1,9 +1,9 @@
-version: '3.8'
+version: "3.8"
 services:
   audiobookshelf:
     image: advplyr/audiobookshelf:latest
     container_name: audiobookshelf
-    restart: on-failure
+    restart: always
     ports:
       - 13378:80
     extends:
@@ -11,38 +11,10 @@ services:
       service: media-access
     volumes:
       - /containers/audiobookshelf/config:/config
-  jellyfin:
-    image: linuxserver/jellyfin:latest
-    container_name: jellyfin
-    restart: on-failure
-    ports:
-      - 8096:8096
-    devices:
-      - /dev/dri:/dev/dri # for intel hardware decode
-    environment:
-      - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel # for intel hardware decode
-    extends:
-      file: ../common.yaml
-      service: media-access
-    volumes:
-      - /containers/jellyfin:/config
-    networks:
-      - servarr_bridge
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
-    restart: on-failure
-    ports:
-      - 5057:5055
-    volumes:
-      - /containers/jellyseerr/:/app/config
-      - /etc/timezone:/etc/timezone:ro
-    networks:
-      - servarr_bridge
   kavita:
     image: jvmilazz0/kavita:latest
     container_name: kavita
-    restart: on-failure
+    restart: always
     ports:
       - 5000:5000
     extends:
@@ -53,7 +25,7 @@ services:
   navidrome:
     image: deluan/navidrome:latest
     container_name: navidrome
-    restart: on-failure
+    restart: always
     ports:
       - 4533:4533
     extends:

@@ -14,4 +14,6 @@ Helpful tool for various tasks (generating UUIDs, hashes, etc.).
 
 ![It-tools UI](../../resources/screenshots/it-tools.webp)
 
+#### `compose.yaml`
+
 [filename](compose.yaml ':include :type=code')

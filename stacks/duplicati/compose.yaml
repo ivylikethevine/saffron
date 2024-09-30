@@ -1,14 +1,14 @@
-version: '3.8'
+version: "3.8"
 services:
   duplicati:
     image: linuxserver/duplicati:latest
     container_name: duplicati
-    restart: on-failure
+    restart: always
     entrypoint:
       - /init
     extends:
       file: ../common.yaml
-      service: base-settings
+      service: media-access
     ports:
       - 8200:8200/tcp
     environment:
@@ -16,6 +16,5 @@ services:
       - HOME=/config
     volumes:
       - /containers/duplicati/config:/config
-      - /nas:/nas # optional
     ipc: private
 networks: {}

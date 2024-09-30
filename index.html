@@ -21,12 +21,16 @@
         name: 'Saffron Wiki',
         repo: 'https://github.com/ivylikethevine/saffron',
         auto2top: true,
+        loadSidebar: true,
+        loadNavbar: true,
+        mergeNavbar: true,
         timeUpdater: {
           text: '<span style="text-align:right;display:grid;">last updated at {docsify-updated}</span>',
           formatUpdated: '{HH}:{mm} on {DD}-{MM}-{YYYY}',
         },
       };
     </script>
+    
     <!-- Docsify v4 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 
@@ -62,5 +66,15 @@
     />
     <script src="//cdn.jsdelivr.net/npm/marked@4"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
+
+    <!-- Custom Page Titles -->
+    <script src="//cdn.jsdelivr.net/npm/@sujaykumarh/docsify-plugin-title@2.x/dist/plugin.min.js"></script>
+
+    <!-- Prism Language Highlights -->
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-docker.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-git.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-markdown.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
   </body>
 </html>
