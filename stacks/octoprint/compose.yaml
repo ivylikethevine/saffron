@@ -9,13 +9,7 @@ services:
     volumes:
       - /containers/octoprint:/octoprint
     privileged: true
-  ustreamer:
-    image: pikvm/ustreamer:latest
-    container_name: ustreamer
-    restart: always
-    devices:
-      - /dev/video3:/dev/video0
-    ports:
-      - 8080:8080
-    command: ustreamer --device /dev/video0 -b 32 -w 32 -r 1280x720 -q 60
+    extends:
+      file: ../common.yaml
+      service: base-settings
 networks: {}

@@ -1,15 +1,17 @@
-version: '3.8'
+version: "3.8"
 services:
   homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
     container_name: homeassistant
-    restart: on-failure
-    network_mode: host
+    restart: always
     privileged: true
     ports:
       - 8123:8123
     volumes:
       - /containers/homeassistant/config:/config
-      - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
-networks: {}
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    network_mode: host
+    

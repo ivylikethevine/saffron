@@ -3,10 +3,18 @@ services:
   docsify:
     build:
       context: .
+      network: host
     container_name: docsify
     restart: always
     ports:
-      - 3000:3000
+      - 3005:3000
     volumes:
       - /home/$USER/saffron:/saffron:ro
-networks: {}
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

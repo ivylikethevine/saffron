@@ -9,6 +9,7 @@ stacks/common.yaml
 
 # To prevent VPN configurations being committed
 *.ovpn
+wg*.conf
 
 # Section for repositories cloned into stacks/ directory
 stacks/obico-server/
@@ -16,3 +17,5 @@ stacks/obico-server/
 # Prefixes for stacks not tracked by git
 stacks/p-*
 stacks/dev-*
+
+**/ollama*/local/*

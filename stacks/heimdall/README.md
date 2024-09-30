@@ -17,3 +17,7 @@ Easy to use home page.
 ### WebUI Dashboard
 
 ![Heimdall UI](../../resources/screenshots/heimdall.webp)
+
+#### `compose.yaml`
+
+[filename](compose.yaml ':include :type=code')

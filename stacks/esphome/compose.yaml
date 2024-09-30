@@ -7,3 +7,8 @@ services:
       - /containers/esphome/config:/config
     ports:
       - 6052:6052
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    privileged: true
+networks: {}

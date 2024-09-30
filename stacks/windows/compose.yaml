@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   windows:
     image: dockurr/windows
@@ -14,8 +14,8 @@ services:
     stop_grace_period: 2m
     restart: on-failure
     environment:
-      VERSION: win11
-      RAM_SIZE: '4G'
-      CPU_CORES: '2'
-      DISK_SIZE: '64GB'
+      VERSION: winxp
+      RAM_SIZE: 4G
+      CPU_CORES: "2"
+      DISK_SIZE: 64GB
 networks: {}

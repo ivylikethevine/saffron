@@ -13,3 +13,7 @@ Helpful tool for various tasks (generating UUIDs, hashes, etc.).
 ### WebUI Dashboard
 
 ![It-tools UI](../../resources/screenshots/it-tools.webp)
+
+#### `compose.yaml`
+
+[filename](compose.yaml ':include :type=code')

@@ -15,3 +15,7 @@
 ### WebUI Dashboard
 
 ![Speedtest-tracker UI](../../resources/screenshots/speedtest-tracker.webp)
+
+#### `compose.yaml`
+
+[filename](compose.yaml ':include :type=code')

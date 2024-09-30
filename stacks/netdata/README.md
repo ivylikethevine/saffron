@@ -39,3 +39,7 @@ Then, replace `API_KEY` in `parent/stream.conf` and `child/stream.conf` with the
 Note: changes to the `stream.conf` files will not be committed, but the files remain in the repo unchanged per `git update-index --assume-unchanged [ ...]` [See Reference](https://stackoverflow.com/questions/3319479/can-i-git-commit-a-file-and-ignore-its-content-changes)
 
 To continue tracking: `git update-index --no-assume-unchanged [ ...]`
+
+#### `compose.yaml`
+
+[filename](compose.yaml ':include :type=code')

@@ -1,8 +1,0 @@
-version: '3.8'
-services:
-  avahi:
-    image: flungo/avahi
-    container_name: avahi
-    restart: on-failure
-    environment:
-      - REFLECTOR_ENABLE_REFLECTOR=yes

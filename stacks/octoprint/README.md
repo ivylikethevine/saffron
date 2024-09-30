@@ -20,11 +20,16 @@
 
 The internal MJPEG-streamer can be accessed outside of the container (ie: by homeassistant as an IP camera).
 
+https://github.com/OctoPrint/octoprint-docker?tab=readme-ov-file#container-environment-variables
+
 `http://<host_ip>:<octprint_port>/webcam/?action=stream`
 
 `http://<host_ip>:<octprint_port>/webcam/?action=snapshot`
+
+Or can be swapped with ustreamer (contained in its own stack)
 https://manpages.ubuntu.com/manpages/jammy/man1/ustreamer.1.html
 
+https://github.com/juliagoda/CH341SER/issues/18
 
 https://www.reddit.com/r/OrangePI/comments/127vfid/orange_pi_4_lts_gpio_and_mainsailmoonrakerklipper/
 
@@ -33,7 +38,55 @@ https://github.com/orangepi-xunlong/wiringOP
 
 Had to run `sudo apt remove brltty`
 
-https://github.com/juliagoda/CH341SER/issues/18
+##### Docker udev Rules (plug-in issues)
+
+## /etc/udev/rules.d/99-docker-tty.rules 
+ACTION=="add", SUBSYSTEM=="tty", RUN+="/usr/local/bin/docker_tty.sh 'added' '%E{DEVNAME}' '%M' '%m'"
+ACTION=="remove", SUBSYSTEM=="tty", RUN+="/usr/local/bin/docker_tty.sh 'removed' '%E{DEVNAME}' '%M' '%m'"
+KERNEL=="ttyUSB[0-9]*",MODE="0666"
+
+## /usr/local/bin/docker_tty.sh 
+#!/usr/bin/env bash  
+                                                           
+echo "Usb event: $1 $2 $3 $4" >> /tmp/docker_tty.log        
+if [ ! -z "$(docker ps -qf name=env_dev)" ]                                     
+then                                                                            
+if [ "$1" == "added" ]                                                          
+    then                                                                        
+        docker exec -u 0 env_dev mknod $2 c $3 $4                               
+        docker exec -u 0 env_dev chmod -R 777 $2                                
+        echo "Adding $2 to docker" >> /tmp/docker_tty.log                
+    else                                                                        
+        docker exec -u 0 env_dev rm $2                                          
+        echo "Removing $2 from docker" >> /tmp/docker_tty.log            
+    fi                                                                          
+fi 
+
+ORRR? 
+
+version: "3.9"
+services:
+  octoprint:
+    image: octoprint/octoprint
+    container_name: octoprint
+    restart: always
+    ports:
+      - 85:80
+    volumes:
+      - /containers/octoprint:/octoprint
+      - /run/udev:/run/udev
+      - /dev:/dev
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    networks:
+      - ustreamer_default
+    device_cgroup_rules:
+      - c 188:* rwm
+      - c 189:* rwm
+    privileged: true
+  # devices:
+  #   - /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
 
 ##### Orange Pi 3B+ Physical Pin -> /dev/gpiochip mapping
 
@@ -79,3 +132,7 @@ https://github.com/juliagoda/CH341SER/issues/18
 | 38           | 122       | GPIO3_D2 | 3              | 26         |
 | 39           | GND       |          |                |            |
 | 40           | 121       | GPIO3_D1 | 3              | 25         |
+
+#### `compose.yaml`
+
+[filename](compose.yaml ":include :type=code")
