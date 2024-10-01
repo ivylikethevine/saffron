@@ -12,4 +12,8 @@ services:
     extends:
       file: ../common.yaml
       service: base-settings
-networks: {}
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

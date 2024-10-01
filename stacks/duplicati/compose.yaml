@@ -4,11 +4,11 @@ services:
     image: linuxserver/duplicati:latest
     container_name: duplicati
     restart: always
-    entrypoint:
-      - /init
     extends:
       file: ../common.yaml
       service: media-access
+    entrypoint:
+      - /init
     ports:
       - 8200:8200/tcp
     environment:
@@ -17,4 +17,8 @@ services:
     volumes:
       - /containers/duplicati/config:/config
     ipc: private
-networks: {}
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

@@ -3,11 +3,11 @@ services:
     image: louislam/uptime-kuma:latest
     container_name: uptime-kuma
     restart: always
-    ports:
-      - 3001:3001
     extends:
       file: ../common.yaml
       service: base-settings
+    ports:
+      - 3001:3001
     volumes:
       - /containers/uptime-kuma/data:/app/data
     networks:

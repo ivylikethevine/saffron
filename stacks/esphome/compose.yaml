@@ -3,12 +3,12 @@ services:
     image: esphome/esphome:latest
     container_name: esphome
     restart: unless-stopped
+    extends:
+      file: ../common.yaml
+      service: base-settings
     volumes:
       - /containers/esphome/config:/config
     ports:
       - 6052:6052
-    extends:
-      file: ../common.yaml
-      service: base-settings
     privileged: true
 networks: {}

@@ -4,14 +4,14 @@ services:
     image: linuxserver/heimdall
     container_name: heimdall
     restart: always
+    extends:
+      file: ../common.yaml
+      service: base-settings
     ports:
       - 80:80
       - 443:443
     volumes:
       - /containers/heimdall:/config
-    extends:
-      file: ../common.yaml
-      service: base-settings
     networks:
       - saffron_default
 networks:

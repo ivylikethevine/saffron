@@ -4,12 +4,14 @@ services:
     image: containrrr/watchtower
     container_name: watchtower
     restart: always
+    extends:
+      file: ../common.yaml
+      service: base-settings
     environment:
       - WATCHTOWER_CLEANUP=true # remove orphaned images
       - WATCHTOWER_POLL_INTERVAL=43200 # run every 12 hours
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/localtime:/etc/localtime:ro
     networks:
       - saffron_default
 networks:

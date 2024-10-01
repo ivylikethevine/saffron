@@ -4,11 +4,11 @@ services:
     image: linuxserver/code-server
     container_name: vscode-server
     restart: always
-    ports:
-      - 8445:8443
     extends:
       file: ../common.yaml
       service: media-access
+    ports:
+      - 8445:8443
     environment:
       - DEFAULT_WORKSPACE=/saffron
     volumes:

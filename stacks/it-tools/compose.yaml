@@ -2,12 +2,12 @@ version: "3.3"
 services:
   it-tools:
     container_name: it-tools
+    image: corentinth/it-tools:latest
+    restart: always
     ports:
       - 8099:80
-    image: corentinth/it-tools:latest
     networks:
       - saffron_default
-    restart: always
 networks:
   saffron_default:
     external: true

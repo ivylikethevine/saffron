@@ -3,16 +3,16 @@ services:
   dozzle:
     container_name: dozzle
     image: amir20/dozzle:latest
+    restart: always
+    extends:
+      file: ../common.yaml
+      service: base-settings
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 9999:8080
     environment:
       DOZZLE_NO_ANALYTICS: true
-    extends:
-      file: ../common.yaml
-      service: base-settings
-    restart: always
     networks:
       - saffron_default
 networks:
