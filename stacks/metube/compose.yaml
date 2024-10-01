@@ -8,11 +8,11 @@ services:
       - 8280:8081
     volumes:
       - /data/metube:/downloads
-    networks:
-      - saffron_default
     extends:
       file: ../common.yaml
       service: media-access
+    networks:
+      - saffron_default
 networks:
   saffron_default:
     external: true
