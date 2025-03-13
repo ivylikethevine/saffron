@@ -1,52 +1,44 @@
-version: "3.8"
 services:
-  flaresolverr:
-    image: flaresolverr/flaresolverr:latest
-    container_name: flaresolverr
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
     restart: always
-    ports:
-      - 8191:8191
-    networks:
-      - servarr_bridge
-    extends:
-      file: ../common.yaml
-      service: base-settings
-  prowlarr:
-    image: linuxserver/prowlarr:develop
-    container_name: prowlarr
-    restart: always
-    ports:
-      - 9696:9696
-    env_file:
-      - .env.public
-    volumes:
-      - /containers/prowlarr:/config
-    networks:
-      - servarr_bridge
-  qbittorrentvpn:
-    image: dyonr/qbittorrentvpn
-    container_name: qbittorrentvpn
-    restart: always
-    privileged: true
-    ports:
-      - 8080:8080
-      - 8999:8999
-      - 8999:8999/udp
     extends:
       file: ../common.yaml
       service: media-access
-    environment:
-      - VPN_ENABLED=yes
-      - VPN_TYPE=wireguard
-    env_file:
-      - .env.public
     volumes:
-      - /containers/qbittorrent/config:/config
+      - /containers/qbittorrent:/config/
+    environment:
+      TORRENTING_PORT: 58217
+    network_mode: service:qbittorrentvpn
+  qbittorrentvpn:
+    image: qmcgaw/gluetun
+    container_name: qbittorrentvpn
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 8888:8888/tcp # HTTP proxy
+      - 8388:8388/tcp # Shadowsocks
+      - 8388:8388/udp # Shadowsocks
+      - 8080:8080 # Web UI
+      - 58217:58217 # Torrenting
+      - 58217:58217/udp # Torrenting
+    volumes:
+      - /containers/gluetun:/gluetun
+    environment:
+      FIREWALL_VPN_INPUT_PORTS: 58217
+      VPN_SERVICE_PROVIDER: $PROVIDER
+      VPN_TYPE: wireguard
+      WIREGUARD_PRIVATE_KEY: $PRIVATE_KEY
+      WIREGUARD_PRESHARED_KEY: $PRESHARED_KEY
+      WIREGUARD_ADDRESSES: $ADDRESSES
+    extends:
+      file: ../common.yaml
+      service: media-access
     networks:
-      - default
       - servarr_bridge
 networks:
-  default:
-    driver: bridge
   servarr_bridge:
     external: true

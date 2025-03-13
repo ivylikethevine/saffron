@@ -1,14 +1,17 @@
 version: "3.8"
 services:
   speedtest-tracker:
-    image: linuxserver/speedtest-tracker:0.19.0
+    image: linuxserver/speedtest-tracker
     container_name: speedtest-tracker
     restart: always
     ports:
-      - 8081:80
+      - 8011:80
     environment:
       - DB_CONNECTION=sqlite
       - APP_KEY=$APP_KEY
+      - APP_URL=$APP_URL
+      - SPEEDTEST_SCHEDULE=0 */6 * * *
+    #     - SPEEDTEST_SERVERS=52365,36998,52365
     extends:
       file: ../common.yaml
       service: base-settings

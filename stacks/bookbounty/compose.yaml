@@ -1,0 +1,18 @@
+services:
+  bookbounty:
+    image: thewicklowwolf/bookbounty:latest
+    container_name: bookbounty
+    ports:
+      - 5003:5000
+    volumes:
+      - /containers/bookbounty/config:/bookbounty/config
+      - /containers/readarr/books:/bookbounty/downloads
+    extends:
+      file: ../common.yaml
+      service: media-access
+    restart: unless-stopped
+    networks:
+      - servarr_bridge
+networks:
+  servarr_bridge:
+    external: true

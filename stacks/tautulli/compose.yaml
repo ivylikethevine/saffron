@@ -1,0 +1,13 @@
+
+services:
+  tautulli:
+    image: ghcr.io/tautulli/tautulli
+    container_name: tautulli
+    restart: unless-stopped
+    extends:
+      file: ../common.yaml
+      service: media-access
+    volumes:
+      - /containers/tautulli:/config
+    ports:
+      - 8181:8181

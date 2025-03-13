@@ -1,0 +1,22 @@
+services:
+  prowlarr:
+    image: linuxserver/prowlarr:develop
+    container_name: prowlarr
+    restart: always
+    ports:
+      - 9696:9696
+    volumes:
+      - /containers/prowlarr:/config
+    networks:
+      - servarr_bridge
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: always
+    ports:
+      - 8191:8191
+    networks:
+      - servarr_bridge
+networks:
+  servarr_bridge:
+    external: true
