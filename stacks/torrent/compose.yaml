@@ -1,39 +1,52 @@
 services:
   qbittorrent:
-    image: linuxserver/qbittorrent
+    image: linuxserver/qbittorrent:latest
     container_name: qbittorrent
-    restart: always
+    restart: unless-stopped
     extends:
       file: ../common.yaml
       service: media-access
     volumes:
       - /containers/qbittorrent:/config/
     environment:
-      TORRENTING_PORT: 58217
+      TORRENTING_PORT: $VPN_INPUT_PORT
+    #  DOCKER_MODS: ghcr.io/vuetorrent/vuetorrent-lsio-mod:sha-71ff0ec
     network_mode: service:qbittorrentvpn
+  portcheck:
+    container_name: portcheck
+    depends_on:
+      - qbittorrent
+    environment:
+      QBITTORRENT_PORT: $VPN_INPUT_PORT
+      QBITTORRENT_USERNAME: $USER
+      QBITTORRENT_PASSWORD: $PASSWORD
+    image: eiqnepm/portcheck:latest
+    network_mode: service:qbittorrentvpn
+    restart: unless-stopped
   qbittorrentvpn:
-    image: qmcgaw/gluetun
+    image: qmcgaw/gluetun:latest
     container_name: qbittorrentvpn
+    restart: always
     cap_add:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
     ports:
-      - 8888:8888/tcp # HTTP proxy
-      - 8388:8388/tcp # Shadowsocks
-      - 8388:8388/udp # Shadowsocks
       - 8080:8080 # Web UI
-      - 58217:58217 # Torrenting
-      - 58217:58217/udp # Torrenting
+      - 8000:8000 # Control Server
     volumes:
       - /containers/gluetun:/gluetun
     environment:
-      FIREWALL_VPN_INPUT_PORTS: 58217
-      VPN_SERVICE_PROVIDER: $PROVIDER
       VPN_TYPE: wireguard
+      UPDATER_PERIOD: 24h
+      FIREWALL_VPN_INPUT_PORTS: $PORTS
+      VPN_PORT_FORWARDING_LISTENING_PORT: $TRACKER_PORT
+      HTTP_CONTROL_SERVER_AUTH_CONFIG_FILEPATH: /gluetun/config.toml
+      VPN_SERVICE_PROVIDER: $PROVIDER
       WIREGUARD_PRIVATE_KEY: $PRIVATE_KEY
       WIREGUARD_PRESHARED_KEY: $PRESHARED_KEY
       WIREGUARD_ADDRESSES: $ADDRESSES
+      SERVER_REGIONS: $REGIONS
     extends:
       file: ../common.yaml
       service: media-access

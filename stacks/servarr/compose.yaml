@@ -1,31 +1,4 @@
-version: "3.8"
 services:
-  bazarr:
-    image: linuxserver/bazarr:latest
-    container_name: bazarr
-    restart: always
-    ports:
-      - 6767:6767
-    extends:
-      file: ../common.yaml
-      service: media-access
-    volumes:
-      - /containers/bazarr:/config
-    networks:
-      - bridge
-  lidarr:
-    image: linuxserver/lidarr:latest
-    container_name: lidarr
-    restart: always
-    ports:
-      - 8686:8686
-    extends:
-      file: ../common.yaml
-      service: media-access
-    volumes:
-      - /containers/lidarr:/config
-    networks:
-      - bridge
   radarr:
     image: linuxserver/radarr:latest
     container_name: radarr
@@ -40,7 +13,7 @@ services:
     networks:
       - bridge
   readarr:
-    image: linuxserver/readarr:develop
+    image: linuxserver/readarr:0.4.19-nightly
     container_name: readarr
     restart: always
     ports:

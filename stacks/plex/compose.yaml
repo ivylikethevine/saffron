@@ -5,8 +5,7 @@ services:
     container_name: plex
     network_mode: host
     environment:
-      - VERSION=docker
-      - PLEX_CLAIM= #optional
+      VERSION: docker
     restart: unless-stopped
     devices:
       - /dev/dri:/dev/dri # for intel hardware decode
@@ -15,14 +14,14 @@ services:
       service: media-access
     volumes:
       - /containers/plex:/config
-  overseerr:
-    image: linuxserver/overseerr:latest
-    container_name: overseerr
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
     extends:
       file: ../common.yaml
       service: base-settings
     volumes:
-      - /containers/overseerr/config:/config
+      - /containers/overseerr/config:/app/config
     ports:
       - 5055:5055
     restart: unless-stopped

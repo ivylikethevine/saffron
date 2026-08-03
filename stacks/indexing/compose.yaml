@@ -17,6 +17,15 @@ services:
       - 8191:8191
     networks:
       - servarr_bridge
+  byparr:
+    container_name: byparr
+    image: ghcr.io/thephaseless/byparr:latest
+    restart: unless-stopped
+    shm_size: 2gb
+    ports:
+      - 8192:8191
+    networks:
+      - servarr_bridge
 networks:
   servarr_bridge:
     external: true

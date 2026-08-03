@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:latest
     container_name: watchtower
     restart: always
     extends:
@@ -10,6 +10,7 @@ services:
     environment:
       - WATCHTOWER_CLEANUP=true # remove orphaned images
       - WATCHTOWER_POLL_INTERVAL=43200 # run every 12 hours
+      - DOCKER_API_VERSION=1.52
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
