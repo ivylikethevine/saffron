@@ -1,0 +1,30 @@
+services:
+  profilarr:
+    image: ghcr.io/dictionarry-hub/profilarr:latest
+    container_name: profilarr
+    ports:
+      - 6868:6868
+    volumes:
+      - /containers/profilarr/config:/config
+    networks:
+      - servarr_bridge
+    extends:
+      file: ../common.yaml
+      service: media-access
+    restart: unless-stopped
+    environment:
+      - PARSER_HOST=parser
+      - PARSER_PORT=5000
+    depends_on:
+      parser:
+        condition: service_healthy
+  # Optional - only needed for CF/QP testing
+  parser:
+    image: ghcr.io/dictionarry-hub/profilarr-parser:latest
+    container_name: profilarr-parser
+    restart: unless-stopped
+    expose:
+      - "5000"
+networks:
+  servarr_bridge:
+    external: true

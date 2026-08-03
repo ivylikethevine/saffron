@@ -1,0 +1,17 @@
+services:
+  lidarr:
+    image: linuxserver/lidarr:nightly
+    container_name: lidarr
+    restart: always
+    ports:
+      - 8686:8686
+    extends:
+      file: ../common.yaml
+      service: media-access
+    volumes:
+      - /containers/lidarr:/config
+    networks:
+      - servarr_bridge
+networks:
+  servarr_bridge:
+    external: true

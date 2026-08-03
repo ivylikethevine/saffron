@@ -1,0 +1,20 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    restart: always
+    ports:
+      - 4533:4533
+    extends:
+      file: ../common.yaml
+      service: media-access
+    environment:
+      - ND_MUSICFOLDER=/data/music
+      - ND_DATAFOLDER=/navidrome/data
+      - ND_LASTFM_APIKEY=${ND_LASTFM_APIKEY}
+      - ND_LASTFM_SECRET=${ND_LASTFM_SECRET}
+    volumes:
+      - /containers/navidrome/data:/navidrome/data
+networks:
+  servarr_bridge:
+    external: true

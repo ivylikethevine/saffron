@@ -1,0 +1,15 @@
+version: "3.3"
+services:
+  watchyourlan:
+    container_name: watchyourlan
+    image: aceberg/watchyourlan
+    network_mode: host
+    restart: unless-stopped
+    ports:
+      - 8840:8840
+    environment:
+      IFACES: ens18
+      TZ: America/Los_Angeles
+    volumes:
+      - /containers/watchyourlan/data:/data/WatchYourLAN
+networks: {}

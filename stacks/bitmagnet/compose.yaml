@@ -1,0 +1,83 @@
+services:
+  bitmagnet:
+    image: ghcr.io/bitmagnet-io/bitmagnet:latest
+    container_name: bitmagnet
+    network_mode: service:bitmagnet-gluetun
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: bitmagnet-postgres
+      POSTGRES_PASSWORD: $POSTGRES_PW
+      CLASSIFIER_DELETE_XXX: true
+    volumes:
+      - /containers/bitmagnet:/root/.config/bitmagnet
+    command:
+      - worker
+      - run
+      - --keys=http_server
+      - --keys=queue_server
+      - --keys=dht_crawler
+    depends_on:
+      bitmagnet-postgres:
+        condition: service_healthy
+  bitmagnet-gluetun:
+    container_name: bitmagnet-gluetun
+    image: qmcgaw/gluetun:latest
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 3333:3333 # Bitmagnet UI
+      - 3334:3334/tcp # Bitmagnet torrent
+      - 3334:3334/udp # Bitmagnet torrent
+      - 5030:5030 # Slskd WebUI
+      - 13612:13612 # Slkskd (Port Forwarded)
+    environment:
+      VPN_TYPE: wireguard
+      UPDATER_PERIOD: 24h
+      VPN_SERVICE_PROVIDER: $PROVIDER
+      WIREGUARD_PRIVATE_KEY: $PRIVATE_KEY
+      WIREGUARD_PRESHARED_KEY: $PRESHARED_KEY
+      WIREGUARD_ADDRESSES: $ADDRESSES
+      SERVER_REGIONS: $REGIONS
+      FIREWALL_VPN_INPUT_PORTS: 13612
+      VPN_PORT_FORWARDING_LISTENING_PORT: 13612
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    extra_hosts:
+      - bitmagnet-postgres:5.5.5.2
+    networks:
+      bridge:
+        ipv4_address: 5.5.5.1
+      servarr_bridge: {}
+  bitmagnet-postgres:
+    image: postgres:16-alpine
+    container_name: bitmagnet-postgres
+    volumes:
+      - /containers/bitmagnet/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PW
+      POSTGRES_DB: bitmagnet
+      PGUSER: postgres
+    shm_size: 1g
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready
+      start_period: 20s
+      interval: 10s
+    networks:
+      bridge:
+        ipv4_address: 5.5.5.2
+    ports:
+      - 5432:5432
+networks:
+  bridge:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 5.5.5.0/24
+          gateway: 5.5.5.4
+  servarr_bridge:
+    external: true

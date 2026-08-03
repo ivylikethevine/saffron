@@ -1,0 +1,18 @@
+services:
+  slskd:
+    image: slskd/slskd
+    container_name: slskd
+    restart: unless-stopped
+    network_mode: container:bitmagnet-gluetun
+    extends:
+      file: ../common.yaml
+      service: media-access
+    environment:
+      SLSKD_REMOTE_CONFIGURATION: true
+    #    SLSKD_UMASK: 22
+#    user: 1000:1000
+    volumes:
+      - /containers/slskd:/app
+      - /data/slskd:/data/slskd
+      - /data/music:/shared
+networks: {}

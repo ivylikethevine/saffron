@@ -1,0 +1,12 @@
+
+services:
+  gotify:
+    image: gotify/server
+    container_name: gotify
+    restart: unless-stopped
+    ports:
+      - 8321:80
+    environment:
+      TZ: 'America/Los_Angeles'
+    volumes:
+      - /containers/gotify:/app/data
