@@ -12,6 +12,7 @@ These have been implemented:
 - **Add healthchecks** — Added HTTP healthcheck to qbittorrent (wget on port 8080). Converted portcheck's `depends_on` from list to mapping form with `condition: service_healthy`.
 - **Add resource limits** — Added `deploy.resources.limits.memory` to 24 services across 13 stacks (512M for medium-weight, 256M for lightweight UI, 1G for browser-backed, 128M for portcheck). Memory-only per initial scope.
 - **Reconcile `pull_policy`** — All pinned services now use `pull_policy: missing`; floating-tag services (portcheck) remain `always`.
+- **Network topology diagram** — Added Mermaid diagram to CLAUDE.md showing servarr_bridge, VPN-routed services (bitmagnet-gluetun, qbittorrentvpn), and host-mode services. Created `resources/generate-topology.py` to regenerate diagram programmatically. See commit 700d2fe.
 
 ## Now (high impact, low-to-medium effort)
 
@@ -55,11 +56,6 @@ Real gaps for consideration:
   conversion) has to be manually copied into `.git/hooks/`. A one-line
   step in `install-saffron.sh` (`ln -sf` or `git config core.hooksPath`)
   would make it opt-out instead of easy-to-forget.
-- **Network topology diagram.** The VPN-sharing relationships (bitmagnet ↔
-  slskd via one gluetun; torrent's own gluetun; `servarr_bridge` linking
-  servarr/indexing/torrent) are only describable in prose right now. A
-  small diagram in `CLAUDE.md` would make the bridge/VPN routing much
-  faster to reason about when adding a new stack.
 
 ## Nice-to-haves (low priority, quality-of-life)
 
