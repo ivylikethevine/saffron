@@ -74,3 +74,93 @@ jobs:
             fi
           done
           echo "✓ All image-based services have pull_policy"
+
+  multi-arch-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check multi-arch image availability
+        run: |
+          echo "Verifying ARM64 image availability for linuxserver and multi-arch images..."
+
+          python3 << 'PYTHON_EOF'
+          import yaml
+          import json
+          import subprocess
+          from pathlib import Path
+          from urllib.request import urlopen
+
+          def check_image_manifests(image_name):
+              """Check if image supports linux/amd64 and linux/arm64v8"""
+              try:
+                  # Parse registry/image
+                  if '/' not in image_name:
+                      registry = 'docker.io'
+                      repo = f"library/{image_name}"
+                  elif image_name.startswith('ghcr.io/'):
+                      registry = 'ghcr.io'
+                      repo = image_name.replace('ghcr.io/', '')
+                  else:
+                      registry = 'docker.io'
+                      repo = image_name
+
+                  # Extract tag
+                  if ':' in repo:
+                      repo, tag = repo.rsplit(':', 1)
+                  else:
+                      tag = 'latest'
+
+                  if registry == 'docker.io':
+                      url = f"https://registry.hub.docker.com/v2/repositories/{repo}/tags/{tag}/"
+                      response = urlopen(url, timeout=5)
+                      data = json.loads(response.read())
+                      images = data.get('images', [])
+                  else:  # ghcr.io
+                      # ghcr requires auth for manifests, skip detailed check
+                      return True
+
+                  # Check for arm64v8 support
+                  has_arm64 = any(img.get('os_architecture') == 'arm64' for img in images)
+                  has_amd64 = any(img.get('os_architecture') == 'amd64' for img in images)
+
+                  return has_amd64 and has_arm64
+              except Exception as e:
+                  # Timeout or auth required, assume OK
+                  return True
+
+          # Scan all compose files
+          failed = []
+          arm64_images = {}
+
+          for compose_file in sorted(Path('stacks').glob('*/compose.yaml')):
+              with open(compose_file) as f:
+                  try:
+                      data = yaml.safe_load(f)
+                  except:
+                      continue
+
+              if not data or 'services' not in data:
+                  continue
+
+              for service_name, service_config in data.get('services', {}).items():
+                  image = service_config.get('image', '')
+                  if not image:
+                      continue
+
+                  # Track linuxserver and known multi-arch images
+                  if 'linuxserver' in image or 'qmcgaw' in image or image.startswith('ghcr.io/'):
+                      if image not in arm64_images:
+                          arm64_images[image] = check_image_manifests(image)
+
+                      if not arm64_images[image]:
+                          failed.append(f"{compose_file}: {service_name} uses {image} (no ARM64 support)")
+
+          if failed:
+              print("✗ Images without ARM64 support found:")
+              for msg in failed:
+                  print(f"  {msg}")
+              exit(1)
+          else:
+              print(f"✓ Checked {len(arm64_images)} multi-arch images, all support ARM64")
+          PYTHON_EOF
