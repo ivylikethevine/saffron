@@ -14,18 +14,39 @@ services:
       TORRENTING_PORT: $VPN_INPUT_PORT
     #  DOCKER_MODS: ghcr.io/vuetorrent/vuetorrent-lsio-mod:sha-71ff0ec
     network_mode: service:qbittorrentvpn
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -qO-
+        - --timeout=2
+        - http://localhost:8080
+      start_period: 30s
+      interval: 10s
+      timeout: 3s
+      retries: 3
   portcheck:
     container_name: portcheck
     depends_on:
-      - qbittorrent
+      qbittorrent:
+        condition: service_healthy
     environment:
       QBITTORRENT_PORT: $VPN_INPUT_PORT
       QBITTORRENT_USERNAME: $USER
       QBITTORRENT_PASSWORD: $PASSWORD
+    # portcheck has no semver tags; latest is the only tag available
     image: eiqnepm/portcheck:latest
     pull_policy: always
     network_mode: service:qbittorrentvpn
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 128M
   qbittorrentvpn:
     image: qmcgaw/gluetun:v3.41.3
     pull_policy: missing
@@ -54,6 +75,10 @@ services:
     extends:
       file: ../common.yaml
       service: media-access
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     networks:
       - servarr_bridge
 networks:

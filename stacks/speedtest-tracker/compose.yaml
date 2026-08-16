@@ -18,6 +18,10 @@ services:
       service: base-settings
     volumes:
       - /containers/speedtest-tracker/config:/config
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - saffron_default
 networks:

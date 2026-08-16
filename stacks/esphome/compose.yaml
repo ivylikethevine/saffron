@@ -13,4 +13,8 @@ services:
     ports:
       - 6052:6052
     privileged: true
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 networks: {}

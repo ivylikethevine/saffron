@@ -1,8 +1,8 @@
 version: "3.8"
 services:
   profilarr:
-    image: ghcr.io/dictionarry-hub/profilarr:latest
-    pull_policy: always
+    image: ghcr.io/dictionarry-hub/profilarr:2.1.0
+    pull_policy: missing
     container_name: profilarr
     ports:
       - 6868:6868
@@ -17,17 +17,25 @@ services:
     environment:
       - PARSER_HOST=parser
       - PARSER_PORT=5000
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     depends_on:
       parser:
         condition: service_healthy
   # Optional - only needed for CF/QP testing
   parser:
-    image: ghcr.io/dictionarry-hub/profilarr-parser:latest
-    pull_policy: always
+    image: ghcr.io/dictionarry-hub/profilarr-parser:2.1.0
+    pull_policy: missing
     container_name: profilarr-parser
     restart: unless-stopped
     expose:
       - "5000"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     healthcheck:
       test:
         - CMD

@@ -12,6 +12,10 @@ services:
       service: media-access
     volumes:
       - /containers/lidarr:/config
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - servarr_bridge
 networks:

@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   prowlarr:
-    image: linuxserver/prowlarr:2.6.1-develop
+    image: linuxserver/prowlarr:nightly-2.6.2.5548-ls10
     pull_policy: missing
     container_name: prowlarr
     restart: always
@@ -12,6 +12,10 @@ services:
       service: base-settings
     volumes:
       - /containers/prowlarr:/config
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - servarr_bridge
   flaresolverr:
@@ -21,16 +25,24 @@ services:
     restart: always
     ports:
       - 8191:8191
+    deploy:
+      resources:
+        limits:
+          memory: 1G
     networks:
       - servarr_bridge
   byparr:
     container_name: byparr
-    image: ghcr.io/thephaseless/byparr:latest
-    pull_policy: always
+    image: ghcr.io/thephaseless/byparr:v3.0.3
+    pull_policy: missing
     restart: unless-stopped
     shm_size: 2gb
     ports:
       - 8192:8191
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - servarr_bridge
 networks:

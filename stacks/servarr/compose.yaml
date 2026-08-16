@@ -12,6 +12,10 @@ services:
       service: media-access
     volumes:
       - /containers/radarr:/config
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - bridge
   readarr:
@@ -27,6 +31,10 @@ services:
     volumes:
       - /containers/readarr/config:/config
       - /containers/readarr/books:/books
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - bridge
   sonarr:
@@ -41,6 +49,10 @@ services:
       service: media-access
     volumes:
       - /containers/sonarr:/config
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     networks:
       - bridge
 networks:

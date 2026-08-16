@@ -17,6 +17,10 @@ services:
       - ND_LASTFM_SECRET=${ND_LASTFM_SECRET}
     volumes:
       - /containers/navidrome/data:/navidrome/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 networks:
   servarr_bridge:
     external: true

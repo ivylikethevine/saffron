@@ -13,4 +13,8 @@ services:
       TZ: America/Los_Angeles
     volumes:
       - /containers/watchyourlan/data:/data/WatchYourLAN
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 networks: {}

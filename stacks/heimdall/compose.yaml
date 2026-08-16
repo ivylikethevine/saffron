@@ -13,6 +13,10 @@ services:
       - 443:443
     volumes:
       - /containers/heimdall:/config
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     networks:
       - saffron_default
 networks:

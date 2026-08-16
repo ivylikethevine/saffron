@@ -15,4 +15,8 @@ services:
       TZ: 'America/Los_Angeles'
     volumes:
       - /containers/gotify:/app/data
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 networks: {}
