@@ -13,6 +13,7 @@ These have been implemented:
 - **Add resource limits** — Added `deploy.resources.limits.memory` to 24 services across 13 stacks (512M for medium-weight, 256M for lightweight UI, 1G for browser-backed, 128M for portcheck). Memory-only per initial scope.
 - **Reconcile `pull_policy`** — All pinned services now use `pull_policy: missing`; floating-tag services (portcheck) remain `always`.
 - **Network topology diagram** — Added Mermaid diagram to CLAUDE.md showing servarr_bridge, VPN-routed services (bitmagnet-gluetun, qbittorrentvpn), and host-mode services. Created `resources/generate-topology.py` to regenerate diagram programmatically. See commit 700d2fe.
+- **Multi-arch verification in CI** — Added `multi-arch-verify` job to `.github/workflows/compose-validate.yml` that checks ARM64 image availability for linuxserver, qmcgaw, and GHCR images via Docker Hub registry API. Verifies all multi-arch images support both linux/amd64 and linux/arm64v8. See commit ebf07f5.
 
 ## Now (high impact, low-to-medium effort)
 
@@ -49,13 +50,15 @@ Real gaps for consideration:
   nothing verifies a restore actually works. A periodic (manual or
   scripted) "restore into a scratch dir and diff" check would turn "we have
   backups" into "we know the backups work."
-- **Multi-arch verification.** READMEs show ARM64 badges for several
-  images, but nothing in CI actually builds/tests on ARM. Only worth doing
-  if Saffron is actually being run on ARM hardware (Raspberry Pi, etc.).
 - **Pre-commit hook auto-install.** `resources/pre-commit` (webp
   conversion) has to be manually copied into `.git/hooks/`. A one-line
   step in `install-saffron.sh` (`ln -sf` or `git config core.hooksPath`)
   would make it opt-out instead of easy-to-forget.
+- **Smoke-test CI builds.** The `multi-arch-verify` job now checks ARM64
+  availability, but doesn't actually build containers on ARM. A follow-up
+  could add experimental `runs-on: ubuntu-latest-arm64` jobs to catch ARM-
+  specific breakage, though this is expensive and only needed if Saffron
+  actually runs on ARM hardware (Raspberry Pi, etc.).
 
 ## Nice-to-haves (low priority, quality-of-life)
 
