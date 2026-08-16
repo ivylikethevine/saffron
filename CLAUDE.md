@@ -88,6 +88,49 @@ Most stacks extend one of these base services to inherit consistent:
 - **Host mode** (plex, homeassistant, watchyourlan): Direct network access (special cases)
 - **VPN routing** (torrent, bitmagnet + slskd): Services tunnel through gluetun (wireguard)
 
+### Network Topology Diagram
+
+```mermaid
+graph TB
+    subgraph Bridge[Default Bridge]
+        direction TB
+    end
+    subgraph Servarr[servarr_bridge]
+        bitmagnet_bitmagnet_gluetun["bitmagnet/bitmagnet-gluetun"]
+        indexing_byparr["indexing/byparr"]
+        indexing_flaresolverr["indexing/flaresolverr"]
+        indexing_prowlarr["indexing/prowlarr"]
+        lidarr_lidarr["lidarr/lidarr"]
+        plex_seerr["plex/seerr"]
+        profilarr_profilarr["profilarr/profilarr"]
+        torrent_qbittorrentvpn["torrent/qbittorrentvpn"]
+    end
+    subgraph VPNbitmagnetgluetun[VPN: bitmagnet-gluetun]
+        bitmagnet_bitmagnet["bitmagnet/bitmagnet"]
+    end
+    subgraph VPNqbittorrentvpn[VPN: qbittorrentvpn]
+        torrent_portcheck["torrent/portcheck"]
+        torrent_qbittorrent["torrent/qbittorrent"]
+    end
+    subgraph HostMode[Host Network Mode]
+        homeassistant_homeassistant["homeassistant/homeassistant"]
+        plex_plex["plex/plex"]
+        watchyourlan_watchyourlan["watchyourlan/watchyourlan"]
+    end
+```
+
+**Key relationships:**
+- **servarr_bridge**: Connects indexing (prowlarr, flaresolverr, byparr), media management (radarr, sonarr, lidarr), and download clients (qbittorrent, bitmagnet)
+- **bitmagnet-gluetun**: Isolated VPN for bitmagnet (DHT crawler) and slskd (file sharing)
+- **qbittorrentvpn**: Isolated VPN for torrent client (qBittorrent) and port-checker
+- **Host mode**: Services requiring direct host network access (plex transcoding, homeassistant integrations, network scanning)
+
+To regenerate this diagram after adding/removing stacks, run:
+```bash
+python3 resources/generate-topology.py > /tmp/topology.mermaid
+# Compare output with diagram above, update CLAUDE.md if topology changed
+```
+
 ## Key Files & Their Purpose
 
 ### compose.yaml
