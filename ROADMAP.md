@@ -4,28 +4,18 @@ Potential improvements, upgrades, and nice-to-haves, roughly ordered by
 impact vs. effort. This is a planning document, not a commitment — pick
 items up as they become relevant.
 
+## ✓ Completed (2026-08-16)
+
+These have been implemented:
+
+- **Pin image versions** — All floating `:latest`/`:develop`/`:nightly` tags pinned to specific releases (profilarr 2.1.0, byparr v3.0.3, prowlarr nightly-2.6.2.5548-ls10, homeassistant 2026.8.0). `pull_policy` flipped to `missing` for pinned services. See commit 532cba4.
+- **Add healthchecks** — Added HTTP healthcheck to qbittorrent (wget on port 8080). Converted portcheck's `depends_on` from list to mapping form with `condition: service_healthy`.
+- **Add resource limits** — Added `deploy.resources.limits.memory` to 24 services across 13 stacks (512M for medium-weight, 256M for lightweight UI, 1G for browser-backed, 128M for portcheck). Memory-only per initial scope.
+- **Reconcile `pull_policy`** — All pinned services now use `pull_policy: missing`; floating-tag services (portcheck) remain `always`.
+
 ## Now (high impact, low-to-medium effort)
 
-These fix real gaps found by auditing the current `stacks/` directory.
-
-- **Pin image versions.** Nearly every stack runs `:latest`, `:develop`
-  (prowlarr), or `:nightly` (lidarr, readarr). A bad upstream release breaks
-  the stack with no warning and no easy rollback. Pin to a known-good tag per
-  stack, and let `watchtower`/`pull_policy` handle *intentional* upgrades
-  instead of every restart pulling whatever landed on `latest`.
-- **Add healthchecks.** Only `bitmagnet-postgres` has one. Without
-  healthchecks, `depends_on` can't actually wait for a dependency to be
-  *ready* (e.g. profilarr's `parser` dependency, prowlarr before sonarr).
-  Add basic HTTP/TCP healthchecks to the services other stacks depend on.
-- **Add resource limits.** No stack sets `deploy.resources.limits`. A single
-  runaway container (Plex transcode, bitmagnet indexing) can starve the
-  whole host. Start with soft memory limits on the heavier services (plex,
-  bitmagnet, homeassistant) and expand from there.
-- **Reconcile `pull_policy: always` with pinned versions.** Once tags are
-  pinned (above), `pull_policy: always` mostly just re-pulls the same digest
-  on every start — harmless but pointless. Revisit whether it should stay
-  `always` (fine for `:latest`-style tags you intentionally keep floating)
-  or move to `missing`/`if_not_present` for pinned stacks.
+Real gaps for consideration:
 
 ## Next (real gaps, more design work)
 

@@ -147,12 +147,12 @@ GitHub Actions CI:
 - ✗ Extends can't override individual volumes, so each stack still repeats some boilerplate
 - **Trade-off:** Good enough for the consistency level needed
 
-### pull_policy: always
-- Every service has `pull_policy: always` (added 2024-08-16)
-- Forces image re-pull on `docker-compose up`
-- Watchtower then updates running containers
-- ✓ Keeps images current without manual intervention
-- ✗ Slightly slower startup if many images
+### pull_policy: missing for pinned, always for floating
+- **Pinned services** (profilarr, byparr, homeassistant, indexing, torrent, servarr, etc.) use `pull_policy: missing` — skip re-pull if image tag already present locally. Watchtower handles intentional updates.
+- **Floating-tag services** (portcheck, which has no semver tags) use `pull_policy: always` — necessary when upstream only publishes `:latest`.
+- ✓ Avoids re-pulling same digest on every restart (efficiency)
+- ✓ Explicit version pins prevent surprise breakage from upstream releases
+- See commit 532cba4 for full hardening pass (2026-08-16)
 
 ### Separate Data Directory ($DATA_DIR)
 - `/containers/` = config (linked to git projects, small)
