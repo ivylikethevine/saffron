@@ -80,6 +80,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y python3-yaml
+
       - name: Check multi-arch image availability
         run: |
           echo "Verifying ARM64 image availability for linuxserver and multi-arch images..."
