@@ -1,0 +1,76 @@
+name: Compose Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "stacks/**/*.yaml"
+      - "stacks/**/*.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "stacks/**/*.yaml"
+      - "stacks/**/*.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Docker Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose-v2
+
+      - name: Validate compose file syntax
+        run: |
+          for file in stacks/*/compose.yaml; do
+            echo "Validating $file..."
+            docker-compose -f "$file" config > /dev/null || exit 1
+          done
+          echo "✓ All compose files are valid"
+
+      - name: Check for required documentation
+        run: |
+          echo "Checking for README.md in all stack directories..."
+          for dir in stacks/*/; do
+            stack=$(basename "$dir")
+            if [ "$stack" = "README.md" ] || [ "$stack" = "common.yaml.public" ]; then
+              continue
+            fi
+            if [ ! -f "$dir/README.md" ]; then
+              echo "✗ Missing README.md: $dir"
+              exit 1
+            fi
+          done
+          echo "✓ All stacks have README.md files"
+
+      - name: Check for required version keys
+        run: |
+          echo "Checking for compose version specification..."
+          for file in stacks/*/compose.yaml; do
+            if ! grep -q '^version:' "$file"; then
+              echo "✗ Missing version in $file"
+              exit 1
+            fi
+          done
+          echo "✓ All compose files have version specified"
+
+      - name: Verify pull_policy settings
+        run: |
+          echo "Checking for pull_policy in image-based services..."
+          for file in stacks/*/compose.yaml; do
+            # Skip files that use 'build' instead of 'image'
+            if grep -q '^\s*build:' "$file"; then
+              continue
+            fi
+            # Check that services with images have pull_policy
+            services_with_image=$(grep -c '^\s*image:' "$file" || echo 0)
+            if [ "$services_with_image" -gt 0 ]; then
+              pull_policy=$(grep -c 'pull_policy:' "$file" || echo 0)
+              if [ "$pull_policy" -eq 0 ]; then
+                echo "✗ Missing pull_policy in $file"
+                exit 1
+              fi
+            fi
+          done
+          echo "✓ All image-based services have pull_policy"

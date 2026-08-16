@@ -2,7 +2,8 @@ version: "3.8"
 services:
   dozzle:
     container_name: dozzle
-    image: amir20/dozzle:latest
+    image: amir20/dozzle:v10.7.2
+    pull_policy: missing
     restart: always
     extends:
       file: ../common.yaml

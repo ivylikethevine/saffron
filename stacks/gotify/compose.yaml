@@ -1,12 +1,18 @@
+version: "3.8"
 
 services:
   gotify:
-    image: gotify/server
+    image: gotify/server:3.0.0
+    pull_policy: missing
     container_name: gotify
     restart: unless-stopped
     ports:
       - 8321:80
+    extends:
+      file: ../common.yaml
+      service: base-settings
     environment:
       TZ: 'America/Los_Angeles'
     volumes:
       - /containers/gotify:/app/data
+networks: {}

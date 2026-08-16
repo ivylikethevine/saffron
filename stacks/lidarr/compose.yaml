@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   lidarr:
-    image: linuxserver/lidarr:nightly
+    image: linuxserver/lidarr:3.1.3-nightly
+    pull_policy: missing
     container_name: lidarr
     restart: always
     ports:

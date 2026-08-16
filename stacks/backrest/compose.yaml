@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   backrest:
-    image: ghcr.io/garethgeorge/backrest:latest
+    image: ghcr.io/garethgeorge/backrest:v1.14.1
+    pull_policy: missing
     container_name: backrest
     extends:
       file: ../common.yaml

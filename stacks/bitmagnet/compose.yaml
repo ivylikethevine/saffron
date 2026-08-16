@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   bitmagnet:
-    image: ghcr.io/bitmagnet-io/bitmagnet:latest
+    image: ghcr.io/bitmagnet-io/bitmagnet:v0.9.5
+    pull_policy: missing
     container_name: bitmagnet
     network_mode: service:bitmagnet-gluetun
     restart: unless-stopped
@@ -16,12 +18,17 @@ services:
       - --keys=http_server
       - --keys=queue_server
       - --keys=dht_crawler
+    deploy:
+      resources:
+        limits:
+          memory: 2G
     depends_on:
       bitmagnet-postgres:
         condition: service_healthy
   bitmagnet-gluetun:
     container_name: bitmagnet-gluetun
-    image: qmcgaw/gluetun:latest
+    image: qmcgaw/gluetun:v3.41.3
+    pull_policy: missing
     restart: always
     cap_add:
       - NET_ADMIN
@@ -50,7 +57,8 @@ services:
         ipv4_address: 5.5.5.1
       servarr_bridge: {}
   bitmagnet-postgres:
-    image: postgres:16-alpine
+    image: postgres:16.15-alpine
+    pull_policy: missing
     container_name: bitmagnet-postgres
     volumes:
       - /containers/bitmagnet/postgres:/var/lib/postgresql/data
@@ -60,6 +68,10 @@ services:
       POSTGRES_DB: bitmagnet
       PGUSER: postgres
     shm_size: 1g
+    deploy:
+      resources:
+        limits:
+          memory: 2G
     healthcheck:
       test:
         - CMD-SHELL

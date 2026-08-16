@@ -1,16 +1,22 @@
+version: "3.8"
 services:
   prowlarr:
-    image: linuxserver/prowlarr:develop
+    image: linuxserver/prowlarr:2.6.1-develop
+    pull_policy: missing
     container_name: prowlarr
     restart: always
     ports:
       - 9696:9696
+    extends:
+      file: ../common.yaml
+      service: base-settings
     volumes:
       - /containers/prowlarr:/config
     networks:
       - servarr_bridge
   flaresolverr:
-    image: flaresolverr/flaresolverr:latest
+    image: flaresolverr/flaresolverr:v3.5.0
+    pull_policy: missing
     container_name: flaresolverr
     restart: always
     ports:
@@ -20,6 +26,7 @@ services:
   byparr:
     container_name: byparr
     image: ghcr.io/thephaseless/byparr:latest
+    pull_policy: always
     restart: unless-stopped
     shm_size: 2gb
     ports:

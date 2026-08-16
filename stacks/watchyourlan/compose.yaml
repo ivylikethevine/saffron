@@ -1,14 +1,15 @@
-version: "3.3"
+version: "3.8"
 services:
   watchyourlan:
+    image: aceberg/watchyourlan:2.1.4
+    pull_policy: missing
     container_name: watchyourlan
-    image: aceberg/watchyourlan
-    network_mode: host
     restart: unless-stopped
+    network_mode: host
     ports:
       - 8840:8840
     environment:
-      IFACES: ens18
+      IFACES: ${IFACES:-eth0}
       TZ: America/Los_Angeles
     volumes:
       - /containers/watchyourlan/data:/data/WatchYourLAN

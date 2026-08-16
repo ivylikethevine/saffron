@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   esphome:
-    image: esphome/esphome:latest
+    image: esphome/esphome:2026.7.4
+    pull_policy: missing
     container_name: esphome
     restart: unless-stopped
     extends:

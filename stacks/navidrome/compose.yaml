@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   navidrome:
-    image: deluan/navidrome:latest
+    image: deluan/navidrome:0.63.2
+    pull_policy: missing
     container_name: navidrome
     restart: always
     ports:

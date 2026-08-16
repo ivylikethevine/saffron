@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   radarr:
-    image: linuxserver/radarr:latest
+    image: linuxserver/radarr:6.3.0
+    pull_policy: missing
     container_name: radarr
     restart: always
     ports:
@@ -14,6 +16,7 @@ services:
       - bridge
   readarr:
     image: linuxserver/readarr:0.4.19-nightly
+    pull_policy: missing
     container_name: readarr
     restart: always
     ports:
@@ -27,7 +30,8 @@ services:
     networks:
       - bridge
   sonarr:
-    image: linuxserver/sonarr:latest
+    image: linuxserver/sonarr:4.0.19
+    pull_policy: missing
     container_name: sonarr
     restart: always
     ports:

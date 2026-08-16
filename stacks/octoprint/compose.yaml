@@ -1,7 +1,8 @@
 version: "3.8"
 services:
   octoprint:
-    image: octoprint/octoprint
+    image: octoprint/octoprint:1.11.8
+    pull_policy: missing
     container_name: octoprint
     restart: always
     ports:

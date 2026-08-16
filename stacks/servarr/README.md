@@ -4,6 +4,12 @@ Media library systems.
 
 <https://wiki.servarr.com/docker-guide>
 
+## Related Stacks
+
+- **[indexing](../indexing/README.md)** — Prowlarr and Flaresolverr for search integration
+- **[lidarr](../lidarr/README.md)** — Standalone music library manager
+- **[torrent](../torrent/README.md)** — Torrent client for automated downloads
+
 # Sonarr
 
 TV library manager.

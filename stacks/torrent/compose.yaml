@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   qbittorrent:
-    image: linuxserver/qbittorrent:latest
+    image: linuxserver/qbittorrent:5.2.3
+    pull_policy: missing
     container_name: qbittorrent
     restart: unless-stopped
     extends:
@@ -21,10 +23,12 @@ services:
       QBITTORRENT_USERNAME: $USER
       QBITTORRENT_PASSWORD: $PASSWORD
     image: eiqnepm/portcheck:latest
+    pull_policy: always
     network_mode: service:qbittorrentvpn
     restart: unless-stopped
   qbittorrentvpn:
-    image: qmcgaw/gluetun:latest
+    image: qmcgaw/gluetun:v3.41.3
+    pull_policy: missing
     container_name: qbittorrentvpn
     restart: always
     cap_add:

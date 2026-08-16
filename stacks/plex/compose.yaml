@@ -1,7 +1,8 @@
 version: "3.8"
 services:
   plex:
-    image: linuxserver/plex:latest
+    image: linuxserver/plex:1.43.3
+    pull_policy: missing
     container_name: plex
     network_mode: host
     environment:
@@ -12,10 +13,15 @@ services:
     extends:
       file: ../common.yaml
       service: media-access
+    deploy:
+      resources:
+        limits:
+          memory: 4G
     volumes:
       - /containers/plex:/config
   seerr:
-    image: ghcr.io/seerr-team/seerr:latest
+    image: ghcr.io/seerr-team/seerr:v3.0.1
+    pull_policy: missing
     container_name: seerr
     extends:
       file: ../common.yaml

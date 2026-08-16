@@ -2,6 +2,7 @@ version: "3.8"
 services:
   homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
+    pull_policy: always
     container_name: homeassistant
     restart: always
     privileged: true
@@ -13,5 +14,8 @@ services:
     extends:
       file: ../common.yaml
       service: base-settings
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
     network_mode: host
-    

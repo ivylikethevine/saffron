@@ -27,34 +27,52 @@ Read this project's README's as a wiki [here](https://ivylikethevine.github.io/s
 
 ### What does Saffron replace?
 
-- Media libraries for TV, movies, music, ebooks, & audiobooks. (+ subtitles!)
-  - Radarr/Sonarr + Plex/Jellyfin
-  - Lidarr + Navidrome
-  - Readarr + Kavita & Audiobookshelf
-  - Bazarr
-  - Overseerr/Jellyseer
-- Self contained and reactive wiki
-  - docsify
-  - vscode-server
-- Comprehensive monitoring/administration suite
-  - dockage
-  - uptime kuma
-  - dozzle
-  - netdata
-  - speedtest-tracker
-- Full torrenting suite with VPN integration.
-  - qbittorrentvpn
-  - prowlarr
-  - flaresolvarr
-- Automated backup to cloud storage.
-  - duplicati
-- Smart home automation & integration.
-  - homeassistant
-  - ustreamer
-  - octoprint
-  - esphome
+Saffron provides 21+ containerized services for a complete homelab:
 
-AND MORE
+**Media Management**
+- **Sonarr** — TV series automation and management
+- **Radarr** — Movie automation and management
+- **Lidarr** — Music library automation
+- **Readarr** — Ebook library automation
+- **Bazarr** — Subtitle management (integrates with Sonarr/Radarr)
+- **Plex** — Media server and streaming (or self-host streaming)
+- **Navidrome** — Music streaming service
+
+**Content Discovery & Search**
+- **Prowlarr** — Unified search aggregator for torrent/usenet indexers
+- **Flaresolverr** — Search proxy for cloudflare-protected sites
+- **Byparr** — Indexer proxy for the *arr ecosystem
+
+**Downloading & Torrenting**
+- **qBittorrent** — Torrent client with VPN integration (via gluetun)
+- **Bitmagnet** — DHT crawler and torrent indexer (VPN-routed)
+- **Soulseek (slskd)** — Direct file sharing client (VPN-routed)
+
+**Backup & Archival**
+- **Backrest** — Restic-based backup UI for cloud/local backups
+
+**Monitoring & Admin**
+- **Dockge** — Docker Compose management UI (the control center)
+- **Dozzle** — Container log viewer
+- **Watchtower** — Automatic container updates
+- **Speedtest Tracker** — Internet speed monitoring
+
+**Smart Home & IoT**
+- **Home Assistant** — Smart home automation and integration
+- **ESPHome** — ESP32 IoT device management
+- **Octoprint** — 3D printer monitoring and control
+- **Ustreamer** — Lightweight IP camera streaming
+
+**Documentation**
+- **Docsify** — Auto-generated wiki from markdown files
+- **Heimdall** — Dashboard/homepage for your services
+
+**Specialty Services**
+- **Gotify** — Push notification server
+- **Profilarr** — Quality profile sync for the *arr ecosystem
+- **Watch Your LAN** — Network device monitoring
+
+See [stacks/README.md](stacks/README.md) for the complete, up-to-date list.
 
 All while being:
 
@@ -74,7 +92,7 @@ By using a set of base "services"\*\* inside of `saffron/stacks/common.yaml`, we
 2. Consistent mount locations (such as media libraries) - library locations only have to be defined once.
 3. Consistent localtime - not very important, but nice to have.
 
-On install, saffron copies it's local `stacks/common.yaml.public` file to `stacks/compose.yaml`, setting `/data` in all extended containers to the value of `$DATA_DIR` used during setup. This can be changed by using vscode-server and editing files in the saffron directory. `common.yaml` is set to be ignored by git to prevent committing personal directory paths.
+On install, saffron copies it's local `stacks/common.yaml.public` file to `stacks/common.yaml`, setting `/data` in all extended containers to the value of `$DATA_DIR` used during setup. This can be changed by editing files directly in the saffron directory. `common.yaml` is set to be ignored by git to prevent committing personal directory paths.
 
 \*\* : These aren't full services since they have no images defined. As such, they can't run alone.
 
@@ -174,3 +192,11 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
    - This is not a perfect separation, since some containers will use config for "data" (such as torrent clients using it as a default download location)
 2. `/home/$USER/saffron/stacks` - all stacks & services' compose files
 3. `$DATA_DIR` - where bulk files are stored (configured during setup) See [common.yaml](#common-yaml) for more infromation.
+
+### More Documentation
+
+- [CLAUDE.md](CLAUDE.md) - Codebase architecture and contributing guide
+- [SECURITY.md](SECURITY.md) - Security model and production checklist
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Common problems and fixes
+- [UPGRADE.md](UPGRADE.md) - Updating, migrating hosts, backups
+- [ROADMAP.md](ROADMAP.md) - Planned improvements and nice-to-haves

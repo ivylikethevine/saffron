@@ -1,7 +1,8 @@
 version: "3.8"
 services:
   heimdall:
-    image: linuxserver/heimdall
+    image: linuxserver/heimdall:2.8.2
+    pull_policy: missing
     container_name: heimdall
     restart: always
     extends:

@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   slskd:
-    image: slskd/slskd
+    image: slskd/slskd:0.26.0
+    pull_policy: missing
     container_name: slskd
     restart: unless-stopped
     network_mode: container:bitmagnet-gluetun

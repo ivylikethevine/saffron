@@ -1,35 +1,51 @@
 #!/bin/bash
+set -euo pipefail
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
 
 echo "Starting Saffron Removal"
+echo
+echo -e "${RED}WARNING: This will permanently delete:${NC}"
+echo "  - /containers directory (all container data)"
+echo "  - /home/$USER/saffron directory (all configuration)"
+echo "  - All running Saffron containers"
+echo
+echo "This action CANNOT be undone."
+echo
 
-echo "This script will delete all files in /containers and /home/$USER/saffron. Are you sure you want to proceed? (y/n)"
+read -p "Are you absolutely sure? Type 'yes' to proceed: " response
 
-while true; do
-    read -s -n 1 key
+if [ "$response" != "yes" ]; then
+    echo "Operation canceled."
+    exit 0
+fi
 
-    case $key in
-    y | Y)
-        echo "Stopping all containers"
-        docker stop $(docker ps -a -q)
+echo
+echo "Stopping all Docker containers..."
+if containers=$(docker ps -aq); then
+    if [ -n "$containers" ]; then
+        docker stop $containers || true
+        echo -e "${GREEN}✓ Stopped containers${NC}"
+    fi
+fi
 
-        echo "Deleting /containers directory"
-        cd /
-        sudo rm -rf containers
+echo "Removing /containers directory..."
+if [ -d "/containers" ]; then
+    sudo rm -rf /containers || exit 1
+    echo -e "${GREEN}✓ Removed /containers${NC}"
+fi
 
-        echo "Deleting /home/$USER/saffron"
-        cd /home/$USER/
-        sudo rm -rf saffron
-        echo "Removal complete. If you want to remove leftover docker images, use docker [container|image|system|network|etc] prune"
-        exit 0
-        ;;
+echo "Removing /home/$USER/saffron directory..."
+if [ -d "/home/$USER/saffron" ]; then
+    sudo rm -rf /home/$USER/saffron || exit 1
+    echo -e "${GREEN}✓ Removed saffron${NC}"
+fi
 
-    n | N)
-        echo "You pressed $key. Operation canceled."
-        exit 0
-        ;;
-    *)
-        echo "Invalid input. Please press 'y' or 'n'."
-        ;;
-    esac
-
-done
+echo
+echo -e "${GREEN}Removal complete!${NC}"
+echo "Leftover Docker resources can be cleaned with:"
+echo "  docker system prune -a"
+echo

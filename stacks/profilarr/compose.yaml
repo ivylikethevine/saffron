@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   profilarr:
     image: ghcr.io/dictionarry-hub/profilarr:latest
+    pull_policy: always
     container_name: profilarr
     ports:
       - 6868:6868
@@ -21,10 +23,22 @@ services:
   # Optional - only needed for CF/QP testing
   parser:
     image: ghcr.io/dictionarry-hub/profilarr-parser:latest
+    pull_policy: always
     container_name: profilarr-parser
     restart: unless-stopped
     expose:
       - "5000"
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -qO-
+        - --timeout=2
+        - http://localhost:5000/health
+      start_period: 15s
+      interval: 10s
+      timeout: 3s
+      retries: 3
 networks:
   servarr_bridge:
     external: true
