@@ -1,0 +1,38 @@
+name: Image Freshness
+
+# Saffron pins every image to a specific release, so nothing notices when
+# upstream ships a new one. Dependabot can't help here — its docker ecosystem
+# only matches `Dockerfile` and `docker-compose.yml`/`.yaml`, and every stack
+# uses `compose.yaml`. This job fills that gap.
+#
+# It reports into the job summary and always succeeds: a stale upstream
+# release is information, not a build failure.
+
+on:
+  schedule:
+    # 09:00 UTC on the 1st of each month, matching the dependabot cadence.
+    - cron: "0 9 1 * *"
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "resources/check-image-freshness.py"
+      - ".github/workflows/image-freshness.yml"
+
+jobs:
+  image-freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y python3-yaml
+
+      - name: Check pinned image tags against upstream
+        env:
+          # Each GHCR image costs two requests (releases API + tag list);
+          # the unauthenticated limit is 60/hr and shared across the runner.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 resources/check-image-freshness.py --markdown \
+            >> "$GITHUB_STEP_SUMMARY"

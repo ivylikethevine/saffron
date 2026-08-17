@@ -15,9 +15,53 @@ These have been implemented:
 - **Network topology diagram** — Added Mermaid diagram to CLAUDE.md showing servarr_bridge, VPN-routed services (bitmagnet-gluetun, qbittorrentvpn), and host-mode services. Created `resources/generate-topology.py` to regenerate diagram programmatically. See commit 700d2fe.
 - **Multi-arch verification in CI** — Added `multi-arch-verify` job to `.github/workflows/compose-validate.yml` that checks ARM64 image availability for linuxserver, qmcgaw, and GHCR images via Docker Hub registry API. Verifies all multi-arch images support both linux/amd64 and linux/arm64v8. See commit ebf07f5.
 
+- **Automated dependency updates** — Added `.github/dependabot.yml`
+  (`github-actions` ecosystem, monthly, grouped) plus
+  `.github/workflows/image-freshness.yml` and
+  `resources/check-image-freshness.py`, which compare every pinned `image:`
+  tag against upstream and report into the CI job summary. Runs monthly and
+  on demand; always exits 0, since a stale upstream release is information,
+  not a build failure.
+
+  Two constraints worth remembering, both learned the hard way:
+
+  1. **Dependabot cannot watch these files.** Its `docker` ecosystem only
+     matches `Dockerfile` and `docker-compose.yml`/`.yaml`, and every stack
+     here uses `compose.yaml`. A `docker` block would not error — it would
+     just silently never open a PR. Hence the custom checker.
+  2. **GHCR's `tags/list` returns tags oldest-first.** Page 1 of
+     home-assistant is 2021 dev builds; the current release sits thousands
+     of pages deep, so forward pagination finds old tags, not new ones. The
+     script uses the GitHub releases API (newest-first) _merged_ with a
+     bounded tag-list walk, because the releases API alone lags the registry
+     — bitmagnet ships a `v0.10.1` image tag with no matching release.
+
+  Tag comparison is shape-aware (`nightly-…-ls10` is only compared against
+  the same shape) and major-version bumps are reported separately from
+  routine ones, so a Postgres 16 → 18 jump is never presented as a pin edit.
+
 ## Now (high impact, low-to-medium effort)
 
 Real gaps for consideration:
+
+- **Bump the images the freshness check found stale.** First run of
+  `resources/check-image-freshness.py` surfaced four: bitmagnet
+  `v0.9.5 → v0.10.1`, home-assistant `2026.8.0 → 2026.8.2`, seerr
+  `v3.0.1 → v3.4.1`, and postgres `16.15-alpine → 18.6-alpine`. The first
+  three are routine pin edits. **Postgres is not** — 16 → 18 needs a data
+  migration for the bitmagnet database, so treat it as its own piece of
+  work rather than a tag swap.
+
+- **Log rotation defaults.** `grep -c "logging:" -r stacks/` returns zero
+  matches across all 21 stacks, so every container runs on Docker's default
+  json-file driver with no size cap — a slow-motion disk-fill on a box that
+  stays up for months. Add `logging.options.max-size` / `max-file` once to
+  `base-settings` in `stacks/common.yaml.public` so stacks inherit it
+  through the existing `extends` pattern instead of repeating it 24 times.
+  Known limit: not every service extends `common.yaml` — host-mode and
+  VPN-routed services (plex, homeassistant, watchyourlan, the gluetun
+  containers) need checking individually, so this is one edit plus an
+  audit, not a pure one-liner.
 
 ## Next (real gaps, more design work)
 
@@ -75,6 +119,13 @@ Real gaps for consideration:
   flag any `${VAR}` used in a `compose.yaml` that has no corresponding line
   in that stack's `.env.public`, catching the exact gap that bitmagnet and
   speedtest-tracker had before this round of fixes.
+- **`stacks/README.md` drift check in CI.** CI checks that each stack
+  directory _has_ a README, but never that the index in `stacks/README.md`
+  actually lists every stack — CLAUDE.md claims "must be kept in sync (CI
+  checks this)", which is not currently true. Extend the existing "Check
+  for required documentation" step in `compose-validate.yml`: it already
+  loops `stacks/*/` with the right `README.md`/`common.yaml.public` skip
+  logic, so it just needs a second assertion per directory.
 - **Screenshots for the 9 newly-documented stacks.** backrest, bitmagnet,
   gotify, indexing, lidarr, navidrome, profilarr, slskd, and watchyourlan
   currently skip the "WebUI Dashboard" section since no screenshot exists

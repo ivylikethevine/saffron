@@ -1,0 +1,20 @@
+version: 2
+
+updates:
+  # GitHub Actions used by the workflows in .github/workflows/.
+  #
+  # Note: there is deliberately no `docker` ecosystem entry here. Dependabot's
+  # docker support only matches `Dockerfile` and `docker-compose.yml`/`.yaml`,
+  # and every Saffron stack uses `compose.yaml` — a docker entry would find
+  # nothing and silently never open a PR. Image tag freshness is handled by
+  # .github/workflows/image-freshness.yml instead.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "ci"
