@@ -33,7 +33,7 @@ services:
       - servarr_bridge
   byparr:
     container_name: byparr
-    image: ghcr.io/thephaseless/byparr:v3.0.3
+    image: ghcr.io/thephaseless/byparr:main
     pull_policy: missing
     restart: unless-stopped
     shm_size: 2gb
