@@ -9,6 +9,7 @@
 ### What is Saffron?
 
 Saffron is a(n)
+
 1. open sourced
 2. homelab deployment
 3. annotated notebook
@@ -30,6 +31,7 @@ Read this project's README's as a wiki [here](https://ivylikethevine.github.io/s
 Saffron provides 21+ containerized services for a complete homelab:
 
 **Media Management**
+
 - **Sonarr** — TV series automation and management
 - **Radarr** — Movie automation and management
 - **Lidarr** — Music library automation
@@ -39,35 +41,42 @@ Saffron provides 21+ containerized services for a complete homelab:
 - **Navidrome** — Music streaming service
 
 **Content Discovery & Search**
+
 - **Prowlarr** — Unified search aggregator for torrent/usenet indexers
 - **Flaresolverr** — Search proxy for cloudflare-protected sites
 - **Byparr** — Indexer proxy for the *arr ecosystem
 
 **Downloading & Torrenting**
+
 - **qBittorrent** — Torrent client with VPN integration (via gluetun)
 - **Bitmagnet** — DHT crawler and torrent indexer (VPN-routed)
 - **Soulseek (slskd)** — Direct file sharing client (VPN-routed)
 
 **Backup & Archival**
+
 - **Backrest** — Restic-based backup UI for cloud/local backups
 
 **Monitoring & Admin**
+
 - **Dockge** — Docker Compose management UI (the control center)
 - **Dozzle** — Container log viewer
 - **Watchtower** — Automatic container updates
 - **Speedtest Tracker** — Internet speed monitoring
 
 **Smart Home & IoT**
+
 - **Home Assistant** — Smart home automation and integration
 - **ESPHome** — ESP32 IoT device management
 - **Octoprint** — 3D printer monitoring and control
 - **Ustreamer** — Lightweight IP camera streaming
 
 **Documentation**
+
 - **Docsify** — Auto-generated wiki from markdown files
 - **Heimdall** — Dashboard/homepage for your services
 
 **Specialty Services**
+
 - **Gotify** — Push notification server
 - **Profilarr** — Quality profile sync for the *arr ecosystem
 - **Watch Your LAN** — Network device monitoring
@@ -96,7 +105,7 @@ On install, saffron copies it's local `stacks/common.yaml.public` file to `stack
 
 \*\* : These aren't full services since they have no images defined. As such, they can't run alone.
 
-[filename](stacks/common.yaml.public ":include :type=code")
+[filename](stacks/common.yaml.public ':include :type=code')
 
 #### Env Files
 
@@ -138,7 +147,7 @@ Saffron is designed to be extensible. It is more an amalgamation of my experienc
 #### stacks/vscode-server/compose.yaml
 
 ```yaml
-version: "3.8"
+version: '3.8'
 services:
   vscode-server:
     # "vscode-server" is the name of our service.
@@ -195,8 +204,17 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 ### More Documentation
 
-- [CLAUDE.md](CLAUDE.md) - Codebase architecture and contributing guide
-- [SECURITY.md](SECURITY.md) - Security model and production checklist
-- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Common problems and fixes
-- [UPGRADE.md](UPGRADE.md) - Updating, migrating hosts, backups
 - [ROADMAP.md](ROADMAP.md) - Planned improvements and nice-to-haves
+
+#### AI Usage
+
+Heavily inspired by
+[Dictionarry/Profilarr's AI Transparency Statement](https://v2.dictionarry.dev/ai-transparency).
+
+This started as code written entirely by
+[me](https://github.com/ivylikethevine), but I have used generative AI to write
+update parts of it. All of the code here is my _responsibility_ regardless: AI
+is a tool, not an owner of a project. I have personally understood, reviewed,
+and approved all of the AI-generated code in this repository, and **mainline
+releases** carry the same accountability to me as anything I write and publish
+myself.
