@@ -8,15 +8,14 @@ Web UI for managing and updating docker-compose stacks. The control center for S
 
 ## Why Dockge?
 
-Dockge is the **core of Saffron**. Unlike Portainer (heavyweight, proprietary features), Dockge:
 - Edits compose files directly (you always have source control)
 - Lightweight and simple
 - No database required
-- Made by the creator of Uptime Kuma (battle-tested projects)
 
 ## Architecture Compatibility
 
-![x64 Version](https://img.shields.io/docker/v/louislam/dockge/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/louislam/dockge/latest?arch=arm64&label=arm64)
+![x64 Version](https://img.shields.io/docker/v/louislam/dockge/latest?arch=amd64&label=x64)
+![Arm64 Version](https://img.shields.io/docker/v/louislam/dockge/latest?arch=arm64&label=arm64)
 
 ## WebUI Dashboard
 
@@ -33,7 +32,6 @@ Dockge is the **core of Saffron**. Unlike Portainer (heavyweight, proprietary fe
 ## Access
 
 - **URL:** `http://localhost:5001` (or `http://<hostname>.local:5001`)
-- **No Authentication:** Assumes trusted network (LAN only)
 
 ## Usage
 
@@ -45,12 +43,13 @@ Dockge is the **core of Saffron**. Unlike Portainer (heavyweight, proprietary fe
 ## Stacks Directory
 
 Dockge reads from the `DOCKGE_STACKS_DIR` environment variable (set in root `compose.yaml`):
-```
+
+```sh
 /home/$USER/saffron/stacks/
 ```
 
 Each subdirectory (servarr/, torrent/, etc.) becomes a separate "stack" in the UI.
 
-#### `compose.yaml`
+### `compose.yaml`
 
 [filename](compose.yaml ':include :type=code')
