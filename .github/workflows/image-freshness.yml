@@ -11,19 +11,19 @@ name: Image Freshness
 on:
   schedule:
     # 09:00 UTC on the 1st of each month, matching the dependabot cadence.
-    - cron: "0 9 1 * *"
+    - cron: '0 9 1 * *'
   workflow_dispatch:
   pull_request:
     branches: [main]
     paths:
-      - "resources/check-image-freshness.py"
-      - ".github/workflows/image-freshness.yml"
+      - 'resources/check-image-freshness.py'
+      - '.github/workflows/image-freshness.yml'
 
 jobs:
   image-freshness:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
 
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y python3-yaml

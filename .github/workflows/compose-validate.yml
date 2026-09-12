@@ -16,13 +16,15 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
 
       - name: Install Docker Compose
         run: sudo apt-get update && sudo apt-get install -y docker-compose-v2
 
       - name: Validate compose file syntax
         run: |
+          cp stacks/common.yaml.public stacks/common.yaml
+          echo "      - ./data:/data" >> stacks/common.yaml
           for file in stacks/*/compose.yaml; do
             echo "Validating $file..."
             docker compose -f "$file" config > /dev/null || exit 1
@@ -78,7 +80,7 @@ jobs:
   multi-arch-verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
 
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y python3-yaml
