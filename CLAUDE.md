@@ -49,6 +49,7 @@ saffron/
 ### Stack Organization
 
 Each stack is a **separate docker-compose project**:
+
 - **Standalone service** (heimdall, gotify, watchtower): single container in its own compose file
 - **Multi-container stack** (servarr, torrent, bitmagnet): multiple related services networked together
 
@@ -57,6 +58,7 @@ Dockge displays each stack directory as a separate "project" and allows start/st
 ### Shared Configuration (common.yaml)
 
 `stacks/common.yaml.public` defines:
+
 ```yaml
 services:
   base-settings:
@@ -69,12 +71,13 @@ services:
   media-access:
     extends: base-settings
     volumes:
-      - /data/tv:/data/tv        # (populated from $DATA_DIR at install)
+      - /data/tv:/data/tv # (populated from $DATA_DIR at install)
       - /data/movies:/data/movies
       # ... etc
 ```
 
 Most stacks extend one of these base services to inherit consistent:
+
 - User/group IDs (media lib permissions)
 - Timezone
 - Data directory mounts
@@ -120,12 +123,14 @@ graph TB
 ```
 
 **Key relationships:**
+
 - **servarr_bridge**: Connects indexing (prowlarr, flaresolverr, byparr), media management (radarr, sonarr, lidarr), and download clients (qbittorrent, bitmagnet)
 - **bitmagnet-gluetun**: Isolated VPN for bitmagnet (DHT crawler) and slskd (file sharing)
 - **qbittorrentvpn**: Isolated VPN for torrent client (qBittorrent) and port-checker
 - **Host mode**: Services requiring direct host network access (plex transcoding, homeassistant integrations, network scanning)
 
 To regenerate this diagram after adding/removing stacks, run:
+
 ```bash
 python3 resources/generate-topology.py > /tmp/topology.mermaid
 # Compare output with diagram above, update CLAUDE.md if topology changed
@@ -134,27 +139,37 @@ python3 resources/generate-topology.py > /tmp/topology.mermaid
 ## Key Files & Their Purpose
 
 ### compose.yaml
+
 Root compose file. Runs **only dockge** (the web UI).
+
 - **Why separate from stacks?** Dockge manages stacks/ directories, so it can't be in a stack directory without conflict.
 
 ### stacks/README.md
+
 Wiki index of all 21 stacks. Alphabetized list with one-line descriptions and links to per-stack READMEs.
+
 - Automatically published via docsify as the project's public wiki
 - Must be kept in sync with actual `stacks/` directories (CI checks this)
 
 ### stacks/[name]/README.md
+
 Per-stack documentation: project links, architecture compatibility badges, docker info.
+
 - Enables the "self-documenting" claim
 - Also published via docsify
 
 ### stacks/[name]/.env.public
+
 **Template** for required environment variables (credentials, URLs, etc.)
+
 - Not secret; committed to git
 - Users copy to `.env` (which is gitignored) and fill in values
 - Optional; only needed if stack uses env vars
 
 ### resources/install-saffron.sh
+
 Setup automation:
+
 1. Creates `/containers/` directory structure
 2. Prompts for `$DATA_DIR` (bulk media storage location)
 3. Generates `stacks/common.yaml` by interpolating `$DATA_DIR` into `common.yaml.public`
@@ -163,7 +178,9 @@ Setup automation:
 **Critical bug fixed:** Previously line 32 used `>` (overwrite) instead of appending, losing the entire common.yaml template.
 
 ### .github/workflows/compose-validate.yml
+
 GitHub Actions CI:
+
 - Validates each stack's compose file syntax
 - Checks every stack directory has a README.md
 - Verifies compose version and pull_policy presence
@@ -172,12 +189,14 @@ GitHub Actions CI:
 ## Architecture Decisions
 
 ### Static YAML, No Orchestration
+
 - ✓ Simple: easy to understand, fork, modify
 - ✓ Git-friendly: version history, diffs, rollbacks
 - ✗ Manual: no automatic scaling, no self-healing
 - **Trade-off:** Suits homelabs (static topology, manual ops preferred)
 
 ### One Compose File Per Stack
+
 - ✓ Independent deployment and updates
 - ✓ Clear separation of concerns
 - ✓ Survives if one stack's compose breaks
@@ -185,12 +204,14 @@ GitHub Actions CI:
 - **Trade-off:** Uses `depends_on` within stacks; cross-stack needs manual ordering in UI
 
 ### Extends Pattern for Shared Config
+
 - ✓ DRY (don't repeat PUID/timezone in 20 files)
 - ✓ Survives if one service breaks extends target
 - ✗ Extends can't override individual volumes, so each stack still repeats some boilerplate
 - **Trade-off:** Good enough for the consistency level needed
 
 ### pull_policy: missing for pinned, always for floating
+
 - **Pinned services** (profilarr, byparr, homeassistant, indexing, torrent, servarr, etc.) use `pull_policy: missing` — skip re-pull if image tag already present locally. Watchtower handles intentional updates.
 - **Floating-tag services** (portcheck, which has no semver tags) use `pull_policy: always` — necessary when upstream only publishes `:latest`.
 - ✓ Avoids re-pulling same digest on every restart (efficiency)
@@ -198,6 +219,7 @@ GitHub Actions CI:
 - See commit 532cba4 for full hardening pass (2026-08-16)
 
 ### Separate Data Directory ($DATA_DIR)
+
 - `/containers/` = config (linked to git projects, small)
 - `$DATA_DIR` = media (unlinked, hundreds of GB)
 - ✓ Easy to move media between machines
@@ -235,12 +257,12 @@ GitHub Actions CI:
 
 ```bash
 # Validate one compose file
-docker-compose -f stacks/servarr/compose.yaml config
+docker compose -f stacks/servarr/compose.yaml config
 
 # Start a stack via dockge UI after docker-compose is running
 # Or manually:
 cd stacks/servarr
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Common Tasks
@@ -260,7 +282,7 @@ cd saffron/resources
 cd stacks/torrent
 cp .env.public .env
 # Edit .env with your VPN credentials
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Mirror Saffron Setup to Another Machine
@@ -295,17 +317,20 @@ Saffron scales by **adding stacks**, not by replicating existing ones. No load b
 ## Security Considerations
 
 ### Secrets Management
+
 - Never commit `.env` files; `.gitignore` enforces this
 - `.env.public` templates document what's needed, not actual values
 - Consider git-crypt or bitwarden for shared credentials across team
 
 ### Network Exposure
+
 - By default, all services bind to `localhost` (not `0.0.0.0`)
 - Services accessible only within docker network or via port mappings
 - VPN services (bitmagnet, torrent) tunnel traffic through external VPN
 - No TLS termination built-in; use reverse proxy if exposing to internet
 
 ### Image Provenance
+
 - `pull_policy: always` ensures latest versions on start
 - linuxserver.io images are widely trusted, but audit before using others
 - No image signing/verification; consider adding in future if needed
@@ -313,17 +338,21 @@ Saffron scales by **adding stacks**, not by replicating existing ones. No load b
 ## Troubleshooting
 
 ### Compose file fails to start
-- Run `docker-compose -f stacks/[name]/compose.yaml config` to check syntax
+
+- Run `docker compose -f stacks/[name]/compose.yaml config` to check syntax
 - Check CI workflow passed (green checkmark on GitHub)
 
 ### Stack won't start: "Can't connect to servarr_bridge"
+
 - Manually create the bridge: `docker network create servarr_bridge`
 - Or start one stack that defines it first (e.g., servarr)
 
 ### /containers directory doesn't exist
+
 - Run `install-saffron.sh` again, or manually: `sudo mkdir -p /containers && sudo chown 1000:1000 /containers`
 
 ### Dockge won't start: "docker.sock permission denied"
+
 - User may not be in docker group: `sudo usermod -aG docker $USER && newgrp docker`
 
 ## Future Improvements

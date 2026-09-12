@@ -4,13 +4,13 @@ on:
   push:
     branches: [main]
     paths:
-      - "stacks/**/*.yaml"
-      - "stacks/**/*.yml"
+      - 'stacks/**/*.yaml'
+      - 'stacks/**/*.yml'
   pull_request:
     branches: [main]
     paths:
-      - "stacks/**/*.yaml"
-      - "stacks/**/*.yml"
+      - 'stacks/**/*.yaml'
+      - 'stacks/**/*.yml'
 
 jobs:
   validate:
@@ -25,7 +25,7 @@ jobs:
         run: |
           for file in stacks/*/compose.yaml; do
             echo "Validating $file..."
-            docker-compose -f "$file" config > /dev/null || exit 1
+            docker compose -f "$file" config > /dev/null || exit 1
           done
           echo "✓ All compose files are valid"
 
@@ -151,8 +151,7 @@ jobs:
                   if not image:
                       continue
 
-                  # Track linuxserver and known multi-arch images
-                  if 'linuxserver' in image or 'qmcgaw' in image or image.startswith('ghcr.io/'):
+                  if image.startswith('ghcr.io/'):
                       if image not in arm64_images:
                           arm64_images[image] = check_image_manifests(image)
 
