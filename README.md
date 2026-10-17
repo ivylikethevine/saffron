@@ -199,7 +199,7 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 1. `/containers/` - stores individual generated configs, db files, etc.
    - This is not a perfect separation, since some containers will use config for "data" (such as torrent clients using it as a default download location)
-2. `/home/$USER/saffron/stacks` - all stacks & services' compose files
+2. `stacks/` in the checkout - all stacks & services' compose files
 3. `$DATA_DIR` - where bulk files are stored (configured during setup) See [common.yaml](#common-yaml) for more infromation.
 
 ### More Documentation

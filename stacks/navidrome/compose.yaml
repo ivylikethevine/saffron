@@ -1,7 +1,6 @@
 services:
   navidrome:
     image: deluan/navidrome:0.64.2
-    pull_policy: missing
     container_name: navidrome
     labels:
       homepage.group: Media
@@ -9,7 +8,6 @@ services:
       homepage.icon: navidrome.png
       homepage.href: http://${HOMEPAGE_HOST:-localhost}:4533
       homepage.description: Music streaming
-    restart: unless-stopped
     ports:
       - 4533:4533
     extends:
@@ -32,10 +30,6 @@ services:
         - curl
         - -fsS
         - http://localhost:4533/ping
-      start_period: 30s
-      interval: 30s
-      timeout: 5s
-      retries: 3
 networks:
   servarr_bridge:
     external: true

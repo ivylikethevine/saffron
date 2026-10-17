@@ -2,7 +2,6 @@
 services:
   gotify:
     image: gotify/server:3.1.1
-    pull_policy: missing
     container_name: gotify
     labels:
       homepage.group: Infrastructure
@@ -10,7 +9,6 @@ services:
       homepage.icon: gotify.png
       homepage.href: http://${HOMEPAGE_HOST:-localhost}:8321
       homepage.description: Notifications
-    restart: unless-stopped
     ports:
       - 8321:80
     extends:

@@ -51,6 +51,19 @@ These have been implemented:
 - **Homepage stack** on port 82 beside heimdall, with the docker socket
   mounted read-only for label discovery.
 - **CI: `.env.public` completeness and `stacks/README.md` index checks.**
+- **Consistency pass**: every floating tag pinned (bitmagnet, byparr,
+  dockge), obsolete `version:` keys dropped, retired readarr swapped for
+  bookshelf (data stays in `/containers/readarr`), stale bazarr docs
+  removed, watchtower replaced by diun, healthchecks on every service with
+  a verified binary, `/etc/localtime` as the one timezone source.
+- **Template consolidation**: `restart`, `pull_policy`, hardening, log
+  rotation, healthcheck timings and the timezone mount live in
+  `base-settings` and every service extends it. The root compose and the
+  two stacks that need the checkout path read it from `PWD`/`SAFFRON_DIR`
+  instead of `/home/$USER/saffron`. The pre-commit hook is linked by the
+  install script. The multi-arch CI job, which only ever checked ghcr images
+  and skipped those unconditionally, and the Jekyll build of a docsify site
+  are gone.
 - **`homepage.*` labels on all 26 UI services**, grouped Media, Media
   Management, Indexing, Downloads, Home and Infrastructure; links use
   `HOMEPAGE_HOST`, passed down from dockge.
@@ -94,15 +107,14 @@ These have been implemented:
   nothing verifies a restore actually works. A periodic (manual or
   scripted) "restore into a scratch dir and diff" check would turn "we have
   backups" into "we know the backups work."
-- **Pre-commit hook auto-install.** `resources/pre-commit` (webp
-  conversion) has to be manually copied into `.git/hooks/`. A one-line
-  step in `install-saffron.sh` (`ln -sf` or `git config core.hooksPath`)
-  would make it opt-out instead of easy-to-forget.
-- **Smoke-test CI builds.** The `multi-arch-verify` job now checks ARM64
-  availability, but doesn't actually build containers on ARM. A follow-up
-  could add experimental `runs-on: ubuntu-latest-arm64` jobs to catch ARM-
-  specific breakage, though this is expensive and only needed if Saffron
-  actually runs on ARM hardware (Raspberry Pi, etc.).
+- **One shared VPN stack.** torrent and bitmagnet each run their own
+  gluetun. A single `vpn` stack with consumers on
+  `network_mode: container:gluetun` halves credentials and config, at the
+  cost of a cross-stack startup-order dependency.
+- **ARM64 verification.** Nothing checks that pinned images publish an
+  arm64 manifest. Only needed if Saffron runs on ARM hardware; the check
+  belongs in `check-image-freshness.py`, which already talks to both
+  registries.
 
 ## Nice-to-haves (low priority, quality-of-life)
 
@@ -114,6 +126,17 @@ These have been implemented:
   currently skip the "WebUI Dashboard" section since no screenshot exists
   in `resources/screenshots/` — cosmetic, but matches the pattern the rest
   of the wiki uses.
+
+## Candidate services
+
+- **Media**: Jellyfin (open alternative to Plex), Tautulli (Plex stats),
+  Audiobookshelf, Unpackerr and Cleanuparr (arr queue hygiene), Recyclarr
+  if profilarr proves heavy.
+- **Ops**: Uptime Kuma (same author as Dockge), Beszel (lightweight host and
+  container metrics), Scrutiny (disk SMART health, pairs with backrest).
+- **Network and auth**: Caddy with Tinyauth or Authelia for the proxy and
+  login items above, Pi-hole or AdGuard Home, Vaultwarden.
+- **Photos**: Immich.
 
 ## Explicitly out of scope (for now)
 

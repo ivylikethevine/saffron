@@ -1,5 +1,3 @@
----
-
 services:
   dockge:
     image: louislam/dockge:1.5.0
@@ -21,11 +19,14 @@ services:
     ports:
       - 5001:5001
     environment:
-      - DOCKGE_STACKS_DIR=/home/$USER/saffron/stacks
-      - USER=$USER # to pass down to use in other stacks
-      - HOMEPAGE_HOST=${HOMEPAGE_HOST:-localhost} # host browsers use in homepage links; passed down to stacks
+      # dockge needs the stacks path to be the same inside and outside the container
+      - DOCKGE_STACKS_DIR=${PWD}/stacks
+      # passed down to every stack dockge starts
+      - SAFFRON_DIR=${PWD}
+      - USER=$USER
+      - HOMEPAGE_HOST=${HOMEPAGE_HOST:-localhost} # host browsers use in homepage links
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /containers/dockge/data:/app/data
-      - /home/$USER/saffron/stacks:/home/$USER/saffron/stacks
+      - ${PWD}/stacks:${PWD}/stacks
       - /etc/localtime:/etc/localtime:ro

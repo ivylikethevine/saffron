@@ -1,9 +1,7 @@
 services:
   diun:
     image: ghcr.io/crazy-max/diun:4.33.0
-    pull_policy: missing
     container_name: diun
-    restart: unless-stopped
     command: serve
     extends:
       file: ../common.yaml

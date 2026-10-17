@@ -1,7 +1,6 @@
 services:
   backrest:
     image: ghcr.io/garethgeorge/backrest:v1.14.1
-    pull_policy: missing
     container_name: backrest
     labels:
       homepage.group: Infrastructure
@@ -18,7 +17,7 @@ services:
       - /containers/backrest/cache:/cache
       - /containers/backrest/tmp:/tmp
       - /containers/:/userdata/containers
-      - ${HOME}/saffron:/userdata/saffron
+      - ${SAFFRON_DIR:-../..}:/userdata/saffron
       - /data/tv:/userdata/tv
       - /data/movies:/userdata/movies
       - /data/music:/userdata/music
@@ -30,7 +29,6 @@ services:
       - TMPDIR=/tmp
     ports:
       - 9898:9898
-    restart: unless-stopped
     deploy:
       resources:
         limits:
@@ -41,8 +39,4 @@ services:
         - curl
         - -fsS
         - http://localhost:9898/
-      start_period: 30s
-      interval: 30s
-      timeout: 5s
-      retries: 3
 networks: {}

@@ -1,9 +1,7 @@
 services:
   homepage:
     image: ghcr.io/gethomepage/homepage:v2.6.0
-    pull_policy: missing
     container_name: homepage
-    restart: unless-stopped
     extends:
       file: ../common.yaml
       service: base-settings

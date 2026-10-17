@@ -1,8 +1,10 @@
 services:
   bitmagnet:
     image: ghcr.io/bitmagnet-io/bitmagnet:v0.10.1
-    pull_policy: missing
     container_name: bitmagnet
+    extends:
+      file: ../common.yaml
+      service: base-settings
     labels:
       homepage.group: Indexing
       homepage.name: Bitmagnet
@@ -10,20 +12,12 @@ services:
       homepage.href: http://${HOMEPAGE_HOST:-localhost}:3333
       homepage.description: DHT crawler
     network_mode: service:bitmagnet-gluetun
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
     environment:
       POSTGRES_HOST: bitmagnet-postgres
       POSTGRES_PASSWORD: $POSTGRES_PW
       CLASSIFIER_DELETE_XXX: true
     volumes:
       - /containers/bitmagnet:/root/.config/bitmagnet
-      - /etc/localtime:/etc/localtime:ro
     command:
       - worker
       - run
@@ -43,21 +37,12 @@ services:
         - curl
         - -fsS
         - http://localhost:3333/metrics
-      start_period: 30s
-      interval: 30s
-      timeout: 5s
-      retries: 3
   bitmagnet-gluetun:
     container_name: bitmagnet-gluetun
+    extends:
+      file: ../common.yaml
+      service: base-settings
     image: qmcgaw/gluetun:v3.41.3
-    pull_policy: missing
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
     cap_add:
       - NET_ADMIN
     ports:
@@ -78,8 +63,6 @@ services:
       VPN_PORT_FORWARDING_LISTENING_PORT: 13612
     devices:
       - /dev/net/tun:/dev/net/tun
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
     extra_hosts:
       - bitmagnet-postgres:5.5.5.2
     networks:
@@ -88,18 +71,12 @@ services:
       servarr_bridge: {}
   bitmagnet-postgres:
     image: postgres:16.15-alpine
-    pull_policy: missing
     container_name: bitmagnet-postgres
-    security_opt:
-      - no-new-privileges:true
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
+    extends:
+      file: ../common.yaml
+      service: base-settings
     volumes:
       - /containers/bitmagnet/postgres:/var/lib/postgresql/data
-      - /etc/localtime:/etc/localtime:ro
-    restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: $POSTGRES_PW
       POSTGRES_DB: bitmagnet

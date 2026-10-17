@@ -1,7 +1,6 @@
 services:
   radarr:
     image: linuxserver/radarr:6.4.4
-    pull_policy: missing
     container_name: radarr
     labels:
       homepage.group: Media Management
@@ -9,7 +8,6 @@ services:
       homepage.icon: radarr.png
       homepage.href: http://${HOMEPAGE_HOST:-localhost}:7878
       homepage.description: Movies
-    restart: unless-stopped
     ports:
       - 7878:7878
     extends:
@@ -27,10 +25,6 @@ services:
         - curl
         - -fsS
         - http://localhost:7878/ping
-      start_period: 30s
-      interval: 30s
-      timeout: 5s
-      retries: 3
     networks:
       - bridge
   bookshelf:
@@ -38,7 +32,6 @@ services:
     # softcover tag keeps Readarr's Goodreads metadata and reads the existing
     # Readarr config directory in place.
     image: ghcr.io/pennydreadful/bookshelf:softcover-v0.4.21.182
-    pull_policy: missing
     container_name: bookshelf
     labels:
       homepage.group: Media Management
@@ -46,7 +39,6 @@ services:
       homepage.icon: readarr.png
       homepage.href: http://${HOMEPAGE_HOST:-localhost}:8787
       homepage.description: Ebooks
-    restart: unless-stopped
     ports:
       - 8787:8787
     extends:
@@ -65,15 +57,10 @@ services:
         - curl
         - -fsS
         - http://localhost:8787/ping
-      start_period: 30s
-      interval: 30s
-      timeout: 5s
-      retries: 3
     networks:
       - bridge
   sonarr:
     image: linuxserver/sonarr:4.0.20
-    pull_policy: missing
     container_name: sonarr
     labels:
       homepage.group: Media Management
@@ -81,7 +68,6 @@ services:
       homepage.icon: sonarr.png
       homepage.href: http://${HOMEPAGE_HOST:-localhost}:8989
       homepage.description: TV
-    restart: unless-stopped
     ports:
       - 8989:8989
     extends:
@@ -99,10 +85,6 @@ services:
         - curl
         - -fsS
         - http://localhost:8989/ping
-      start_period: 30s
-      interval: 30s
-      timeout: 5s
-      retries: 3
     networks:
       - bridge
 networks:

@@ -1,7 +1,6 @@
 services:
   plex:
     image: linuxserver/plex:1.43.4
-    pull_policy: missing
     container_name: plex
     labels:
       homepage.group: Media
@@ -12,7 +11,6 @@ services:
     network_mode: host
     environment:
       VERSION: docker
-    restart: unless-stopped
     devices:
       - /dev/dri:/dev/dri # for intel hardware decode
     extends:
@@ -30,13 +28,8 @@ services:
         - curl
         - -fsS
         - http://localhost:32400/identity
-      start_period: 30s
-      interval: 30s
-      timeout: 5s
-      retries: 3
   seerr:
     image: ghcr.io/seerr-team/seerr:v3.5.0
-    pull_policy: missing
     container_name: seerr
     labels:
       homepage.group: Media
@@ -51,7 +44,6 @@ services:
       - /containers/overseerr/config:/app/config
     ports:
       - 5055:5055
-    restart: unless-stopped
     healthcheck:
       test:
         - CMD
@@ -59,10 +51,6 @@ services:
         - -qO-
         - --timeout=2
         - http://localhost:5055/api/v1/status
-      start_period: 30s
-      interval: 30s
-      timeout: 5s
-      retries: 3
     networks:
       - servarr_bridge
 networks:

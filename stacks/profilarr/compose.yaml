@@ -1,7 +1,6 @@
 services:
   profilarr:
     image: ghcr.io/dictionarry-hub/profilarr:2.2.0
-    pull_policy: missing
     container_name: profilarr
     labels:
       homepage.group: Media Management
@@ -18,7 +17,6 @@ services:
     extends:
       file: ../common.yaml
       service: media-access
-    restart: unless-stopped
     environment:
       - PARSER_HOST=parser
       - PARSER_PORT=5000
@@ -32,9 +30,10 @@ services:
   # Optional - only needed for CF/QP testing
   parser:
     image: ghcr.io/dictionarry-hub/profilarr-parser:2.2.0
-    pull_policy: missing
     container_name: profilarr-parser
-    restart: unless-stopped
+    extends:
+      file: ../common.yaml
+      service: base-settings
     expose:
       - "5000"
     deploy:

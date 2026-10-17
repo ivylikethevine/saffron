@@ -1,7 +1,6 @@
 services:
   esphome:
     image: esphome/esphome:2026.9.1
-    pull_policy: missing
     container_name: esphome
     labels:
       homepage.group: Home
@@ -9,7 +8,6 @@ services:
       homepage.icon: esphome.png
       homepage.href: http://${HOMEPAGE_HOST:-localhost}:6052
       homepage.description: IoT devices
-    restart: unless-stopped
     extends:
       file: ../common.yaml
       service: base-settings

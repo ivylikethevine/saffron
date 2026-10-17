@@ -20,7 +20,7 @@ docker run hello-world
 
 ```bash
 docker stop $(docker ps -a -q) # Important to stop before updates! (remove the $ if using fish shell)
-cd /home/$USER/saffron
+cd saffron # the checkout
 git pull
 docker compose up -d dockge # Then visit dockge to start/stop containers
 ```
@@ -28,8 +28,7 @@ docker compose up -d dockge # Then visit dockge to start/stop containers
 #### To Remove
 
 ```bash
-cd /home/$USER/saffron/resources
-./remove-saffron.sh
+./saffron/resources/remove-saffron.sh
 ```
 
 #### `install-saffron.sh`

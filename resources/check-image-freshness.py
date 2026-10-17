@@ -14,7 +14,7 @@ Best-effort by design — it never exits non-zero for a stale image. Network
 failures, rate limits, and unparseable tags are reported as "skipped", not
 treated as findings.
 
-Usage:
+Usage (needs resources/requirements.txt):
     python3 resources/check-image-freshness.py
     python3 resources/check-image-freshness.py --markdown   # for CI summaries
 """

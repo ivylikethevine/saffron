@@ -69,13 +69,9 @@
 
 - &#x2705; [watchyourlan](stacks/watchyourlan/README.md) - Lightweight LAN device and network monitor.
 
-- For other projects that use a docker compose file from locally built Dockerfiles, clone the repo into `/home/$USER/saffron/stacks`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
+- For other projects that use a docker compose file from locally built Dockerfiles, clone the repo into `stacks/`, then add `stacks/repoName/` to the `.gitignore` file. An alternative is to use either the `p-` or `dev-` prefix in the stack name to be ignored by git. See [editing .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) for more information.
 
-### `common.yaml`
-
-[Live view of local common.yaml](common.yaml ':include :type=yaml')
-
-#### `common.yaml.public`
+### `common.yaml.public`
 
 [Default saffron common.yaml.public](common.yaml.public ':include :type=yaml yaml')
 
