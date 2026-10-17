@@ -37,11 +37,10 @@ Done, pending review:
   cost of a cross-stack startup-order dependency.
 - **Root compose hardcodes `/home/$USER/saffron`.** Have
   `install-saffron.sh` write the real path into a `.env` beside it.
-- **Cheap hardening in `base-settings`**: `security_opt:
-  [no-new-privileges:true]` and logging limits inherit through `extends`
-  like PUID does.
-- **Replace Heimdall with Homepage or Dashy.** Both auto-discover services
-  from Docker labels, closing the dashboard-drift item without a script.
+- Done: `no-new-privileges` and 10m × 3 log rotation on `base-settings`,
+  repeated on the six services that don't extend it.
+- Done: homepage stack on port 82 beside heimdall, with `homepage.*` labels
+  on every UI service.
 
 ## Related services
 
@@ -57,5 +56,3 @@ Done, pending review:
 ## Upgrades pending
 
 - Postgres 16 to 18 for bitmagnet: dump and restore, not a tag edit.
-- Home Assistant, seerr and bitmagnet pins are behind per the freshness
-  check.

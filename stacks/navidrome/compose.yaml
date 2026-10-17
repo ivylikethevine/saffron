@@ -1,8 +1,14 @@
 services:
   navidrome:
-    image: deluan/navidrome:0.63.2
+    image: deluan/navidrome:0.64.2
     pull_policy: missing
     container_name: navidrome
+    labels:
+      homepage.group: Media
+      homepage.name: Navidrome
+      homepage.icon: navidrome.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:4533
+      homepage.description: Music streaming
     restart: unless-stopped
     ports:
       - 4533:4533

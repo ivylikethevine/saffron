@@ -146,7 +146,7 @@ Root compose file. Runs **only dockge** (the web UI).
 
 ### stacks/README.md
 
-Wiki index of all 21 stacks. Alphabetized list with one-line descriptions and links to per-stack READMEs.
+Wiki index of all 22 stacks. Alphabetized list with one-line descriptions and links to per-stack READMEs.
 
 - Automatically published via docsify as the project's public wiki
 - Must be kept in sync with actual `stacks/` directories (CI checks this)
@@ -182,7 +182,8 @@ Setup automation:
 GitHub Actions CI:
 
 - Validates each stack's compose file syntax
-- Checks every stack directory has a README.md
+- Checks every stack directory has a README.md and is listed in `stacks/README.md`
+- Checks every `$VAR` a compose file uses is documented in that stack's `.env.public` (`USER`, `HOME` and `HOMEPAGE_HOST` exempt)
 - Rejects the obsolete `version:` key and verifies pull_policy presence
 - Runs on push/PR to stacks/ directory
 

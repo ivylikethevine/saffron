@@ -3,8 +3,20 @@ services:
     image: aceberg/watchyourlan:2.1.4
     pull_policy: missing
     container_name: watchyourlan
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: WatchYourLAN
+      homepage.icon: watchyourlan.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8840
+      homepage.description: LAN devices
     restart: unless-stopped
     network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
     ports:
       - 8840:8840
     environment:

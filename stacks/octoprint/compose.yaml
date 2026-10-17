@@ -3,6 +3,12 @@ services:
     image: octoprint/octoprint:1.11.8
     pull_policy: missing
     container_name: octoprint
+    labels:
+      homepage.group: Home
+      homepage.name: OctoPrint
+      homepage.icon: octoprint.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:85
+      homepage.description: 3D printer
     restart: unless-stopped
     ports:
       - 85:80

@@ -1,9 +1,21 @@
 services:
   ustreamer:
-    image: pikvm/ustreamer:v6.62
+    image: pikvm/ustreamer:v6.66
     pull_policy: missing
     container_name: ustreamer
+    labels:
+      homepage.group: Home
+      homepage.name: uStreamer
+      homepage.icon: mdi-cctv
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8083
+      homepage.description: IP camera
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
     devices:
       - /dev/video0:/dev/video0
     volumes:

@@ -40,28 +40,28 @@ These have been implemented:
   the same shape) and major-version bumps are reported separately from
   routine ones, so a Postgres 16 → 18 jump is never presented as a pin edit.
 
+## ✓ Completed (2026-10-17)
+
+- **Routine pin bumps** from `check-image-freshness.py`, all 17 non-major
+  ones in one batch.
+- **Log rotation and `no-new-privileges`** on `base-settings` in
+  `common.yaml.public` (10m × 3 json-file), repeated directly on the six
+  services that don't extend it: bitmagnet's three, ustreamer, watchyourlan
+  and dockge.
+- **Homepage stack** on port 82 beside heimdall, with the docker socket
+  mounted read-only for label discovery.
+- **CI: `.env.public` completeness and `stacks/README.md` index checks.**
+- **`homepage.*` labels on all 26 UI services**, grouped Media, Media
+  Management, Indexing, Downloads, Home and Infrastructure; links use
+  `HOMEPAGE_HOST`, passed down from dockge.
+- **dozzle v10 → v11.** No config changes; everyone is signed out once.
+
 ## Now (high impact, low-to-medium effort)
 
-Real gaps for consideration:
-
-- **Bump the images the freshness check found stale.** First run of
-  `resources/check-image-freshness.py` surfaced four: bitmagnet
-  `v0.9.5 → v0.10.1`, home-assistant `2026.8.0 → 2026.8.2`, seerr
-  `v3.0.1 → v3.4.1`, and postgres `16.15-alpine → 18.6-alpine`. The first
-  three are routine pin edits. **Postgres is not** — 16 → 18 needs a data
-  migration for the bitmagnet database, so treat it as its own piece of
-  work rather than a tag swap.
-
-- **Log rotation defaults.** `grep -c "logging:" -r stacks/` returns zero
-  matches across all 21 stacks, so every container runs on Docker's default
-  json-file driver with no size cap — a slow-motion disk-fill on a box that
-  stays up for months. Add `logging.options.max-size` / `max-file` once to
-  `base-settings` in `stacks/common.yaml.public` so stacks inherit it
-  through the existing `extends` pattern instead of repeating it 24 times.
-  Known limit: not every service extends `common.yaml` — host-mode and
-  VPN-routed services (plex, homeassistant, watchyourlan, the gluetun
-  containers) need checking individually, so this is one edit plus an
-  audit, not a pure one-liner.
+- **Postgres major bump**, its own piece of work:
+  - **postgres `16.15-alpine → 18.6-alpine`** for bitmagnet needs a
+    `pg_dumpall` from the old container and a restore into the new one;
+    confirm bitmagnet v0.10.1 supports 18 first.
 
 ## Next (real gaps, more design work)
 
@@ -106,26 +106,9 @@ Real gaps for consideration:
 
 ## Nice-to-haves (low priority, quality-of-life)
 
-- **Heimdall/dashboard auto-population.** Heimdall is included but each
-  service still has to be added by hand; a documented "add your new stack
-  here too" step (or a script that reads `stacks/*/compose.yaml` ports and
-  proposes entries) would keep the dashboard from drifting out of sync the
-  way `stacks/README.md` did.
 - **`docker compose config` lint in the pre-commit hook**, not just CI —
   catches YAML mistakes before they're even committed, not just before
   merge.
-- **Per-stack `.env.public` completeness check in CI.** Right now CI
-  checks for `version:`, `pull_policy:`, and README presence; it could also
-  flag any `${VAR}` used in a `compose.yaml` that has no corresponding line
-  in that stack's `.env.public`, catching the exact gap that bitmagnet and
-  speedtest-tracker had before this round of fixes.
-- **`stacks/README.md` drift check in CI.** CI checks that each stack
-  directory _has_ a README, but never that the index in `stacks/README.md`
-  actually lists every stack — CLAUDE.md claims "must be kept in sync (CI
-  checks this)", which is not currently true. Extend the existing "Check
-  for required documentation" step in `compose-validate.yml`: it already
-  loops `stacks/*/` with the right `README.md`/`common.yaml.public` skip
-  logic, so it just needs a second assertion per directory.
 - **Screenshots for the 9 newly-documented stacks.** backrest, bitmagnet,
   gotify, indexing, lidarr, navidrome, profilarr, slskd, and watchyourlan
   currently skip the "WebUI Dashboard" section since no screenshot exists

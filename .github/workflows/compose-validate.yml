@@ -46,6 +46,36 @@ jobs:
           done
           echo "✓ All stacks have README.md files"
 
+      - name: Check stacks/README.md lists every stack
+        run: |
+          fail=0
+          for dir in stacks/*/; do
+            stack=$(basename "$dir")
+            if ! grep -q "](stacks/$stack/README.md)" stacks/README.md; then
+              echo "✗ stacks/README.md does not list $stack"
+              fail=1
+            fi
+          done
+          [ "$fail" -eq 0 ] || exit 1
+          echo "✓ stacks/README.md lists every stack"
+
+      - name: Check .env.public documents every variable
+        run: |
+          # USER, HOME and HOMEPAGE_HOST come from the host or dockge environment, not .env
+          fail=0
+          for file in stacks/*/compose.yaml; do
+            dir=$(dirname "$file")
+            for v in $(grep -oE '\$\{?[A-Z_][A-Z0-9_]*' "$file" | tr -d '${' | sort -u); do
+              case "$v" in USER|HOME|HOMEPAGE_HOST) continue ;; esac
+              if [ ! -f "$dir/.env.public" ] || ! grep -qE "^#? ?$v=" "$dir/.env.public"; then
+                echo "✗ $file uses \$$v but $dir/.env.public does not document it"
+                fail=1
+              fi
+            done
+          done
+          [ "$fail" -eq 0 ] || exit 1
+          echo "✓ Every compose variable is documented in its .env.public"
+
       - name: Reject obsolete version keys
         run: |
           echo "Checking that no compose file sets the obsolete top-level version key..."

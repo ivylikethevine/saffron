@@ -1,8 +1,14 @@
 services:
   speedtest-tracker:
-    image: linuxserver/speedtest-tracker:1.14.7
+    image: linuxserver/speedtest-tracker:1.15.0
     pull_policy: missing
     container_name: speedtest-tracker
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: Speedtest Tracker
+      homepage.icon: speedtest-tracker.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8011
+      homepage.description: Bandwidth history
     restart: unless-stopped
     ports:
       - 8011:80

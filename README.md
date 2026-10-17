@@ -73,6 +73,7 @@ Saffron provides 21+ containerized services for a complete homelab:
 
 - **Docsify** — Auto-generated wiki from markdown files
 - **Heimdall** — Dashboard/homepage for your services
+- **Homepage** — Label-driven dashboard that discovers services automatically
 
 **Specialty Services**
 

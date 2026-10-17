@@ -4,6 +4,12 @@ services:
       - PGID=1000
       - PUID=1000
       - UMASK=022
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
     volumes:
       - /etc/localtime:/etc/localtime:ro
   media-access:

@@ -1,8 +1,14 @@
 services:
   profilarr:
-    image: ghcr.io/dictionarry-hub/profilarr:2.1.0
+    image: ghcr.io/dictionarry-hub/profilarr:2.2.0
     pull_policy: missing
     container_name: profilarr
+    labels:
+      homepage.group: Media Management
+      homepage.name: Profilarr
+      homepage.icon: mdi-tune
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:6868
+      homepage.description: Quality profiles
     ports:
       - 6868:6868
     volumes:
@@ -25,7 +31,7 @@ services:
         condition: service_healthy
   # Optional - only needed for CF/QP testing
   parser:
-    image: ghcr.io/dictionarry-hub/profilarr-parser:2.1.0
+    image: ghcr.io/dictionarry-hub/profilarr-parser:2.2.0
     pull_policy: missing
     container_name: profilarr-parser
     restart: unless-stopped

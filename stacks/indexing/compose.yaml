@@ -1,8 +1,14 @@
 services:
   prowlarr:
-    image: linuxserver/prowlarr:nightly-2.6.2.5548-ls10
+    image: linuxserver/prowlarr:nightly-2.6.5.5672-ls20
     pull_policy: missing
     container_name: prowlarr
+    labels:
+      homepage.group: Indexing
+      homepage.name: Prowlarr
+      homepage.icon: prowlarr.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:9696
+      homepage.description: Indexer manager
     restart: unless-stopped
     ports:
       - 9696:9696
@@ -28,9 +34,15 @@ services:
     networks:
       - servarr_bridge
   flaresolverr:
-    image: flaresolverr/flaresolverr:v3.5.0
+    image: flaresolverr/flaresolverr:v3.5.2
     pull_policy: missing
     container_name: flaresolverr
+    labels:
+      homepage.group: Indexing
+      homepage.name: FlareSolverr
+      homepage.icon: flaresolverr.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8191
+      homepage.description: Cloudflare proxy
     restart: unless-stopped
     ports:
       - 8191:8191
@@ -52,6 +64,12 @@ services:
       - servarr_bridge
   byparr:
     container_name: byparr
+    labels:
+      homepage.group: Indexing
+      homepage.name: Byparr
+      homepage.icon: mdi-shield-search
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8192
+      homepage.description: Indexer proxy
     image: ghcr.io/thephaseless/byparr:3.0.4
     pull_policy: missing
     restart: unless-stopped

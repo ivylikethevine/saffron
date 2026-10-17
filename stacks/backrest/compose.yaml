@@ -3,6 +3,12 @@ services:
     image: ghcr.io/garethgeorge/backrest:v1.14.1
     pull_policy: missing
     container_name: backrest
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: Backrest
+      homepage.icon: backrest.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:9898
+      homepage.description: Backups
     extends:
       file: ../common.yaml
       service: base-settings

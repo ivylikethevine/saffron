@@ -1,7 +1,13 @@
 services:
   dozzle:
     container_name: dozzle
-    image: amir20/dozzle:v10.7.2
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: Dozzle
+      homepage.icon: dozzle.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:9999
+      homepage.description: Container logs
+    image: amir20/dozzle:v11.3.2
     pull_policy: missing
     restart: unless-stopped
     extends:

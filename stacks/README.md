@@ -26,6 +26,8 @@
 
 - &#x2705; [homeassistant](stacks/homeassistant/README.md) - Smart home automation.
 
+- &#x2705; [homepage](stacks/homepage/README.md) - Dashboard that discovers services from docker labels (port 82).
+
 - &#128994; [indexing](stacks/indexing/README.md) - Search aggregation services.
 
   - &#x2705; prowlarr - Search aggregator.

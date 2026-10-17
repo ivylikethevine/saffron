@@ -4,6 +4,12 @@ services:
       context: .
       network: host
     container_name: docsify
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: Docsify
+      homepage.icon: docsify.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:3005
+      homepage.description: This wiki
     restart: unless-stopped
     ports:
       - 3005:3000

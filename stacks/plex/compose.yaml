@@ -1,8 +1,14 @@
 services:
   plex:
-    image: linuxserver/plex:1.43.3
+    image: linuxserver/plex:1.43.4
     pull_policy: missing
     container_name: plex
+    labels:
+      homepage.group: Media
+      homepage.name: Plex
+      homepage.icon: plex.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:32400
+      homepage.description: Media server
     network_mode: host
     environment:
       VERSION: docker
@@ -29,9 +35,15 @@ services:
       timeout: 5s
       retries: 3
   seerr:
-    image: ghcr.io/seerr-team/seerr:v3.0.1
+    image: ghcr.io/seerr-team/seerr:v3.5.0
     pull_policy: missing
     container_name: seerr
+    labels:
+      homepage.group: Media
+      homepage.name: Seerr
+      homepage.icon: jellyseerr.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:5055
+      homepage.description: Requests
     extends:
       file: ../common.yaml
       service: base-settings
