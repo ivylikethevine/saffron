@@ -16,7 +16,7 @@ saffron/
 │   ├── backrest/             # Example: Restic backup UI
 │   │   ├── compose.yaml
 │   │   └── README.md
-│   ├── servarr/              # Media library management (sonarr/radarr/bazarr/readarr)
+│   ├── servarr/              # Media library management (sonarr/radarr/bookshelf)
 │   ├── torrent/              # qBittorrent + VPN (gluetun)
 │   ├── [20+ other stacks]
 │   └── ...
@@ -50,7 +50,7 @@ saffron/
 
 Each stack is a **separate docker-compose project**:
 
-- **Standalone service** (heimdall, gotify, watchtower): single container in its own compose file
+- **Standalone service** (heimdall, gotify, diun): single container in its own compose file
 - **Multi-container stack** (servarr, torrent, bitmagnet): multiple related services networked together
 
 Dockge displays each stack directory as a separate "project" and allows start/stop/update via UI.
@@ -79,7 +79,7 @@ services:
 Most stacks extend one of these base services to inherit consistent:
 
 - User/group IDs (media lib permissions)
-- Timezone
+- Timezone, via `/etc/localtime:ro` only. Never `/etc/timezone` (missing on some Debian and non-Debian hosts) or a hardcoded `TZ=`.
 - Data directory mounts
 
 **Why not centralize?** If common.yaml broke, every stack would fail. This design keeps each stack independent but consistent.
@@ -183,7 +183,7 @@ GitHub Actions CI:
 
 - Validates each stack's compose file syntax
 - Checks every stack directory has a README.md
-- Verifies compose version and pull_policy presence
+- Rejects the obsolete `version:` key and verifies pull_policy presence
 - Runs on push/PR to stacks/ directory
 
 ## Architecture Decisions
@@ -212,7 +212,7 @@ GitHub Actions CI:
 
 ### pull_policy: missing for pinned, always for floating
 
-- **Pinned services** (profilarr, byparr, homeassistant, indexing, torrent, servarr, etc.) use `pull_policy: missing` — skip re-pull if image tag already present locally. Watchtower handles intentional updates.
+- **Pinned services** (profilarr, byparr, homeassistant, indexing, torrent, servarr, etc.) use `pull_policy: missing` — skip re-pull if image tag already present locally. Diun notifies when a newer tag exists; updates are deliberate pin edits in git.
 - **Floating-tag services** (portcheck, which has no semver tags) use `pull_policy: always` — necessary when upstream only publishes `:latest`.
 - ✓ Avoids re-pulling same digest on every restart (efficiency)
 - ✓ Explicit version pins prevent surprise breakage from upstream releases
@@ -232,7 +232,7 @@ GitHub Actions CI:
 
 1. Create `stacks/newstack/compose.yaml`
 2. Follow existing patterns:
-   - `version: "3.8"` at top
+   - no top-level `version:` key (obsolete in Compose v2)
    - `container_name` matches service name
    - `extends: ../common.yaml` if using linuxserver images
    - `pull_policy: always` for each image

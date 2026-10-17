@@ -13,7 +13,7 @@ x64 and ARM64 supported (optimized for Raspberry Pi)
 ## Related Stacks
 
 - **[homeassistant](../homeassistant/README.md)** — Integrates with Home Assistant for monitoring
-- **[watchtower](../watchtower/README.md)** — Keeps ustreamer updated
+- **[diun](../diun/README.md)** — Notifies when a newer ustreamer image is published
 
 ## Features
 

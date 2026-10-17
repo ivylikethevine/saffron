@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   plex:
     image: linuxserver/plex:1.43.3
@@ -19,6 +18,16 @@ services:
           memory: 4G
     volumes:
       - /containers/plex:/config
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:32400/identity
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 3
   seerr:
     image: ghcr.io/seerr-team/seerr:v3.0.1
     pull_policy: missing
@@ -31,6 +40,17 @@ services:
     ports:
       - 5055:5055
     restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -qO-
+        - --timeout=2
+        - http://localhost:5055/api/v1/status
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 3
     networks:
       - servarr_bridge
 networks:

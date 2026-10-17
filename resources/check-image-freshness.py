@@ -3,7 +3,7 @@
 
 Saffron pins every image to a specific release (see ROADMAP.md, "Pin image
 versions"), which stops surprise breakage but means nothing notices when
-upstream ships a new version. Watchtower updates running containers, not the
+upstream ships a new version. Diun notifies at runtime, but nothing touches the
 committed YAML, so `compose.yaml` drifts silently.
 
 Dependabot can't cover this: its docker ecosystem only matches `Dockerfile`

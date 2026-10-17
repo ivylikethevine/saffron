@@ -46,16 +46,16 @@ jobs:
           done
           echo "✓ All stacks have README.md files"
 
-      - name: Check for required version keys
+      - name: Reject obsolete version keys
         run: |
-          echo "Checking for compose version specification..."
+          echo "Checking that no compose file sets the obsolete top-level version key..."
           for file in stacks/*/compose.yaml; do
-            if ! grep -q '^version:' "$file"; then
-              echo "✗ Missing version in $file"
+            if grep -q '^version:' "$file"; then
+              echo "✗ Obsolete version key in $file (Compose v2 ignores it and warns)"
               exit 1
             fi
           done
-          echo "✓ All compose files have version specified"
+          echo "✓ No compose file sets a version key"
 
       - name: Verify pull_policy settings
         run: |

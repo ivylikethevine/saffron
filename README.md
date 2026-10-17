@@ -35,8 +35,7 @@ Saffron provides 21+ containerized services for a complete homelab:
 - **Sonarr** — TV series automation and management
 - **Radarr** — Movie automation and management
 - **Lidarr** — Music library automation
-- **Readarr** — Ebook library automation
-- **Bazarr** — Subtitle management (integrates with Sonarr/Radarr)
+- **Bookshelf** — Ebook library automation (maintained Readarr fork)
 - **Plex** — Media server and streaming (or self-host streaming)
 - **Navidrome** — Music streaming service
 
@@ -60,7 +59,7 @@ Saffron provides 21+ containerized services for a complete homelab:
 
 - **Dockge** — Docker Compose management UI (the control center)
 - **Dozzle** — Container log viewer
-- **Watchtower** — Automatic container updates
+- **Diun** — Notifications when a newer image tag is published
 - **Speedtest Tracker** — Internet speed monitoring
 
 **Smart Home & IoT**

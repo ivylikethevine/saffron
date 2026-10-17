@@ -1,12 +1,13 @@
-version: "3.8"
 services:
   ustreamer:
     image: pikvm/ustreamer:v6.62
     pull_policy: missing
     container_name: ustreamer
-    restart: always
+    restart: unless-stopped
     devices:
       - /dev/video0:/dev/video0
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 8083:8080
     command: ustreamer --device /dev/video0 -b 32 -w 32 -r 1280x720 -q 60

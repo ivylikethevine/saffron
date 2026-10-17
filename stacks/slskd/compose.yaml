@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   slskd:
     image: slskd/slskd:0.26.0

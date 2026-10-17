@@ -15,7 +15,7 @@ x64 and ARM64 supported
 ## Related Stacks
 
 - **[homeassistant](../homeassistant/README.md)** — Integrates with Home Assistant for automation
-- **[watchtower](../watchtower/README.md)** — Keeps ESPHome container updated
+- **[diun](../diun/README.md)** — Notifies when a newer ESPHome image is published
 
 ## Highlights
 

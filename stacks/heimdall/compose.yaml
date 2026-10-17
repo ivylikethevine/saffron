@@ -1,10 +1,9 @@
-version: "3.8"
 services:
   heimdall:
     image: linuxserver/heimdall:2.8.2
     pull_policy: missing
     container_name: heimdall
-    restart: always
+    restart: unless-stopped
     extends:
       file: ../common.yaml
       service: base-settings
@@ -17,6 +16,16 @@ services:
       resources:
         limits:
           memory: 256M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:80/
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 3
     networks:
       - saffron_default
 networks:

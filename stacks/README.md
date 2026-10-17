@@ -10,6 +10,8 @@
 
 - &#x2705; [bitmagnet](stacks/bitmagnet/README.md) - Self-hosted DHT crawler and torrent indexer, VPN-routed via gluetun.
 
+- &#x2705; [diun](stacks/diun/README.md) - Notifies via gotify when a newer image tag is published for a running container.
+
 - &#x2705; [docsify](stacks/docsify/README.md) - Web UI to view this repo's `README.md`'s as a wiki reflecting local edits. See the [public](https://ivylikethevine.github.io/saffron) instance or visit <http://hostname.local:5001> (if the container is running).
 
 - &#x2705; [dockge](dockge.md) - Web UI to manage docker compose files (integral to `saffron`).
@@ -40,7 +42,7 @@
 
 - &#x2705; [plex](stacks/plex/README.md) - Fully featured media player/environment with many smart TV integrations.
 
-  - &#x2705; overseerr - TV/movie requests.
+  - &#x2705; seerr - TV/movie requests.
 
 - &#x2705; [profilarr](stacks/profilarr/README.md) - Quality profile and custom format sync for the *arr apps.
 
@@ -50,9 +52,8 @@
 
   - &#x2705; radarr - Movie library manager.
 
-  - &#x2705; readarr - Ebook library manager.
+  - &#x2705; bookshelf - Ebook library manager (maintained Readarr fork).
 
-  - &#x2705; bazarr - Subtitle management/requests for sonarr/radarr.
 
 - &#x2705; [slskd](stacks/slskd/README.md) - Soulseek client, VPN-routed via bitmagnet's gluetun.
 
@@ -63,8 +64,6 @@
   - &#x2705; qbittorrentvpn - Torrent client that runs only on VPN connection.
 
 - &#x2705; [ustreamer](stacks/ustreamer/README.md) - Easily deployable IP camera.
-
-- &#x2705; [watchtower](stacks/watchtower/README.md) - Automatically update and restart docker containers.
 
 - &#x2705; [watchyourlan](stacks/watchyourlan/README.md) - Lightweight LAN device and network monitor.
 

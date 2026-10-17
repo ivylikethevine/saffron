@@ -1,10 +1,9 @@
-version: "3.8"
 services:
   speedtest-tracker:
     image: linuxserver/speedtest-tracker:1.14.7
     pull_policy: missing
     container_name: speedtest-tracker
-    restart: always
+    restart: unless-stopped
     ports:
       - 8011:80
     environment:
@@ -22,6 +21,16 @@ services:
       resources:
         limits:
           memory: 512M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:80/api/healthcheck
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 3
     networks:
       - saffron_default
 networks:

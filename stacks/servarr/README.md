@@ -76,49 +76,20 @@ Music library manager.
 
 ![Lidarr UI](../../resources/screenshots/lidarr.webp)
 
-# Readarr
+# Bookshelf
 
-Ebook library manager.
+Ebook library manager, the maintained fork of the retired Readarr. The
+`softcover` image keeps Readarr's Goodreads metadata, so an existing Readarr
+config directory in `/containers/readarr` keeps working in place. The
+`hardcover` image has better metadata but needs a fresh database.
 
-<https://github.com/Readarr/Readarr>
+<https://github.com/pennydreadful/Bookshelf>
 
-<https://wiki.servarr.com/en/readarr>
-
-<https://docs.linuxserver.io/images/docker-readarr/>
-
-<https://github.com/linuxserver/docker-readarr>
-
-<https://hub.docker.com/r/linuxserver/readarr>
-
-## Architecture Compatibility
-
-![x64 Version](https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/linuxserver/readarr/develop?arch=arm64&label=arm64)
+<https://github.com/pennydreadful/Bookshelf/pkgs/container/bookshelf>
 
 ### WebUI Dashboard
 
 ![Readarr UI](../../resources/screenshots/readarr.webp)
-
-# Bazarr
-
-Subtitle management/requests for sonarr/radarr.
-
-<https://github.com/morpheus65535/bazarr>
-
-<https://www.bazarr.media/>
-
-<https://docs.linuxserver.io/images/docker-bazarr/>
-
-<https://github.com/linuxserver/docker-bazarr>
-
-<https://hub.docker.com/r/linuxserver/bazarr>
-
-## Architecture Compatibility
-
-![x64 Version](https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/linuxserver/bazarr/latest?arch=arm64&label=arm64)
-
-### WebUI Dashboard
-
-![Bazarr UI](../../resources/screenshots/bazarr.webp)
 
 #### `compose.yaml`
 

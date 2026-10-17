@@ -4,7 +4,7 @@ Search aggregation services for the *arr stack.
 
 ## Related Stacks
 
-- **[servarr](../servarr/README.md)** — Sonarr, Radarr, Readarr, Bazarr (uses prowlarr for searches)
+- **[servarr](../servarr/README.md)** — Sonarr, Radarr, Bookshelf (uses prowlarr for searches)
 - **[torrent](../torrent/README.md)** — qBittorrent client for automated downloads
 - **[profilarr](../profilarr/README.md)** — Quality profile management for the *arr apps
 

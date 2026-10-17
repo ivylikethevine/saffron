@@ -1,4 +1,3 @@
-version: "3.8"
 
 services:
   gotify:
@@ -11,8 +10,6 @@ services:
     extends:
       file: ../common.yaml
       service: base-settings
-    environment:
-      TZ: 'America/Los_Angeles'
     volumes:
       - /containers/gotify:/app/data
     deploy:
