@@ -56,6 +56,10 @@ Search proxy (required for some search engines & reduces error rates in general)
 
 ![x64 Version](https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=amd64&label=x64) ![Arm64 Version](https://img.shields.io/docker/v/flaresolverr/flaresolverr/latest?arch=arm64&label=arm64)
 
+## Related Stacks
+
+- **[sharerr](../sharerr/README.md)** — Shares the media library with friends; rides in this stack's VPN namespace
+
 #### `compose.yaml`
 
 [filename](compose.yaml ':include :type=code')

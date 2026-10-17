@@ -1,0 +1,30 @@
+services:
+  degoog:
+    image: ghcr.io/degoog-org/degoog:1.1.0
+    container_name: degoog
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Web
+      homepage.name: degoog
+      homepage.icon: degoog.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:4444
+      homepage.description: Search
+    ports:
+      - 4444:4444
+    environment:
+      - DEGOOG_SETTINGS_PASSWORDS=$DEGOOG_SETTINGS_PASSWORDS
+    volumes:
+      - /containers/degoog:/app/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://127.0.0.1:4444/readyz
+networks: {}

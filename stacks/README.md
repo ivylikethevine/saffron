@@ -10,6 +10,10 @@
 
 - &#x2705; [bitmagnet](stacks/bitmagnet/README.md) - Self-hosted DHT crawler and torrent indexer, VPN-routed via gluetun.
 
+- &#x2705; [dapsync](stacks/dapsync/README.md) - Syncs curated Navidrome music to a DAP's SD card.
+
+- &#x2705; [degoog](stacks/degoog/README.md) - Self-hosted search engine and results aggregator.
+
 - &#x2705; [diun](stacks/diun/README.md) - Notifies via gotify when a newer image tag is published for a running container.
 
 - &#x2705; [docsify](stacks/docsify/README.md) - Web UI to view this repo's `README.md`'s as a wiki reflecting local edits. See the [public](https://ivylikethevine.github.io/saffron) instance or visit <http://hostname.local:5001> (if the container is running).
@@ -19,6 +23,8 @@
 - &#x2705; [dozzle](stacks/dozzle/README.md) - Web UI to live docker container logs.
 
 - &#x2705; [esphome](stacks/esphome/README.md) - Easily create & manage esp32-based IoT devices, such as temp. sensors.
+
+- &#x2705; [freshrss](stacks/freshrss/README.md) - RSS and Atom feed reader (port 8084).
 
 - &#x2705; [gotify](stacks/gotify/README.md) - Simple self-hosted push notification server.
 
@@ -36,6 +42,14 @@
 
   - &#x2705; byparr - Indexer proxy.
 
+- &#128994; [instadroid](stacks/instadroid/README.md) - Instagram to RSS, scraped from an Android container.
+
+  - &#x2705; redroid - Android device.
+
+  - &#x2705; instadroid - Scraper and feed server.
+
+- &#x2705; [lan-orangutan](stacks/lan-orangutan/README.md) - Network scanner with persistent device labels (port 291).
+
 - &#x2705; [lidarr](stacks/lidarr/README.md) - Music library manager.
 
 - &#x2705; [navidrome](stacks/navidrome/README.md) - Music streaming service.
@@ -48,6 +62,12 @@
 
 - &#x2705; [profilarr](stacks/profilarr/README.md) - Quality profile and custom format sync for the *arr apps.
 
+- &#128994; [rsshub](stacks/rsshub/README.md) - Generates RSS feeds for sites that have none.
+
+  - &#x2705; browserless - Headless Chrome for JavaScript-rendered routes.
+
+  - &#x2705; redis - Response cache.
+
 - &#128994; [servarr](stacks/servarr/README.md) - Media library systems.
 
   - &#x2705; sonarr - TV library manager.
@@ -56,6 +76,8 @@
 
   - &#x2705; bookshelf - Ebook library manager (maintained Readarr fork).
 
+
+- &#x2705; [sharerr](stacks/sharerr/README.md) - Shares the media library with friends, riding in the torrent stack's VPN.
 
 - &#x2705; [slskd](stacks/slskd/README.md) - Soulseek client, VPN-routed via bitmagnet's gluetun.
 

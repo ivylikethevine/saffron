@@ -62,6 +62,10 @@ services:
     ports:
       - 8080:8080 # Web UI
       - 8000:8000 # Control Server
+      - 8477:8477 # sharerr, which joins this namespace
+    # sharerr shares this container's /etc/hosts and reaches the *arr apps' published ports here.
+    extra_hosts:
+      - host.docker.internal:host-gateway
     volumes:
       - /containers/gluetun:/gluetun
     environment:
@@ -75,6 +79,8 @@ services:
       WIREGUARD_PRESHARED_KEY: $PRESHARED_KEY
       WIREGUARD_ADDRESSES: $ADDRESSES
       SERVER_REGIONS: $REGIONS
+      # Routes outside the tunnel; must not overlap ADDRESSES.
+      FIREWALL_OUTBOUND_SUBNETS: ${LAN_SUBNETS:-}
     extends:
       file: ../common.yaml
       service: media-access

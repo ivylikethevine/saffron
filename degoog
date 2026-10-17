@@ -1,0 +1,12 @@
+services:
+  degoog:
+    container_name: degoog
+    ports:
+      - 4444:4444
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DEGOOG_SETTINGS_PASSWORDS=$PW
+    restart: unless-stopped
+    image: ghcr.io/degoog-org/degoog:latest
+networks: {}

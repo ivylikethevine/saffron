@@ -1,0 +1,44 @@
+services:
+  dapsync:
+    container_name: dapsync
+    # dapsync has no semver tags; latest is the only tag available
+    image: joshuaswilcox/dapsync:latest
+    pull_policy: always
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Media
+      homepage.name: DAPSync
+      homepage.icon: mdi-sd
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8095
+      homepage.description: Navidrome to DAP sync
+    ports:
+      - 8095:8095
+    environment:
+      - DAPSYNC_NAVIDROME_URL=${NAVIDROME_URL:-http://host.docker.internal:4533}
+      - DAPSYNC_NAVIDROME_USER=$NAVIDROME_USER
+      - DAPSYNC_NAVIDROME_PASSWORD=$NAVIDROME_PASSWORD
+      - DAPSYNC_SDCARD_PATH=/sdcard
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - /containers/dapsync:/config
+      # rslave so a card mounted on the host after startup appears in the container.
+      - type: bind
+        source: ${DAP_MOUNT:-/mnt/dap}
+        target: /sdcard
+        bind:
+          propagation: rslave
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      # The image has neither curl nor wget.
+      test:
+        - CMD
+        - python3
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://localhost:8095/', timeout=3)
+networks: {}
