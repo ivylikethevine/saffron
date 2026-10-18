@@ -1,10 +1,16 @@
-version: "3.8"
 services:
   ustreamer:
-    image: pikvm/ustreamer:v6.62
-    pull_policy: missing
+    image: pikvm/ustreamer:v6.66
     container_name: ustreamer
-    restart: always
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Home
+      homepage.name: uStreamer
+      homepage.icon: mdi-cctv
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8083
+      homepage.description: IP camera
     devices:
       - /dev/video0:/dev/video0
     ports:

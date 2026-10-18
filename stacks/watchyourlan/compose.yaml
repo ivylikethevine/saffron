@@ -1,20 +1,32 @@
-version: "3.8"
 services:
   watchyourlan:
     image: aceberg/watchyourlan:2.1.4
-    pull_policy: missing
     container_name: watchyourlan
-    restart: unless-stopped
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: WatchYourLAN
+      homepage.icon: watchyourlan.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8840
+      homepage.description: LAN devices
     network_mode: host
     ports:
       - 8840:8840
     environment:
       IFACES: ${IFACES:-eth0}
-      TZ: America/Los_Angeles
     volumes:
       - /containers/watchyourlan/data:/data/WatchYourLAN
     deploy:
       resources:
         limits:
           memory: 256M
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -qO-
+        - --timeout=2
+        - http://localhost:8840/
 networks: {}

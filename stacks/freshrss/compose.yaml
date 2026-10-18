@@ -1,0 +1,34 @@
+services:
+  freshrss:
+    image: freshrss/freshrss:1.30.1
+    container_name: freshrss
+    hostname: freshrss
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Web
+      homepage.name: FreshRSS
+      homepage.icon: freshrss.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8084
+      homepage.description: Feed reader
+    # 8080 is qbittorrent's in the torrent stack.
+    ports:
+      - 8084:80
+    environment:
+      CRON_MIN: 3,33
+      TRUSTED_PROXY: 172.16.0.1/12 192.168.0.1/16
+    volumes:
+      - /containers/freshrss/data:/var/www/FreshRSS/data
+      - /containers/freshrss/extensions:/var/www/FreshRSS/extensions
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test:
+        - CMD
+        - cli/health.php
+      timeout: 10s
+      start_period: 60s
+networks: {}

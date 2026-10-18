@@ -1,10 +1,13 @@
-version: "3.8"
 services:
   homeassistant:
-    image: ghcr.io/home-assistant/home-assistant:2026.8.0
-    pull_policy: missing
+    image: ghcr.io/home-assistant/home-assistant:2026.10.2
     container_name: homeassistant
-    restart: always
+    labels:
+      homepage.group: Home
+      homepage.name: Home Assistant
+      homepage.icon: home-assistant.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8123
+      homepage.description: Automation
     privileged: true
     ports:
       - 8123:8123
@@ -19,3 +22,9 @@ services:
         limits:
           memory: 1.5G
     network_mode: host
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:8123/

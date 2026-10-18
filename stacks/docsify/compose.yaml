@@ -1,15 +1,19 @@
-version: "3.8"
 services:
   docsify:
     build:
       context: .
       network: host
     container_name: docsify
-    restart: always
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: Docsify
+      homepage.icon: docsify.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:3005
+      homepage.description: This wiki
     ports:
       - 3005:3000
     volumes:
-      - /home/$USER/saffron:/saffron:ro
+      - ${SAFFRON_DIR:-../..}:/saffron:ro
     extends:
       file: ../common.yaml
       service: base-settings

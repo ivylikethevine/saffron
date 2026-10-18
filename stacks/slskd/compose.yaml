@@ -1,10 +1,13 @@
-version: "3.8"
 services:
   slskd:
-    image: slskd/slskd:0.26.0
-    pull_policy: missing
+    image: slskd/slskd:0.26.1
     container_name: slskd
-    restart: unless-stopped
+    labels:
+      homepage.group: Downloads
+      homepage.name: slskd
+      homepage.icon: slskd.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:5030
+      homepage.description: Soulseek over VPN
     network_mode: container:bitmagnet-gluetun
     extends:
       file: ../common.yaml

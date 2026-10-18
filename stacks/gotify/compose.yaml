@@ -1,18 +1,19 @@
-version: "3.8"
 
 services:
   gotify:
-    image: gotify/server:3.0.0
-    pull_policy: missing
+    image: gotify/server:3.1.1
     container_name: gotify
-    restart: unless-stopped
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: Gotify
+      homepage.icon: gotify.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8321
+      homepage.description: Notifications
     ports:
       - 8321:80
     extends:
       file: ../common.yaml
       service: base-settings
-    environment:
-      TZ: 'America/Los_Angeles'
     volumes:
       - /containers/gotify:/app/data
     deploy:

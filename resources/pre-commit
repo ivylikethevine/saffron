@@ -1,18 +1,13 @@
-# move this file to .git/hooks/pre-commit to enable webp conversion
-# based on https://chriskyfung.medium.com/automatically-create-webp-for-new-jpg-and-png-images-in-a-git-project-using-git-hooks-98c43ef6b9b0
-for FILE in $(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep -e .jpg -e .jpeg -e .png -i | sed 's/ /*/g'); do
-  echo $(echo ${FILE} | sed -e 's/\*/ /g' -e 's/^"//' -e 's/"$//') \
-    '-->' $(echo "$FILE" | sed -e 's/\*/ /g' -e 's/^"//' | sed 's/.[^.]*$//').webp
-  cwebp -q 50 "$(echo "$FILE" | sed -e 's/\*/ /g' -e 's/^"//' -e 's/"$//')" \
-    -o "$(echo "$FILE" | sed -e 's/\*/ /g' -e 's/^"//' | sed 's/.[^.]*$//').webp" \
-    -mt -quiet
-  rm $FILE
-  git rm $FILE
-  git add "$(echo "$FILE" | sed -e 's/\*/ /g' -e 's/^"//' | sed 's/.[^.]*$//').webp"
-  git commit --amend --no-edit
-done
-# to count all non-webp lines of code
-# git ls-files -- . ':!:*.webp' | xargs cat | wc -l
-
-# count number of stack directories
-# ls -l stacks | grep '^d' | wc -l
+#!/bin/sh
+# Converts staged jpg/png images to webp and stages the webp in their place.
+# install-saffron.sh links this as .git/hooks/pre-commit; needs cwebp.
+git diff --cached --name-only --diff-filter=ACMR -z \
+  | tr '\0' '\n' \
+  | grep -iE '\.(jpe?g|png)$' \
+  | while IFS= read -r file; do
+    webp="${file%.*}.webp"
+    echo "$file --> $webp"
+    cwebp -q 50 -mt -quiet "$file" -o "$webp"
+    git rm -q --cached "$file" && rm -f "$file"
+    git add "$webp"
+  done

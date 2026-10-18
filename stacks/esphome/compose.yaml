@@ -1,10 +1,13 @@
-version: "3.8"
 services:
   esphome:
-    image: esphome/esphome:2026.7.4
-    pull_policy: missing
+    image: esphome/esphome:2026.9.1
     container_name: esphome
-    restart: unless-stopped
+    labels:
+      homepage.group: Home
+      homepage.name: ESPHome
+      homepage.icon: esphome.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:6052
+      homepage.description: IoT devices
     extends:
       file: ../common.yaml
       service: base-settings

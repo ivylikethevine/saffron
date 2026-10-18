@@ -1,10 +1,13 @@
-version: "3.8"
 services:
   heimdall:
-    image: linuxserver/heimdall:2.8.2
-    pull_policy: missing
+    image: linuxserver/heimdall:2.8.3
     container_name: heimdall
-    restart: always
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: Heimdall
+      homepage.icon: heimdall.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:80
+      homepage.description: Dashboard
     extends:
       file: ../common.yaml
       service: base-settings
@@ -17,6 +20,12 @@ services:
       resources:
         limits:
           memory: 256M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:80/
     networks:
       - saffron_default
 networks:

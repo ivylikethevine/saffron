@@ -1,10 +1,13 @@
-version: "3.8"
 services:
   qbittorrent:
-    image: linuxserver/qbittorrent:5.2.3
-    pull_policy: missing
+    image: linuxserver/qbittorrent:5.2.4
     container_name: qbittorrent
-    restart: unless-stopped
+    labels:
+      homepage.group: Downloads
+      homepage.name: qBittorrent
+      homepage.icon: qbittorrent.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8080
+      homepage.description: Torrents over VPN
     extends:
       file: ../common.yaml
       service: media-access
@@ -31,27 +34,27 @@ services:
       retries: 3
   portcheck:
     container_name: portcheck
+    extends:
+      file: ../common.yaml
+      service: base-settings
     depends_on:
       qbittorrent:
         condition: service_healthy
     environment:
       QBITTORRENT_PORT: $VPN_INPUT_PORT
-      QBITTORRENT_USERNAME: $USER
-      QBITTORRENT_PASSWORD: $PASSWORD
+      QBITTORRENT_USERNAME: $QBT_USER
+      QBITTORRENT_PASSWORD: $QBT_PASSWORD
     # portcheck has no semver tags; latest is the only tag available
     image: eiqnepm/portcheck:latest
     pull_policy: always
     network_mode: service:qbittorrentvpn
-    restart: unless-stopped
     deploy:
       resources:
         limits:
           memory: 128M
   qbittorrentvpn:
     image: qmcgaw/gluetun:v3.41.3
-    pull_policy: missing
     container_name: qbittorrentvpn
-    restart: always
     cap_add:
       - NET_ADMIN
     devices:
@@ -59,6 +62,10 @@ services:
     ports:
       - 8080:8080 # Web UI
       - 8000:8000 # Control Server
+      - 8477:8477 # sharerr, which joins this namespace
+    # sharerr shares this container's /etc/hosts and reaches the *arr apps' published ports here.
+    extra_hosts:
+      - host.docker.internal:host-gateway
     volumes:
       - /containers/gluetun:/gluetun
     environment:
@@ -72,6 +79,8 @@ services:
       WIREGUARD_PRESHARED_KEY: $PRESHARED_KEY
       WIREGUARD_ADDRESSES: $ADDRESSES
       SERVER_REGIONS: $REGIONS
+      # Routes outside the tunnel; must not overlap ADDRESSES.
+      FIREWALL_OUTBOUND_SUBNETS: ${LAN_SUBNETS:-}
     extends:
       file: ../common.yaml
       service: media-access

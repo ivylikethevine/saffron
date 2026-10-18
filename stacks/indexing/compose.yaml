@@ -1,10 +1,13 @@
-version: "3.8"
 services:
   prowlarr:
-    image: linuxserver/prowlarr:nightly-2.6.2.5548-ls10
-    pull_policy: missing
+    image: linuxserver/prowlarr:nightly-2.6.5.5672-ls20
     container_name: prowlarr
-    restart: always
+    labels:
+      homepage.group: Indexing
+      homepage.name: Prowlarr
+      homepage.icon: prowlarr.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:9696
+      homepage.description: Indexer manager
     ports:
       - 9696:9696
     extends:
@@ -16,26 +19,52 @@ services:
       resources:
         limits:
           memory: 512M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:9696/ping
     networks:
       - servarr_bridge
   flaresolverr:
-    image: flaresolverr/flaresolverr:v3.5.0
-    pull_policy: missing
+    image: flaresolverr/flaresolverr:v3.5.2
     container_name: flaresolverr
-    restart: always
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Indexing
+      homepage.name: FlareSolverr
+      homepage.icon: flaresolverr.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8191
+      homepage.description: Cloudflare proxy
     ports:
       - 8191:8191
     deploy:
       resources:
         limits:
           memory: 1G
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:8191/
     networks:
       - servarr_bridge
   byparr:
     container_name: byparr
-    image: ghcr.io/thephaseless/byparr:main
-    pull_policy: missing
-    restart: unless-stopped
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Indexing
+      homepage.name: Byparr
+      homepage.icon: mdi-shield-search
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8192
+      homepage.description: Indexer proxy
+    image: ghcr.io/thephaseless/byparr:3.0.4
     shm_size: 2gb
     ports:
       - 8192:8191

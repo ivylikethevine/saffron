@@ -1,13 +1,16 @@
-version: "3.8"
 services:
   plex:
-    image: linuxserver/plex:1.43.3
-    pull_policy: missing
+    image: linuxserver/plex:1.43.4
     container_name: plex
+    labels:
+      homepage.group: Media
+      homepage.name: Plex
+      homepage.icon: plex.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:32400
+      homepage.description: Media server
     network_mode: host
     environment:
       VERSION: docker
-    restart: unless-stopped
     devices:
       - /dev/dri:/dev/dri # for intel hardware decode
     extends:
@@ -19,10 +22,21 @@ services:
           memory: 4G
     volumes:
       - /containers/plex:/config
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:32400/identity
   seerr:
-    image: ghcr.io/seerr-team/seerr:v3.0.1
-    pull_policy: missing
+    image: ghcr.io/seerr-team/seerr:v3.5.0
     container_name: seerr
+    labels:
+      homepage.group: Media
+      homepage.name: Seerr
+      homepage.icon: jellyseerr.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:5055
+      homepage.description: Requests
     extends:
       file: ../common.yaml
       service: base-settings
@@ -30,7 +44,13 @@ services:
       - /containers/overseerr/config:/app/config
     ports:
       - 5055:5055
-    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -qO-
+        - --timeout=2
+        - http://localhost:5055/api/v1/status
     networks:
       - servarr_bridge
 networks:

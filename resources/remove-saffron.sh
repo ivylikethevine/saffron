@@ -1,51 +1,36 @@
 #!/bin/bash
 set -euo pipefail
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
+# shellcheck source=lib.sh
+source "$(dirname "$0")/lib.sh"
 
 echo "Starting Saffron Removal"
 echo
 echo -e "${RED}WARNING: This will permanently delete:${NC}"
-echo "  - /containers directory (all container data)"
-echo "  - /home/$USER/saffron directory (all configuration)"
-echo "  - All running Saffron containers"
+echo "  - every saffron container and network"
+echo "  - /containers (all container data)"
+echo "  - $SAFFRON_DIR (this checkout)"
 echo
 echo "This action CANNOT be undone."
 echo
 
-read -p "Are you absolutely sure? Type 'yes' to proceed: " response
-
+read -rp "Are you absolutely sure? Type 'yes' to proceed: " response
 if [ "$response" != "yes" ]; then
     echo "Operation canceled."
     exit 0
 fi
 
 echo
-echo "Stopping all Docker containers..."
-if containers=$(docker ps -aq); then
-    if [ -n "$containers" ]; then
-        docker stop $containers || true
-        echo -e "${GREEN}✓ Stopped containers${NC}"
-    fi
-fi
+echo "Removing saffron stacks..."
+for file in "$SAFFRON_DIR"/stacks/*/compose.yaml "$SAFFRON_DIR"/compose.yaml; do
+    docker compose -f "$file" down --remove-orphans || true
+done
+success "Removed containers and networks"
 
-echo "Removing /containers directory..."
-if [ -d "/containers" ]; then
-    sudo rm -rf /containers || exit 1
-    echo -e "${GREEN}✓ Removed /containers${NC}"
-fi
+sudo rm -rf /containers
+success "Removed /containers"
 
-echo "Removing /home/$USER/saffron directory..."
-if [ -d "/home/$USER/saffron" ]; then
-    sudo rm -rf /home/$USER/saffron || exit 1
-    echo -e "${GREEN}✓ Removed saffron${NC}"
-fi
+sudo rm -rf "$SAFFRON_DIR"
+success "Removed $SAFFRON_DIR"
 
 echo
-echo -e "${GREEN}Removal complete!${NC}"
-echo "Leftover Docker resources can be cleaned with:"
-echo "  docker system prune -a"
-echo
+echo "Leftover images can be cleaned with: docker image prune -a"

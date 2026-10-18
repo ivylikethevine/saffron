@@ -1,12 +1,25 @@
-version: '3.8'
 services:
   base-settings:
+    restart: unless-stopped
+    pull_policy: missing
     environment:
       - PGID=1000
       - PUID=1000
       - UMASK=022
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    healthcheck:
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 3
     volumes:
       - /etc/localtime:/etc/localtime:ro
   media-access:
     extends: base-settings
     volumes:
+      - /data:/data

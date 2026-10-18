@@ -1,10 +1,13 @@
-version: "3.8"
 services:
   navidrome:
-    image: deluan/navidrome:0.63.2
-    pull_policy: missing
+    image: deluan/navidrome:0.64.2
     container_name: navidrome
-    restart: always
+    labels:
+      homepage.group: Media
+      homepage.name: Navidrome
+      homepage.icon: navidrome.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:4533
+      homepage.description: Music streaming
     ports:
       - 4533:4533
     extends:
@@ -21,6 +24,12 @@ services:
       resources:
         limits:
           memory: 512M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:4533/ping
 networks:
   servarr_bridge:
     external: true

@@ -3,7 +3,7 @@
 
 Saffron pins every image to a specific release (see ROADMAP.md, "Pin image
 versions"), which stops surprise breakage but means nothing notices when
-upstream ships a new version. Watchtower updates running containers, not the
+upstream ships a new version. Diun notifies at runtime, but nothing touches the
 committed YAML, so `compose.yaml` drifts silently.
 
 Dependabot can't cover this: its docker ecosystem only matches `Dockerfile`
@@ -14,7 +14,7 @@ Best-effort by design — it never exits non-zero for a stale image. Network
 failures, rate limits, and unparseable tags are reported as "skipped", not
 treated as findings.
 
-Usage:
+Usage (needs resources/requirements.txt):
     python3 resources/check-image-freshness.py
     python3 resources/check-image-freshness.py --markdown   # for CI summaries
 """

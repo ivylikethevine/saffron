@@ -35,8 +35,7 @@ Saffron provides 21+ containerized services for a complete homelab:
 - **Sonarr** — TV series automation and management
 - **Radarr** — Movie automation and management
 - **Lidarr** — Music library automation
-- **Readarr** — Ebook library automation
-- **Bazarr** — Subtitle management (integrates with Sonarr/Radarr)
+- **Bookshelf** — Ebook library automation (maintained Readarr fork)
 - **Plex** — Media server and streaming (or self-host streaming)
 - **Navidrome** — Music streaming service
 
@@ -60,7 +59,7 @@ Saffron provides 21+ containerized services for a complete homelab:
 
 - **Dockge** — Docker Compose management UI (the control center)
 - **Dozzle** — Container log viewer
-- **Watchtower** — Automatic container updates
+- **Diun** — Notifications when a newer image tag is published
 - **Speedtest Tracker** — Internet speed monitoring
 
 **Smart Home & IoT**
@@ -74,6 +73,7 @@ Saffron provides 21+ containerized services for a complete homelab:
 
 - **Docsify** — Auto-generated wiki from markdown files
 - **Heimdall** — Dashboard/homepage for your services
+- **Homepage** — Label-driven dashboard that discovers services automatically
 
 **Specialty Services**
 
@@ -199,7 +199,7 @@ I've also made stacks using Lissy93's well maintained [portainer template repo](
 
 1. `/containers/` - stores individual generated configs, db files, etc.
    - This is not a perfect separation, since some containers will use config for "data" (such as torrent clients using it as a default download location)
-2. `/home/$USER/saffron/stacks` - all stacks & services' compose files
+2. `stacks/` in the checkout - all stacks & services' compose files
 3. `$DATA_DIR` - where bulk files are stored (configured during setup) See [common.yaml](#common-yaml) for more infromation.
 
 ### More Documentation

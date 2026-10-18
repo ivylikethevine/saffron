@@ -1,0 +1,38 @@
+services:
+  lan-orangutan:
+    image: ghcr.io/291-group/lan-orangutan:3.3.8
+    container_name: lan-orangutan
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: LAN Orangutan
+      homepage.icon: mdi-lan
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:291
+      homepage.description: Network scanner
+    # A bridge network would only see other containers, not the LAN.
+    network_mode: host
+    # nmap reads the ARP table over raw sockets; 291 is a privileged port.
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+      - NET_BIND_SERVICE
+    environment:
+      - ORANGUTAN_PORT=291
+    volumes:
+      - /containers/lan-orangutan:/var/lib/lan-orangutan
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    healthcheck:
+      # 127.0.0.1, not localhost: the server binds IPv4 only.
+      test:
+        - CMD
+        - wget
+        - --no-verbose
+        - --tries=1
+        - --spider
+        - http://127.0.0.1:291/static/orangutan.svg
+networks: {}

@@ -1,0 +1,40 @@
+services:
+  sharerr:
+    image: ghcr.io/ivylikethevine/sharerr-rs:0.1.7
+    container_name: sharerr
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Downloads
+      homepage.name: sharerr
+      homepage.icon: mdi-share-variant
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8477
+      homepage.description: Library sharing over VPN
+    # Rides in the torrent stack's gluetun namespace: it announces from the tunnel's
+    # address and reaches qBittorrent and gluetun's control server on localhost.
+    # qbittorrentvpn publishes 8477; restart sharerr after recreating it.
+    network_mode: container:qbittorrentvpn
+    environment:
+      # Encrypts the credential vault; losing it loses every stored credential.
+      # Any SHARERR_* setting here would pin its field in the UI, so configure in sharerr.toml.
+      SHARERR_MASTER_KEY: $SHARERR_MASTER_KEY
+      RUST_LOG: ${RUST_LOG:-sharerr=info,warn}
+    volumes:
+      # sharerr.toml, rewritten in place by the UI.
+      - /containers/sharerr/config:/config
+      # The vault, the database and the generated .torrent files.
+      - /containers/sharerr/data:/data
+      # The library, read-only; [[path_map]] translates /media to the /data the other stacks see.
+      - ${MEDIA_PATH:-/data}:/media:ro
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:8477/health
+networks: {}

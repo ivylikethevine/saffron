@@ -16,21 +16,22 @@ saffron/
 │   ├── backrest/             # Example: Restic backup UI
 │   │   ├── compose.yaml
 │   │   └── README.md
-│   ├── servarr/              # Media library management (sonarr/radarr/bazarr/readarr)
+│   ├── servarr/              # Media library management (sonarr/radarr/bookshelf)
 │   ├── torrent/              # qBittorrent + VPN (gluetun)
 │   ├── [20+ other stacks]
 │   └── ...
 ├── resources/
-│   ├── install-saffron.sh   # Setup script (creates dirs, generates common.yaml)
+│   ├── install-saffron.sh   # Setup script (creates dirs, generates common.yaml, installs the hook)
 │   ├── remove-saffron.sh    # Cleanup script
 │   ├── pre-commit            # Git hook for webp image conversion
-│   ├── settings.json         # Dockge UI configuration
+│   ├── lib.sh                # Helpers shared by the scripts
+│   ├── settings.json         # VS Code yaml-sort configuration
 │   └── README.md             # Installation guide
 ├── .github/workflows/
 │   └── compose-validate.yml  # GitHub Actions: validates compose files on push
 ├── compose.yaml              # Root compose file (runs dockge only)
 ├── index.html                # docsify wiki homepage
-├── _navbar.md, _config.yml   # docsify configuration
+├── _navbar.md                # docsify navbar
 ├── README.md                 # Project readme and "why Saffron" explanation
 ├── CLAUDE.md                 # This file
 └── .gitignore               # Tracks what not to commit (.env, custom stacks, etc.)
@@ -50,37 +51,26 @@ saffron/
 
 Each stack is a **separate docker-compose project**:
 
-- **Standalone service** (heimdall, gotify, watchtower): single container in its own compose file
+- **Standalone service** (heimdall, gotify, diun): single container in its own compose file
 - **Multi-container stack** (servarr, torrent, bitmagnet): multiple related services networked together
 
 Dockge displays each stack directory as a separate "project" and allows start/stop/update via UI.
 
 ### Shared Configuration (common.yaml)
 
-`stacks/common.yaml.public` defines:
+`stacks/common.yaml.public` defines two template services. Every service
+extends one of them, so the defaults live in one place:
 
-```yaml
-services:
-  base-settings:
-    environment:
-      - PGID=1000
-      - PUID=1000
-      - UMASK=022
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-  media-access:
-    extends: base-settings
-    volumes:
-      - /data/tv:/data/tv # (populated from $DATA_DIR at install)
-      - /data/movies:/data/movies
-      # ... etc
-```
+- `base-settings`: `restart: unless-stopped`, `pull_policy: missing`,
+  PUID/PGID/UMASK, `no-new-privileges`, json-file log rotation (10m × 3),
+  healthcheck timings (a service adds only `test:`), and the timezone via
+  `/etc/localtime:ro` only. Never `/etc/timezone` (missing on some Debian
+  and non-Debian hosts) or a hardcoded `TZ=`.
+- `media-access`: `base-settings` plus `/data:/data`, rewritten to
+  `$DATA_DIR:/data` by the install script.
 
-Most stacks extend one of these base services to inherit consistent:
-
-- User/group IDs (media lib permissions)
-- Timezone
-- Data directory mounts
+A service overrides a key by setting it (portcheck sets
+`pull_policy: always` for its floating tag).
 
 **Why not centralize?** If common.yaml broke, every stack would fail. This design keeps each stack independent but consistent.
 
@@ -93,48 +83,8 @@ Most stacks extend one of these base services to inherit consistent:
 
 ### Network Topology Diagram
 
-```mermaid
-graph TB
-    subgraph Bridge[Default Bridge]
-        direction TB
-    end
-    subgraph Servarr[servarr_bridge]
-        bitmagnet_bitmagnet_gluetun["bitmagnet/bitmagnet-gluetun"]
-        indexing_byparr["indexing/byparr"]
-        indexing_flaresolverr["indexing/flaresolverr"]
-        indexing_prowlarr["indexing/prowlarr"]
-        lidarr_lidarr["lidarr/lidarr"]
-        plex_seerr["plex/seerr"]
-        profilarr_profilarr["profilarr/profilarr"]
-        torrent_qbittorrentvpn["torrent/qbittorrentvpn"]
-    end
-    subgraph VPNbitmagnetgluetun[VPN: bitmagnet-gluetun]
-        bitmagnet_bitmagnet["bitmagnet/bitmagnet"]
-    end
-    subgraph VPNqbittorrentvpn[VPN: qbittorrentvpn]
-        torrent_portcheck["torrent/portcheck"]
-        torrent_qbittorrent["torrent/qbittorrent"]
-    end
-    subgraph HostMode[Host Network Mode]
-        homeassistant_homeassistant["homeassistant/homeassistant"]
-        plex_plex["plex/plex"]
-        watchyourlan_watchyourlan["watchyourlan/watchyourlan"]
-    end
-```
-
-**Key relationships:**
-
-- **servarr_bridge**: Connects indexing (prowlarr, flaresolverr, byparr), media management (radarr, sonarr, lidarr), and download clients (qbittorrent, bitmagnet)
-- **bitmagnet-gluetun**: Isolated VPN for bitmagnet (DHT crawler) and slskd (file sharing)
-- **qbittorrentvpn**: Isolated VPN for torrent client (qBittorrent) and port-checker
-- **Host mode**: Services requiring direct host network access (plex transcoding, homeassistant integrations, network scanning)
-
-To regenerate this diagram after adding/removing stacks, run:
-
-```bash
-python3 resources/generate-topology.py > /tmp/topology.mermaid
-# Compare output with diagram above, update CLAUDE.md if topology changed
-```
+`python3 resources/generate-topology.py` prints a Mermaid diagram of the
+bridges, VPN-routed services and host-mode services from the compose files.
 
 ## Key Files & Their Purpose
 
@@ -146,7 +96,7 @@ Root compose file. Runs **only dockge** (the web UI).
 
 ### stacks/README.md
 
-Wiki index of all 21 stacks. Alphabetized list with one-line descriptions and links to per-stack READMEs.
+Wiki index of the stacks. Alphabetized list with one-line descriptions and links to per-stack READMEs.
 
 - Automatically published via docsify as the project's public wiki
 - Must be kept in sync with actual `stacks/` directories (CI checks this)
@@ -173,17 +123,17 @@ Setup automation:
 1. Creates `/containers/` directory structure
 2. Prompts for `$DATA_DIR` (bulk media storage location)
 3. Generates `stacks/common.yaml` by interpolating `$DATA_DIR` into `common.yaml.public`
-4. Starts dockge
-
-**Critical bug fixed:** Previously line 32 used `>` (overwrite) instead of appending, losing the entire common.yaml template.
+4. Links `resources/pre-commit` into `.git/hooks`
+5. Starts dockge
 
 ### .github/workflows/compose-validate.yml
 
 GitHub Actions CI:
 
-- Validates each stack's compose file syntax
-- Checks every stack directory has a README.md
-- Verifies compose version and pull_policy presence
+- Validates each stack's compose file syntax against `common.yaml.public`
+- Checks every stack directory has a README.md and is listed in `stacks/README.md`
+- Checks every `$VAR` a compose file uses is documented in that stack's `.env.public` (`USER`, `HOME` and `HOMEPAGE_HOST` exempt)
+- Rejects the obsolete `version:` key
 - Runs on push/PR to stacks/ directory
 
 ## Architecture Decisions
@@ -212,11 +162,10 @@ GitHub Actions CI:
 
 ### pull_policy: missing for pinned, always for floating
 
-- **Pinned services** (profilarr, byparr, homeassistant, indexing, torrent, servarr, etc.) use `pull_policy: missing` — skip re-pull if image tag already present locally. Watchtower handles intentional updates.
+- **Pinned services** inherit `pull_policy: missing` from `base-settings` — skip re-pull if image tag already present locally. Diun notifies when a newer tag exists; updates are deliberate pin edits in git.
 - **Floating-tag services** (portcheck, which has no semver tags) use `pull_policy: always` — necessary when upstream only publishes `:latest`.
 - ✓ Avoids re-pulling same digest on every restart (efficiency)
 - ✓ Explicit version pins prevent surprise breakage from upstream releases
-- See commit 532cba4 for full hardening pass (2026-08-16)
 
 ### Separate Data Directory ($DATA_DIR)
 
@@ -232,11 +181,11 @@ GitHub Actions CI:
 
 1. Create `stacks/newstack/compose.yaml`
 2. Follow existing patterns:
-   - `version: "3.8"` at top
+   - no top-level `version:` key (obsolete in Compose v2)
    - `container_name` matches service name
-   - `extends: ../common.yaml` if using linuxserver images
-   - `pull_policy: always` for each image
-   - `networks: {}` at bottom
+   - `extends` `base-settings` or `media-access` from `../common.yaml`
+   - a `healthcheck.test` using a binary the image has
+   - `homepage.*` labels if it has a UI
 3. Create `stacks/newstack/README.md` with:
    - One-line description
    - Links to upstream project
@@ -331,7 +280,7 @@ Saffron scales by **adding stacks**, not by replicating existing ones. No load b
 
 ### Image Provenance
 
-- `pull_policy: always` ensures latest versions on start
+- Every tag is pinned; `pull_policy: missing` never re-pulls a tag already present
 - linuxserver.io images are widely trusted, but audit before using others
 - No image signing/verification; consider adding in future if needed
 
@@ -357,6 +306,4 @@ Saffron scales by **adding stacks**, not by replicating existing ones. No load b
 
 ## Future Improvements
 
-See [ROADMAP.md](ROADMAP.md) for the full prioritized list (pinned versions,
-healthchecks, resource limits, reverse proxy/TLS, secrets management, and
-more).
+See [ROADMAP.md](ROADMAP.md).

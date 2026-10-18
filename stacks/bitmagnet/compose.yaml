@@ -1,11 +1,17 @@
-version: "3.8"
 services:
   bitmagnet:
-    image: ghcr.io/bitmagnet-io/bitmagnet:latest
-    pull_policy: missing
+    image: ghcr.io/bitmagnet-io/bitmagnet:v0.10.1
     container_name: bitmagnet
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Indexing
+      homepage.name: Bitmagnet
+      homepage.icon: bitmagnet.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:3333
+      homepage.description: DHT crawler
     network_mode: service:bitmagnet-gluetun
-    restart: unless-stopped
     environment:
       POSTGRES_HOST: bitmagnet-postgres
       POSTGRES_PASSWORD: $POSTGRES_PW
@@ -25,11 +31,18 @@ services:
     depends_on:
       bitmagnet-postgres:
         condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:3333/metrics
   bitmagnet-gluetun:
     container_name: bitmagnet-gluetun
+    extends:
+      file: ../common.yaml
+      service: base-settings
     image: qmcgaw/gluetun:v3.41.3
-    pull_policy: missing
-    restart: always
     cap_add:
       - NET_ADMIN
     ports:
@@ -58,11 +71,12 @@ services:
       servarr_bridge: {}
   bitmagnet-postgres:
     image: postgres:16.15-alpine
-    pull_policy: missing
     container_name: bitmagnet-postgres
+    extends:
+      file: ../common.yaml
+      service: base-settings
     volumes:
       - /containers/bitmagnet/postgres:/var/lib/postgresql/data
-    restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: $POSTGRES_PW
       POSTGRES_DB: bitmagnet

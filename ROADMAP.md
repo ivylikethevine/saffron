@@ -8,7 +8,7 @@ items up as they become relevant.
 
 These have been implemented:
 
-- **Pin image versions** — All floating `:latest`/`:develop`/`:nightly` tags pinned to specific releases (profilarr 2.1.0, byparr v3.0.3, prowlarr nightly-2.6.2.5548-ls10, homeassistant 2026.8.0). `pull_policy` flipped to `missing` for pinned services. See commit 532cba4.
+- **Pin image versions** — All floating `:latest`/`:develop`/`:nightly` tags pinned to specific releases (profilarr 2.1.0, byparr 3.0.4, prowlarr nightly-2.6.2.5548-ls10, homeassistant 2026.8.0). `pull_policy` flipped to `missing` for pinned services. See commit 532cba4.
 - **Add healthchecks** — Added HTTP healthcheck to qbittorrent (wget on port 8080). Converted portcheck's `depends_on` from list to mapping form with `condition: service_healthy`.
 - **Add resource limits** — Added `deploy.resources.limits.memory` to 24 services across 13 stacks (512M for medium-weight, 256M for lightweight UI, 1G for browser-backed, 128M for portcheck). Memory-only per initial scope.
 - **Reconcile `pull_policy`** — All pinned services now use `pull_policy: missing`; floating-tag services (portcheck) remain `always`.
@@ -40,28 +40,41 @@ These have been implemented:
   the same shape) and major-version bumps are reported separately from
   routine ones, so a Postgres 16 → 18 jump is never presented as a pin edit.
 
+## ✓ Completed (2026-10-17)
+
+- **Routine pin bumps** from `check-image-freshness.py`, all 17 non-major
+  ones in one batch.
+- **Log rotation and `no-new-privileges`** on `base-settings` in
+  `common.yaml.public` (10m × 3 json-file), repeated directly on the six
+  services that don't extend it: bitmagnet's three, ustreamer, watchyourlan
+  and dockge.
+- **Homepage stack** on port 82 beside heimdall, with the docker socket
+  mounted read-only for label discovery.
+- **CI: `.env.public` completeness and `stacks/README.md` index checks.**
+- **Consistency pass**: every floating tag pinned (bitmagnet, byparr,
+  dockge), obsolete `version:` keys dropped, retired readarr swapped for
+  bookshelf (data stays in `/containers/readarr`), stale bazarr docs
+  removed, watchtower replaced by diun, healthchecks on every service with
+  a verified binary, `/etc/localtime` as the one timezone source.
+- **Template consolidation**: `restart`, `pull_policy`, hardening, log
+  rotation, healthcheck timings and the timezone mount live in
+  `base-settings` and every service extends it. The root compose and the
+  two stacks that need the checkout path read it from `PWD`/`SAFFRON_DIR`
+  instead of `/home/$USER/saffron`. The pre-commit hook is linked by the
+  install script. The multi-arch CI job, which only ever checked ghcr images
+  and skipped those unconditionally, and the Jekyll build of a docsify site
+  are gone.
+- **`homepage.*` labels on all 26 UI services**, grouped Media, Media
+  Management, Indexing, Downloads, Home and Infrastructure; links use
+  `HOMEPAGE_HOST`, passed down from dockge.
+- **dozzle v10 → v11.** No config changes; everyone is signed out once.
+
 ## Now (high impact, low-to-medium effort)
 
-Real gaps for consideration:
-
-- **Bump the images the freshness check found stale.** First run of
-  `resources/check-image-freshness.py` surfaced four: bitmagnet
-  `v0.9.5 → v0.10.1`, home-assistant `2026.8.0 → 2026.8.2`, seerr
-  `v3.0.1 → v3.4.1`, and postgres `16.15-alpine → 18.6-alpine`. The first
-  three are routine pin edits. **Postgres is not** — 16 → 18 needs a data
-  migration for the bitmagnet database, so treat it as its own piece of
-  work rather than a tag swap.
-
-- **Log rotation defaults.** `grep -c "logging:" -r stacks/` returns zero
-  matches across all 21 stacks, so every container runs on Docker's default
-  json-file driver with no size cap — a slow-motion disk-fill on a box that
-  stays up for months. Add `logging.options.max-size` / `max-file` once to
-  `base-settings` in `stacks/common.yaml.public` so stacks inherit it
-  through the existing `extends` pattern instead of repeating it 24 times.
-  Known limit: not every service extends `common.yaml` — host-mode and
-  VPN-routed services (plex, homeassistant, watchyourlan, the gluetun
-  containers) need checking individually, so this is one edit plus an
-  audit, not a pure one-liner.
+- **Postgres major bump**, its own piece of work:
+  - **postgres `16.15-alpine → 18.6-alpine`** for bitmagnet needs a
+    `pg_dumpall` from the old container and a restore into the new one;
+    confirm bitmagnet v0.10.1 supports 18 first.
 
 ## Next (real gaps, more design work)
 
@@ -94,43 +107,36 @@ Real gaps for consideration:
   nothing verifies a restore actually works. A periodic (manual or
   scripted) "restore into a scratch dir and diff" check would turn "we have
   backups" into "we know the backups work."
-- **Pre-commit hook auto-install.** `resources/pre-commit` (webp
-  conversion) has to be manually copied into `.git/hooks/`. A one-line
-  step in `install-saffron.sh` (`ln -sf` or `git config core.hooksPath`)
-  would make it opt-out instead of easy-to-forget.
-- **Smoke-test CI builds.** The `multi-arch-verify` job now checks ARM64
-  availability, but doesn't actually build containers on ARM. A follow-up
-  could add experimental `runs-on: ubuntu-latest-arm64` jobs to catch ARM-
-  specific breakage, though this is expensive and only needed if Saffron
-  actually runs on ARM hardware (Raspberry Pi, etc.).
+- **One shared VPN stack.** torrent and bitmagnet each run their own
+  gluetun. A single `vpn` stack with consumers on
+  `network_mode: container:gluetun` halves credentials and config, at the
+  cost of a cross-stack startup-order dependency.
+- **ARM64 verification.** Nothing checks that pinned images publish an
+  arm64 manifest. Only needed if Saffron runs on ARM hardware; the check
+  belongs in `check-image-freshness.py`, which already talks to both
+  registries.
 
 ## Nice-to-haves (low priority, quality-of-life)
 
-- **Heimdall/dashboard auto-population.** Heimdall is included but each
-  service still has to be added by hand; a documented "add your new stack
-  here too" step (or a script that reads `stacks/*/compose.yaml` ports and
-  proposes entries) would keep the dashboard from drifting out of sync the
-  way `stacks/README.md` did.
 - **`docker compose config` lint in the pre-commit hook**, not just CI —
   catches YAML mistakes before they're even committed, not just before
   merge.
-- **Per-stack `.env.public` completeness check in CI.** Right now CI
-  checks for `version:`, `pull_policy:`, and README presence; it could also
-  flag any `${VAR}` used in a `compose.yaml` that has no corresponding line
-  in that stack's `.env.public`, catching the exact gap that bitmagnet and
-  speedtest-tracker had before this round of fixes.
-- **`stacks/README.md` drift check in CI.** CI checks that each stack
-  directory _has_ a README, but never that the index in `stacks/README.md`
-  actually lists every stack — CLAUDE.md claims "must be kept in sync (CI
-  checks this)", which is not currently true. Extend the existing "Check
-  for required documentation" step in `compose-validate.yml`: it already
-  loops `stacks/*/` with the right `README.md`/`common.yaml.public` skip
-  logic, so it just needs a second assertion per directory.
 - **Screenshots for the 9 newly-documented stacks.** backrest, bitmagnet,
   gotify, indexing, lidarr, navidrome, profilarr, slskd, and watchyourlan
   currently skip the "WebUI Dashboard" section since no screenshot exists
   in `resources/screenshots/` — cosmetic, but matches the pattern the rest
   of the wiki uses.
+
+## Candidate services
+
+- **Media**: Jellyfin (open alternative to Plex), Tautulli (Plex stats),
+  Audiobookshelf, Unpackerr and Cleanuparr (arr queue hygiene), Recyclarr
+  if profilarr proves heavy.
+- **Ops**: Uptime Kuma (same author as Dockge), Beszel (lightweight host and
+  container metrics), Scrutiny (disk SMART health, pairs with backrest).
+- **Network and auth**: Caddy with Tinyauth or Authelia for the proxy and
+  login items above, Pi-hole or AdGuard Home, Vaultwarden.
+- **Photos**: Immich.
 
 ## Explicitly out of scope (for now)
 

@@ -42,11 +42,7 @@ Web UI for managing and updating docker-compose stacks. The control center for S
 
 ## Stacks Directory
 
-Dockge reads from the `DOCKGE_STACKS_DIR` environment variable (set in root `compose.yaml`):
-
-```sh
-/home/$USER/saffron/stacks/
-```
+Dockge reads `DOCKGE_STACKS_DIR`, which the root `compose.yaml` sets to `$PWD/stacks` of the checkout it is started from; the path has to be the same inside and outside the container.
 
 Each subdirectory (servarr/, torrent/, etc.) becomes a separate "stack" in the UI.
 

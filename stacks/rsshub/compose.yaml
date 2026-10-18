@@ -1,0 +1,73 @@
+services:
+  rsshub:
+    image: diygod/rsshub:2026-10-17
+    container_name: rsshub
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    labels:
+      homepage.group: Web
+      homepage.name: RSSHub
+      homepage.icon: rsshub.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:1200
+      homepage.description: Feed generator
+    ports:
+      - 1200:1200
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: redis://rsshub-redis:6379/
+      PLAYWRIGHT_WS_ENDPOINT: ws://rsshub-browserless:3000
+    depends_on:
+      - rsshub-redis
+      - rsshub-browserless
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:1200/healthz
+  # Renders JavaScript-heavy routes; optional, drop it and PLAYWRIGHT_WS_ENDPOINT together.
+  rsshub-browserless:
+    # browserless/chrome v1 is no longer published; latest has been frozen since 2024-02.
+    image: browserless/chrome:latest
+    container_name: rsshub-browserless
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    ulimits:
+      core:
+        hard: 0
+        soft: 0
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:3000/pressure
+  rsshub-redis:
+    image: redis:8.8.3-alpine
+    container_name: rsshub-redis
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    volumes:
+      - /containers/rsshub/redis:/data
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+networks: {}

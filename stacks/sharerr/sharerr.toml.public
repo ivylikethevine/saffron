@@ -1,0 +1,51 @@
+# Copy to /containers/sharerr/config/sharerr.toml. The web UI rewrites it in place on save.
+# Credentials (qBittorrent, *arr and gluetun API keys) go in the vault, not here:
+#   printf %s "$KEY" | docker exec -i sharerr sharerr vault set sonarr.api_key
+# All options: https://github.com/ivylikethevine/sharerr-rs/blob/main/docs/SETTINGS.md
+
+data_dir = "/data"
+
+# Sonarr/Radarr content carrying this tag is shared; nothing else is touched.
+tag = "sharerr"
+
+[server]
+bind = "0.0.0.0:8477"
+
+[qbittorrent]
+# Same namespace as qBittorrent, so localhost. 5.2+ authenticates with an API key
+# (Options -> Web UI -> API key), stored as qbittorrent.api_key.
+url = "http://localhost:8080"
+category = "sharerr"
+tag = "sharerr"
+# false for the first run, so qBittorrent verifies the path mapping instead of trusting it.
+skip_checking = false
+
+[tracker]
+# What friends resolve this instance as. The [gluetun] poll replaces it with the
+# tunnel's exit address once gluetun.api_key is in the vault.
+advertised_host = "CHANGE-ME.example.com"
+port = 8477
+
+[gluetun]
+# The torrent stack's control server. Needs gluetun.api_key in the vault, matching
+# the sharerr role in /containers/gluetun/config.toml, or the poll is skipped.
+control_url = "http://localhost:8000"
+poll_secs = 60
+
+[sync]
+enabled = true
+interval_secs = 900
+
+# Sonarr, Radarr and qBittorrent all see the library at /data; sharerr sees it at /media.
+[[path_map]]
+arr = "/data"
+sharerr = "/media"
+qbit = "/data"
+
+# Names do not resolve inside the tunnel, so the *arr apps are reached on their
+# published ports through the host. Needs LAN_SUBNETS in the torrent stack's .env.
+[sonarr]
+url = "http://host.docker.internal:8989"
+
+[radarr]
+url = "http://host.docker.internal:7878"

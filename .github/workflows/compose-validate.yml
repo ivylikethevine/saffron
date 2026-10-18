@@ -4,13 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - 'stacks/**/*.yaml'
-      - 'stacks/**/*.yml'
+      - 'stacks/**'
   pull_request:
     branches: [main]
     paths:
-      - 'stacks/**/*.yaml'
-      - 'stacks/**/*.yml'
+      - 'stacks/**'
 
 jobs:
   validate:
@@ -18,153 +16,55 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
 
-      - name: Install Docker Compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose-v2
-
       - name: Validate compose file syntax
         run: |
           cp stacks/common.yaml.public stacks/common.yaml
-          echo "      - ./data:/data" >> stacks/common.yaml
           for file in stacks/*/compose.yaml; do
             echo "Validating $file..."
             docker compose -f "$file" config > /dev/null || exit 1
           done
           echo "✓ All compose files are valid"
 
-      - name: Check for required documentation
+      - name: Check every stack has a README and is listed in stacks/README.md
         run: |
-          echo "Checking for README.md in all stack directories..."
+          fail=0
           for dir in stacks/*/; do
             stack=$(basename "$dir")
-            if [ "$stack" = "README.md" ] || [ "$stack" = "common.yaml.public" ]; then
-              continue
-            fi
             if [ ! -f "$dir/README.md" ]; then
               echo "✗ Missing README.md: $dir"
-              exit 1
+              fail=1
+            fi
+            if ! grep -q "](stacks/$stack/README.md)" stacks/README.md; then
+              echo "✗ stacks/README.md does not list $stack"
+              fail=1
             fi
           done
-          echo "✓ All stacks have README.md files"
+          [ "$fail" -eq 0 ] || exit 1
+          echo "✓ Every stack has a README.md and an index entry"
 
-      - name: Check for required version keys
+      - name: Check .env.public documents every variable
         run: |
-          echo "Checking for compose version specification..."
+          # USER, HOMEPAGE_HOST and SAFFRON_DIR come from the host or dockge environment, not .env
+          fail=0
           for file in stacks/*/compose.yaml; do
-            if ! grep -q '^version:' "$file"; then
-              echo "✗ Missing version in $file"
-              exit 1
-            fi
-          done
-          echo "✓ All compose files have version specified"
-
-      - name: Verify pull_policy settings
-        run: |
-          echo "Checking for pull_policy in image-based services..."
-          for file in stacks/*/compose.yaml; do
-            # Skip files that use 'build' instead of 'image'
-            if grep -q '^\s*build:' "$file"; then
-              continue
-            fi
-            # Check that services with images have pull_policy
-            services_with_image=$(grep -c '^\s*image:' "$file" || echo 0)
-            if [ "$services_with_image" -gt 0 ]; then
-              pull_policy=$(grep -c 'pull_policy:' "$file" || echo 0)
-              if [ "$pull_policy" -eq 0 ]; then
-                echo "✗ Missing pull_policy in $file"
-                exit 1
+            dir=$(dirname "$file")
+            for v in $(grep -oE '\$\{?[A-Z_][A-Z0-9_]*' "$file" | tr -d '${' | sort -u); do
+              case "$v" in USER|HOMEPAGE_HOST|SAFFRON_DIR) continue ;; esac
+              if [ ! -f "$dir/.env.public" ] || ! grep -qE "^#? ?$v=" "$dir/.env.public"; then
+                echo "✗ $file uses \$$v but $dir/.env.public does not document it"
+                fail=1
               fi
+            done
+          done
+          [ "$fail" -eq 0 ] || exit 1
+          echo "✓ Every compose variable is documented in its .env.public"
+
+      - name: Reject obsolete version keys
+        run: |
+          for file in stacks/*/compose.yaml; do
+            if grep -q '^version:' "$file"; then
+              echo "✗ Obsolete version key in $file (Compose v2 ignores it and warns)"
+              exit 1
             fi
           done
-          echo "✓ All image-based services have pull_policy"
-
-  multi-arch-verify:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7.0.1
-
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3-yaml
-
-      - name: Check multi-arch image availability
-        run: |
-          echo "Verifying ARM64 image availability for linuxserver and multi-arch images..."
-
-          python3 << 'PYTHON_EOF'
-          import yaml
-          import json
-          import subprocess
-          from pathlib import Path
-          from urllib.request import urlopen
-
-          def check_image_manifests(image_name):
-              """Check if image supports linux/amd64 and linux/arm64v8"""
-              try:
-                  # Parse registry/image
-                  if '/' not in image_name:
-                      registry = 'docker.io'
-                      repo = f"library/{image_name}"
-                  elif image_name.startswith('ghcr.io/'):
-                      registry = 'ghcr.io'
-                      repo = image_name.replace('ghcr.io/', '')
-                  else:
-                      registry = 'docker.io'
-                      repo = image_name
-
-                  # Extract tag
-                  if ':' in repo:
-                      repo, tag = repo.rsplit(':', 1)
-                  else:
-                      tag = 'latest'
-
-                  if registry == 'docker.io':
-                      url = f"https://registry.hub.docker.com/v2/repositories/{repo}/tags/{tag}/"
-                      response = urlopen(url, timeout=5)
-                      data = json.loads(response.read())
-                      images = data.get('images', [])
-                  else:  # ghcr.io
-                      # ghcr requires auth for manifests, skip detailed check
-                      return True
-
-                  # Check for arm64v8 support
-                  has_arm64 = any(img.get('os_architecture') == 'arm64' for img in images)
-                  has_amd64 = any(img.get('os_architecture') == 'amd64' for img in images)
-
-                  return has_amd64 and has_arm64
-              except Exception as e:
-                  # Timeout or auth required, assume OK
-                  return True
-
-          # Scan all compose files
-          failed = []
-          arm64_images = {}
-
-          for compose_file in sorted(Path('stacks').glob('*/compose.yaml')):
-              with open(compose_file) as f:
-                  try:
-                      data = yaml.safe_load(f)
-                  except:
-                      continue
-
-              if not data or 'services' not in data:
-                  continue
-
-              for service_name, service_config in data.get('services', {}).items():
-                  image = service_config.get('image', '')
-                  if not image:
-                      continue
-
-                  if image.startswith('ghcr.io/'):
-                      if image not in arm64_images:
-                          arm64_images[image] = check_image_manifests(image)
-
-                      if not arm64_images[image]:
-                          failed.append(f"{compose_file}: {service_name} uses {image} (no ARM64 support)")
-
-          if failed:
-              print("✗ Images without ARM64 support found:")
-              for msg in failed:
-                  print(f"  {msg}")
-              exit(1)
-          else:
-              print(f"✓ Checked {len(arm64_images)} multi-arch images, all support ARM64")
-          PYTHON_EOF
+          echo "✓ No compose file sets a version key"

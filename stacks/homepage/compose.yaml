@@ -1,0 +1,24 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:v2.6.0
+    container_name: homepage
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    ports:
+      - 82:3000
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS:-*}
+    volumes:
+      - /containers/homepage:/app/config
+      # read-only socket for container discovery via homepage.* labels
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

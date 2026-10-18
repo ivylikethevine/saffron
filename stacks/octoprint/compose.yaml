@@ -1,15 +1,27 @@
-version: "3.8"
 services:
   octoprint:
     image: octoprint/octoprint:1.11.8
-    pull_policy: missing
     container_name: octoprint
-    restart: always
+    labels:
+      homepage.group: Home
+      homepage.name: OctoPrint
+      homepage.icon: octoprint.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:85
+      homepage.description: 3D printer
     ports:
       - 85:80
+    # /dev and /run/udev as mounts, so a printer plugged in after startup appears.
     volumes:
       - /containers/octoprint:/octoprint
+      - /run/udev:/run/udev
+      - /dev:/dev
+    # ttyUSB (188) and ttyACM (189) serial devices
+    device_cgroup_rules:
+      - c 188:* rwm
+      - c 189:* rwm
     privileged: true
+    # devices:
+    #   - /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
     extends:
       file: ../common.yaml
       service: base-settings
@@ -17,6 +29,12 @@ services:
       resources:
         limits:
           memory: 512M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:80/
     networks:
       - saffron_default
 networks:

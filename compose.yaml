@@ -1,17 +1,32 @@
----
-
 services:
   dockge:
-    image: louislam/dockge:latest
+    image: louislam/dockge:1.5.0
+    pull_policy: missing
     container_name: dockge
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: Dockge
+      homepage.icon: dockge.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:5001
+      homepage.description: Stack manager
     restart: always
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
     ports:
       - 5001:5001
     environment:
-      - DOCKGE_STACKS_DIR=/home/$USER/saffron/stacks
-      - USER=$USER # to pass down to use in other stacks
+      # dockge needs the stacks path to be the same inside and outside the container
+      - DOCKGE_STACKS_DIR=${PWD}/stacks
+      # passed down to every stack dockge starts
+      - SAFFRON_DIR=${PWD}
+      - USER=$USER
+      - HOMEPAGE_HOST=${HOMEPAGE_HOST:-localhost} # host browsers use in homepage links
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /containers/dockge/data:/app/data
-      - /home/$USER/saffron/stacks:/home/$USER/saffron/stacks
-      - /etc/timezone:/etc/timezone:ro
+      - ${PWD}/stacks:${PWD}/stacks
+      - /etc/localtime:/etc/localtime:ro

@@ -1,0 +1,34 @@
+services:
+  diun:
+    image: ghcr.io/crazy-max/diun:4.33.0
+    container_name: diun
+    command: serve
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    environment:
+      DIUN_WATCH_SCHEDULE: 0 6 * * * # daily at 06:00 host time
+      DIUN_WATCH_JITTER: 30s
+      DIUN_WATCH_WORKERS: 5
+      DIUN_PROVIDERS_DOCKER: true
+      DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: true
+      # Pinned tags never change, so watch each image's repo for newer tags.
+      DIUN_DEFAULTS_WATCHREPO: true
+      DIUN_DEFAULTS_SORTTAGS: semver
+      DIUN_DEFAULTS_MAXTAGS: 5
+      DIUN_NOTIF_GOTIFY_ENDPOINT: ${GOTIFY_URL:-http://host.docker.internal:8321}
+      DIUN_NOTIF_GOTIFY_TOKEN: $GOTIFY_TOKEN
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /containers/diun:/data
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    networks:
+      - saffron_default
+networks:
+  saffron_default:
+    external: true

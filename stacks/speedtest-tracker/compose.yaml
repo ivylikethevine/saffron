@@ -1,10 +1,13 @@
-version: "3.8"
 services:
   speedtest-tracker:
-    image: linuxserver/speedtest-tracker:1.14.7
-    pull_policy: missing
+    image: linuxserver/speedtest-tracker:1.15.0
     container_name: speedtest-tracker
-    restart: always
+    labels:
+      homepage.group: Infrastructure
+      homepage.name: Speedtest Tracker
+      homepage.icon: speedtest-tracker.png
+      homepage.href: http://${HOMEPAGE_HOST:-localhost}:8011
+      homepage.description: Bandwidth history
     ports:
       - 8011:80
     environment:
@@ -22,6 +25,12 @@ services:
       resources:
         limits:
           memory: 512M
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:80/api/healthcheck
     networks:
       - saffron_default
 networks:

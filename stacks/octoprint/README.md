@@ -62,31 +62,7 @@ if [ "$1" == "added" ]
     fi                                                                          
 fi 
 
-ORRR? 
-
-version: "3.9"
-services:
-  octoprint:
-    image: octoprint/octoprint
-    container_name: octoprint
-    restart: always
-    ports:
-      - 85:80
-    volumes:
-      - /containers/octoprint:/octoprint
-      - /run/udev:/run/udev
-      - /dev:/dev
-    extends:
-      file: ../common.yaml
-      service: base-settings
-    networks:
-      - ustreamer_default
-    device_cgroup_rules:
-      - c 188:* rwm
-      - c 189:* rwm
-    privileged: true
-  # devices:
-  #   - /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
+Alternatively, `compose.yaml` mounts `/dev` and `/run/udev` and allows the ttyUSB/ttyACM device classes (`device_cgroup_rules`), so a printer plugged in after startup appears without the udev script.
 
 ##### Orange Pi 3B+ Physical Pin -> /dev/gpiochip mapping
 
