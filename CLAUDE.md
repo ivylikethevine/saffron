@@ -306,4 +306,4 @@ Saffron scales by **adding stacks**, not by replicating existing ones. No load b
 
 ## Future Improvements
 
-See [ROADMAP.md](ROADMAP.md).
+See the Roadmap section of [README.md](README.md#roadmap).

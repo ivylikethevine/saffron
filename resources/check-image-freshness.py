@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Report Saffron images whose pinned tag is behind the newest upstream tag.
 
-Saffron pins every image to a specific release (see ROADMAP.md, "Pin image
-versions"), which stops surprise breakage but means nothing notices when
+Saffron pins every image to a specific release (see README.md's Roadmap,
+"Pin image versions"), which stops surprise breakage but means nothing notices when
 upstream ships a new version. Diun notifies at runtime, but nothing touches the
 committed YAML, so `compose.yaml` drifts silently.
 
