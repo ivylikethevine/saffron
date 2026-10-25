@@ -11,14 +11,42 @@ services:
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS:-*}
     volumes:
       - /containers/homepage:/app/config
-      # read-only socket for container discovery via homepage.* labels
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # discovery reads containers through homepage-socket-proxy
+      - ./docker.yaml:/app/config/docker.yaml:ro
+    depends_on:
+      - homepage-socket-proxy
     deploy:
       resources:
         limits:
           memory: 512M
     networks:
       - saffron_default
+      - socket
+  # homepage runs as PUID:PGID, which can't open the root:docker socket
+  homepage-socket-proxy:
+    image: tecnativa/docker-socket-proxy:v0.5.0
+    container_name: homepage-socket-proxy
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    environment:
+      CONTAINERS: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -qO-
+        - http://localhost:2375/_ping
+    networks:
+      - socket
 networks:
   saffron_default:
     external: true
+  socket:
+    internal: true

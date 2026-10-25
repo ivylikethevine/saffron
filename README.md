@@ -216,8 +216,8 @@ These have been implemented:
 - **Add healthchecks** — Added HTTP healthcheck to qbittorrent (wget on port 8080). Converted portcheck's `depends_on` from list to mapping form with `condition: service_healthy`.
 - **Add resource limits** — Added `deploy.resources.limits.memory` to 24 services across 13 stacks (512M for medium-weight, 256M for lightweight UI, 1G for browser-backed, 128M for portcheck). Memory-only per initial scope.
 - **Reconcile `pull_policy`** — All pinned services now use `pull_policy: missing`; floating-tag services (portcheck) remain `always`.
-- **Network topology diagram** — Added Mermaid diagram to CLAUDE.md showing servarr_bridge, VPN-routed services (bitmagnet-gluetun, qbittorrentvpn), and host-mode services. Created `resources/generate-topology.py` to regenerate diagram programmatically. See commit 700d2fe.
-- **Multi-arch verification in CI** — Added `multi-arch-verify` job to `.github/workflows/compose-validate.yml` that checks ARM64 image availability for linuxserver, qmcgaw, and GHCR images via Docker Hub registry API. Verifies all multi-arch images support both linux/amd64 and linux/arm64v8. See commit ebf07f5.
+- **Network topology diagram** — Added Mermaid diagram to CLAUDE.md showing servarr_bridge, VPN-routed services (bitmagnet-gluetun, qbittorrentvpn), and host-mode services. Created `resources/generate-topology.py` to regenerate diagram programmatically. See commit 700d2fe. CLAUDE.md now points to the script instead of embedding the diagram.
+- **Multi-arch verification in CI** — Added `multi-arch-verify` job to `.github/workflows/compose-validate.yml` that checks ARM64 image availability for linuxserver, qmcgaw, and GHCR images via Docker Hub registry API. Verifies all multi-arch images support both linux/amd64 and linux/arm64v8. See commit ebf07f5. Removed 2026-10-17; see ARM64 verification under Later.
 
 - **Automated dependency updates** — Added `.github/dependabot.yml`
   (`github-actions` ecosystem, monthly, grouped) plus
@@ -273,6 +273,16 @@ These have been implemented:
   `HOMEPAGE_HOST`, passed down from dockge.
 - **dozzle v10 → v11.** No config changes; everyone is signed out once.
 
+#### ✓ Completed (2026-10-25)
+
+- **Homepage discovery through a socket proxy.** Homepage runs as
+  `PUID:PGID`, which can't open the `root:docker` socket, so label
+  discovery found nothing. It now reads containers through
+  `homepage-socket-proxy` (read-only, `CONTAINERS=1`) on an internal
+  network, and the stack's tracked `docker.yaml` replaces the hand-made one.
+- **Decided against** secrets management beyond `.env` and a compose lint
+  in the pre-commit hook; see out of scope below.
+
 #### Now (high impact, low-to-medium effort)
 
 - **Postgres major bump**, its own piece of work:
@@ -294,13 +304,9 @@ These have been implemented:
   clients, etc.). Pair with the reverse-proxy work above: forward-auth or
   basic-auth at the proxy layer covers everything at once instead of
   per-service.
-- **Secrets management beyond `.env`.** Current model (`.env.public`
-  template → user-created `.env`, gitignored) is fine for solo use. If this
-  ever becomes a team/multi-host setup, revisit git-crypt or a small
-  secrets store rather than hand-copying `.env` files during migration.
 - **Smoke-test the CI workflow, not just syntax.** `compose-validate.yml`
-  currently checks YAML validity, README presence, and a few string
-  patterns — never actually starts a container. A follow-up job that spins
+  checks compose syntax, READMEs and the stack index, `.env.public`
+  completeness and `version:` keys — it never actually starts a container. A follow-up job that spins
   up one or two low-risk stacks (`docker compose up -d && curl healthcheck`)
   would catch breakage the static checks can't.
 
@@ -311,9 +317,11 @@ These have been implemented:
   scripted) "restore into a scratch dir and diff" check would turn "we have
   backups" into "we know the backups work."
 - **One shared VPN stack.** torrent and bitmagnet each run their own
-  gluetun. A single `vpn` stack with consumers on
-  `network_mode: container:gluetun` halves credentials and config, at the
-  cost of a cross-stack startup-order dependency.
+  gluetun; sharerr already rides torrent's (`container:qbittorrentvpn`)
+  and slskd rides bitmagnet's (`container:bitmagnet-gluetun`), so
+  cross-stack startup order is already a dependency. A single `vpn` stack
+  that every consumer joins with `network_mode: container:gluetun` halves
+  credentials and config.
 - **ARM64 verification.** Nothing checks that pinned images publish an
   arm64 manifest. Only needed if Saffron runs on ARM hardware; the check
   belongs in `check-image-freshness.py`, which already talks to both
@@ -321,14 +329,15 @@ These have been implemented:
 
 #### Nice-to-haves (low priority, quality-of-life)
 
-- **`docker compose config` lint in the pre-commit hook**, not just CI —
-  catches YAML mistakes before they're even committed, not just before
-  merge.
-- **Screenshots for the 9 newly-documented stacks.** backrest, bitmagnet,
-  gotify, indexing, lidarr, navidrome, profilarr, slskd, and watchyourlan
-  currently skip the "WebUI Dashboard" section since no screenshot exists
-  in `resources/screenshots/` — cosmetic, but matches the pattern the rest
-  of the wiki uses.
+- **Screenshots for the 20 stacks without one.** backrest, bitmagnet,
+  dapsync, degoog, diun, esphome, freshrss, gotify, homepage, indexing,
+  instadroid, lan-orangutan, lidarr, navidrome, profilarr, rsshub, sharerr,
+  slskd, ustreamer and watchyourlan skip the "WebUI Dashboard" section —
+  cosmetic, but matches the pattern the rest of the wiki uses. Three are
+  already in `resources/screenshots/` but sit in the wrong README or none:
+  `prowlarr.webp` is in torrent's (belongs in indexing), `lidarr.webp` in
+  servarr's (belongs in lidarr), and `navidrome.webp` is unused. plex's
+  README links `plex.webp`, which doesn't exist.
 
 #### Candidate services
 
@@ -349,6 +358,10 @@ These have been implemented:
 - **Built-in image signing/verification.** Worth knowing about but adds
   real friction for a homelab; not worth doing
   until there's a specific threat this is defending against.
+- **Secrets management beyond `.env`** (git-crypt, a secrets store). The
+  `.env.public` → gitignored `.env` model covers a single-owner homelab.
+- **`docker compose config` lint in the pre-commit hook.** CI already runs
+  it on every push; lints are run by hand before committing.
 
 ### AI Usage
 

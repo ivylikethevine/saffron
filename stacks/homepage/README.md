@@ -4,12 +4,10 @@ Dashboard that discovers services from Docker labels, so a stack adds itself
 by carrying `homepage.*` labels instead of being entered by hand. Runs on
 port 82 beside [heimdall](../heimdall/README.md) on port 80.
 
-Enable discovery once by adding the socket to `/containers/homepage/docker.yaml`:
-
-```yaml
-saffron:
-  socket: /var/run/docker.sock
-```
+Homepage runs as `PUID:PGID`, which can't open the Docker socket, so it reads
+containers through `homepage-socket-proxy`, which passes only read-only
+requests. The stack's `docker.yaml` points discovery at the proxy and
+is mounted over `/containers/homepage/docker.yaml`.
 
 Every service carries `homepage.*` labels. Their links use `HOMEPAGE_HOST`,
 which dockge passes down from the root `compose.yaml` (default `localhost`);

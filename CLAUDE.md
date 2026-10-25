@@ -25,10 +25,18 @@ saffron/
 │   ├── remove-saffron.sh    # Cleanup script
 │   ├── pre-commit            # Git hook for webp image conversion
 │   ├── lib.sh                # Helpers shared by the scripts
+│   ├── check-image-freshness.py  # Compares pinned image tags against upstream
+│   ├── generate-topology.py  # Prints a Mermaid network diagram
+│   ├── requirements.txt      # Python deps for the two scripts above
+│   ├── screenshots/          # webp screenshots the stack READMEs embed
 │   ├── settings.json         # VS Code yaml-sort configuration
 │   └── README.md             # Installation guide
-├── .github/workflows/
-│   └── compose-validate.yml  # GitHub Actions: validates compose files on push
+├── .github/
+│   ├── dependabot.yml        # Monthly GitHub Actions bumps
+│   └── workflows/
+│       ├── compose-validate.yml  # Validates compose files on push
+│       ├── image-freshness.yml   # Monthly stale-pin report
+│       └── pages.yml             # Deploys the docsify wiki to GitHub Pages
 ├── compose.yaml              # Root compose file (runs dockge only)
 ├── index.html                # docsify wiki homepage
 ├── _navbar.md                # docsify navbar
@@ -69,17 +77,25 @@ extends one of them, so the defaults live in one place:
 - `media-access`: `base-settings` plus `/data:/data`, rewritten to
   `$DATA_DIR:/data` by the install script.
 
-A service overrides a key by setting it (portcheck sets
-`pull_policy: always` for its floating tag).
+A service overrides a key by setting it (portcheck and dapsync set
+`pull_policy: always` for their floating tags).
 
 **Why not centralize?** If common.yaml broke, every stack would fail. This design keeps each stack independent but consistent.
 
 ### Network Architecture
 
 - **Default bridge** (`saffron_default`): Most services communicate internally via container names
-- **External bridges** (`servarr_bridge`, etc.): Multi-stack communication (e.g., torrent → servarr)
-- **Host mode** (plex, homeassistant, watchyourlan): Direct network access (special cases)
-- **VPN routing** (torrent, bitmagnet + slskd): Services tunnel through gluetun (wireguard)
+- **External bridges** (`servarr_bridge`, created by the servarr stack): Multi-stack communication (e.g., torrent → servarr)
+- **Internal bridges** (`homepage_socket`): reach only the stack's own containers, e.g. homepage → its socket proxy
+- **Host mode** (plex, homeassistant, watchyourlan, lan-orangutan, instadroid's feed): Direct network access (special cases)
+- **VPN routing**: services tunnel through gluetun (wireguard). torrent's `qbittorrentvpn` carries qbittorrent, portcheck and sharerr; bitmagnet's `bitmagnet-gluetun` carries bitmagnet and slskd. sharerr and slskd join from other stacks with `network_mode: container:`, so their gluetun stack must be up first.
+
+### Docker Socket
+
+dockge, dozzle and diun mount `/var/run/docker.sock` directly. homepage runs
+as `PUID:PGID`, which can't open the `root:docker` socket, so it reads
+containers through `homepage-socket-proxy` (read-only, `CONTAINERS=1`);
+`stacks/homepage/docker.yaml` points discovery at the proxy.
 
 ### Network Topology Diagram
 
@@ -132,9 +148,13 @@ GitHub Actions CI:
 
 - Validates each stack's compose file syntax against `common.yaml.public`
 - Checks every stack directory has a README.md and is listed in `stacks/README.md`
-- Checks every `$VAR` a compose file uses is documented in that stack's `.env.public` (`USER`, `HOME` and `HOMEPAGE_HOST` exempt)
+- Checks every `$VAR` a compose file uses is documented in that stack's `.env.public` (`USER`, `HOMEPAGE_HOST` and `SAFFRON_DIR` exempt)
 - Rejects the obsolete `version:` key
 - Runs on push/PR to stacks/ directory
+
+`image-freshness.yml` runs `check-image-freshness.py` monthly and on demand,
+reporting stale pins in the job summary; it never fails. Dependabot can't
+watch `compose.yaml` files, only GitHub Actions.
 
 ## Architecture Decisions
 
@@ -163,7 +183,7 @@ GitHub Actions CI:
 ### pull_policy: missing for pinned, always for floating
 
 - **Pinned services** inherit `pull_policy: missing` from `base-settings` — skip re-pull if image tag already present locally. Diun notifies when a newer tag exists; updates are deliberate pin edits in git.
-- **Floating-tag services** (portcheck, which has no semver tags) use `pull_policy: always` — necessary when upstream only publishes `:latest`.
+- **Floating-tag services** (portcheck and dapsync, which have no semver tags) use `pull_policy: always` — necessary when upstream only publishes `:latest`.
 - ✓ Avoids re-pulling same digest on every restart (efficiency)
 - ✓ Explicit version pins prevent surprise breakage from upstream releases
 
@@ -269,18 +289,18 @@ Saffron scales by **adding stacks**, not by replicating existing ones. No load b
 
 - Never commit `.env` files; `.gitignore` enforces this
 - `.env.public` templates document what's needed, not actual values
-- Consider git-crypt or bitwarden for shared credentials across team
+- Secrets beyond `.env` (git-crypt, a secrets store) are out of scope
 
 ### Network Exposure
 
-- By default, all services bind to `localhost` (not `0.0.0.0`)
-- Services accessible only within docker network or via port mappings
-- VPN services (bitmagnet, torrent) tunnel traffic through external VPN
+- Published ports bind every host interface (`0.0.0.0`), so each UI is reachable from the LAN; only instadroid's ADB port is bound to `127.0.0.1`
+- Most UIs have no login; the host is meant for a trusted LAN
+- VPN services (torrent, bitmagnet, and slskd and sharerr through them) tunnel traffic through external VPN
 - No TLS termination built-in; use reverse proxy if exposing to internet
 
 ### Image Provenance
 
-- Every tag is pinned; `pull_policy: missing` never re-pulls a tag already present
+- Every tag is pinned except portcheck's and dapsync's `:latest` (no other tags exist); `pull_policy: missing` never re-pulls a tag already present
 - linuxserver.io images are widely trusted, but audit before using others
 - No image signing/verification; consider adding in future if needed
 
