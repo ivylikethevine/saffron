@@ -1,0 +1,23 @@
+services:
+  dozzle-agent:
+    image: amir20/dozzle:v11.3.2
+    container_name: dozzle-agent
+    command: agent
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    # Serves this host's logs to a dozzle on another host (DOZZLE_REMOTE_AGENT there).
+    ports:
+      - 7007:7007
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+    healthcheck:
+      test:
+        - CMD
+        - /dozzle
+        - healthcheck
+networks: {}

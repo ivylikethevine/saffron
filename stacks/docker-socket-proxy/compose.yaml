@@ -1,0 +1,24 @@
+services:
+  docker-socket-proxy:
+    image: lscr.io/linuxserver/socket-proxy:3.4.7
+    container_name: docker-socket-proxy
+    extends:
+      file: ../common.yaml
+      service: base-settings
+    # Read-only Docker API on the LAN for another host's homepage: container
+    # listing only, every write endpoint refused.
+    ports:
+      - 2375:2375
+    environment:
+      CONTAINERS: 1
+      POST: 0
+    read_only: true
+    tmpfs:
+      - /run
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+networks: {}

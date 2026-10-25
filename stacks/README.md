@@ -18,9 +18,13 @@
 
 - &#x2705; [docsify](stacks/docsify/README.md) - Web UI to view this repo's `README.md`'s as a wiki reflecting local edits. See the [public](https://ivylikethevine.github.io/saffron) instance or visit <http://hostname.local:5001> (if the container is running).
 
+- &#x2705; [docker-socket-proxy](stacks/docker-socket-proxy/README.md) - Read-only Docker API so another host's homepage can list this host's containers.
+
 - &#x2705; [dockge](dockge.md) - Web UI to manage docker compose files (integral to `saffron`).
 
 - &#x2705; [dozzle](stacks/dozzle/README.md) - Web UI to live docker container logs.
+
+- &#x2705; [dozzle-agent](stacks/dozzle-agent/README.md) - Serves this host's container logs to a dozzle on another host.
 
 - &#x2705; [esphome](stacks/esphome/README.md) - Easily create & manage esp32-based IoT devices, such as temp. sensors.
 

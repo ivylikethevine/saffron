@@ -273,8 +273,7 @@ Saffron scales by **adding stacks**, not by replicating existing ones. No load b
 
 ### Network Exposure
 
-- By default, all services bind to `localhost` (not `0.0.0.0`)
-- Services accessible only within docker network or via port mappings
+- Published ports (`host:container`) bind to all interfaces, so they are reachable from the LAN
 - VPN services (bitmagnet, torrent) tunnel traffic through external VPN
 - No TLS termination built-in; use reverse proxy if exposing to internet
 

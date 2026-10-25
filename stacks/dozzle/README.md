@@ -2,6 +2,9 @@
 
 Web UI to live docker container logs.
 
+To show another host's logs too, run [dozzle-agent](../dozzle-agent/README.md)
+there and set `DOZZLE_REMOTE_AGENT` in `.env` (see `.env.public`).
+
 <https://dozzle.dev/>
 
 <https://github.com/amir20/dozzle>

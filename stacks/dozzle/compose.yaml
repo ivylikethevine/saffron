@@ -15,6 +15,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 9999:8080
+    env_file:
+      - path: .env
+        required: false
     environment:
       DOZZLE_NO_ANALYTICS: true
     deploy:

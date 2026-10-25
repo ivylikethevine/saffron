@@ -19,7 +19,9 @@ sudo chmod -R 755 /containers || error_exit "Failed to change /containers permis
 success "Created /containers"
 
 echo
-read -rp 'Where is the data directory? (ex: /data): ' DATA_DIR
+# DATA_DIR from the environment skips the prompt, for unattended installs
+DATA_DIR=${DATA_DIR:-}
+[ -n "$DATA_DIR" ] || read -rp 'Where is the data directory? (ex: /data): ' DATA_DIR
 [ -n "$DATA_DIR" ] || error_exit "Data directory cannot be empty"
 sudo mkdir -p "$DATA_DIR" || error_exit "Failed to create $DATA_DIR"
 sudo chown -R 1000:1000 "$DATA_DIR" || error_exit "Failed to change ownership of $DATA_DIR"
@@ -49,7 +51,7 @@ echo "2. Start the desired stacks from the Dockge UI"
 echo "3. Configure .env files with your credentials"
 echo
 
-if command -v xdg-open >/dev/null; then
+if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v xdg-open >/dev/null; then
     xdg-open "http://$HOSTNAME.local:5001/" || true
 elif command -v open >/dev/null; then
     open "http://$HOSTNAME.local:5001/" || true
