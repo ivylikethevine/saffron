@@ -6,7 +6,7 @@ on:
     paths:
       - 'stacks/**'
   pull_request:
-    branches: [main]
+    branches: [main, dev]
     paths:
       - 'stacks/**'
 
