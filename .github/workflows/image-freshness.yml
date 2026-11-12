@@ -14,7 +14,7 @@ on:
     - cron: '0 9 1 * *'
   workflow_dispatch:
   pull_request:
-    branches: [main]
+    branches: [main, dev]
     paths:
       - 'resources/check-image-freshness.py'
       - '.github/workflows/image-freshness.yml'
