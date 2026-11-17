@@ -12,7 +12,7 @@ docker compose version >/dev/null 2>&1 || error_exit "docker compose (v2) is not
 echo "Making /containers directories"
 sudo mkdir -p /containers || error_exit "Failed to create /containers"
 for dir in "$SAFFRON_DIR"/stacks/*/; do
-    sudo mkdir -p "/containers/$(basename "$dir")" || error_exit "Failed to create /containers/$(basename "$dir")"
+  sudo mkdir -p "/containers/$(basename "$dir")" || error_exit "Failed to create /containers/$(basename "$dir")"
 done
 sudo chown -R 1000:1000 /containers || error_exit "Failed to change /containers ownership"
 sudo chmod -R 755 /containers || error_exit "Failed to change /containers permissions"
@@ -28,14 +28,9 @@ success "Created $DATA_DIR"
 
 echo
 # media-access mounts DATA_DIR at /data in every container that extends it
-sed "s|^      - /data:|      - $DATA_DIR:|" "$SAFFRON_DIR/stacks/common.yaml.public" > "$SAFFRON_DIR/stacks/common.yaml" \
-    || error_exit "Failed to create stacks/common.yaml"
+sed "s|^      - /data:|      - $DATA_DIR:|" "$SAFFRON_DIR/stacks/common.yaml.public" >"$SAFFRON_DIR/stacks/common.yaml" ||
+  error_exit "Failed to create stacks/common.yaml"
 success "Created stacks/common.yaml with DATA_DIR=$DATA_DIR"
-
-if [ -d "$SAFFRON_DIR/.git" ]; then
-    ln -sf ../../resources/pre-commit "$SAFFRON_DIR/.git/hooks/pre-commit"
-    success "Installed the webp pre-commit hook"
-fi
 
 echo
 echo "Starting dockge..."
@@ -50,7 +45,7 @@ echo "3. Configure .env files with your credentials"
 echo
 
 if command -v xdg-open >/dev/null; then
-    xdg-open "http://$HOSTNAME.local:5001/" || true
+  xdg-open "http://$HOSTNAME.local:5001/" || true
 elif command -v open >/dev/null; then
-    open "http://$HOSTNAME.local:5001/" || true
+  open "http://$HOSTNAME.local:5001/" || true
 fi

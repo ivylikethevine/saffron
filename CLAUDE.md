@@ -21,14 +21,13 @@ saffron/
 │   ├── [20+ other stacks]
 │   └── ...
 ├── resources/
-│   ├── install-saffron.sh   # Setup script (creates dirs, generates common.yaml, installs the hook)
+│   ├── install-saffron.sh   # Setup script (creates dirs, generates common.yaml)
 │   ├── remove-saffron.sh    # Cleanup script
-│   ├── pre-commit            # Git hook for webp image conversion
 │   ├── lib.sh                # Helpers shared by the scripts
 │   ├── check-image-freshness.py  # Compares pinned image tags against upstream
 │   ├── generate-topology.py  # Prints a Mermaid network diagram
 │   ├── requirements.txt      # Python deps for the two scripts above
-│   ├── screenshots/          # webp screenshots the stack READMEs embed
+│   ├── screenshots/          # webp screenshots the stack READMEs embed (cwebp -q 50 IN -o OUT.webp)
 │   ├── settings.json         # VS Code yaml-sort configuration
 │   └── README.md             # Installation guide
 ├── .github/
@@ -139,8 +138,7 @@ Setup automation:
 1. Creates `/containers/` directory structure
 2. Prompts for `$DATA_DIR` (bulk media storage location)
 3. Generates `stacks/common.yaml` by interpolating `$DATA_DIR` into `common.yaml.public`
-4. Links `resources/pre-commit` into `.git/hooks`
-5. Starts dockge
+4. Starts dockge
 
 ### .github/workflows/compose-validate.yml
 
