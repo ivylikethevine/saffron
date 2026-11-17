@@ -60,8 +60,7 @@ These have been implemented:
   rotation, healthcheck timings and the timezone mount live in
   `base-settings` and every service extends it. The root compose and the
   two stacks that need the checkout path read it from `PWD`/`SAFFRON_DIR`
-  instead of `/home/$USER/saffron`. The pre-commit hook is linked by the
-  install script. The multi-arch CI job, which only ever checked ghcr images
+  instead of `/home/$USER/saffron`. The multi-arch CI job, which only ever checked ghcr images
   and skipped those unconditionally, and the Jekyll build of a docsify site
   are gone.
 - **`homepage.*` labels on all 26 UI services**, grouped Media, Media
@@ -77,7 +76,7 @@ These have been implemented:
   `homepage-socket-proxy` (read-only, `CONTAINERS=1`) on an internal
   network, and the stack's tracked `docker.yaml` replaces the hand-made one.
 - **Decided against** secrets management beyond `.env` and a compose lint
-  in the pre-commit hook; see out of scope below.
+  in a git hook; see out of scope below.
 
 ## Now (high impact, low-to-medium effort)
 
@@ -156,5 +155,7 @@ These have been implemented:
   until there's a specific threat this is defending against.
 - **Secrets management beyond `.env`** (git-crypt, a secrets store). The
   `.env.public` → gitignored `.env` model covers a single-owner homelab.
-- **`docker compose config` lint in the pre-commit hook.** CI already runs
-  it on every push; lints are run by hand before committing.
+- **Git hooks**, a `docker compose config` lint and the webp conversion the
+  install script once linked included. CI already runs the lint on every
+  push; lints are run by hand before committing, and a screenshot is
+  converted by hand (`cwebp -q 50 IN -o OUT.webp`).
